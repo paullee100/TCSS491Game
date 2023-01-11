@@ -25,45 +25,45 @@ class Knight {
     };
 
     update() {
-        if (this.game.keys["a"]) {
+        if (this.game.keys["a"] || this.game.keys["ArrowLeft"]) {
             console.log("A is pressed");
             this.facing = 1;
             this.position.x -= 10;
             this.velocity.x -= 10;
-        } else if (this.game.keys["d"]) {
+        } else if (this.game.keys["d"] || this.game.keys["ArrowRight"]) {
             console.log("D is pressed");
             this.facing = 0;
             this.position.x += 10;
             this.velocity.x += 10;
-        } else if (this.game.keys["w"]) {
+        } else if (this.game.keys["w"] || this.game.keys["ArrowUp"]) {
             console.log("W is pressed");
             this.position.y -= 10;
             this.velocity.y -= 10;
-        } else if (this.game.keys["s"]) {
+        } else if (this.game.keys["s"] || this.game.keys["ArrowDown"]) {
             console.log("S is pressed");
             this.position.y += 10;
             this.velocity.y += 10;
         }
 
-        if (this.game.keys["a"] && this.game.keys["s"]) {
+        if (this.game.keys["a"] && this.game.keys["s"] || this.game.keys["ArrowLeft"] && this.game.keys["ArrowDown"]) {
             console.log("A and S is pressed at same time");
             this.position.y += 10;
             this.position.x -= 10;
             this.velocity.y += 10;
             this.velocity.x -= 10;
-        } else if (this.game.keys["a"] && this.game.keys["w"]) {
+        } else if (this.game.keys["a"] && this.game.keys["w"] || this.game.keys["ArrowLeft"] && this.game.keys["ArrowUp"]) {
             console.log("A and W is pressed at same time");
             this.position.y -= 10;
             this.position.x -= 10;
             this.velocity.y -= 10;
             this.velocity.x -= 10;
-        } else if (this.game.keys["d"] && this.game.keys["s"]) {
+        } else if (this.game.keys["d"] && this.game.keys["s"] || this.game.keys["ArrowRight"] && this.game.keys["ArrowDown"]) {
             console.log("D and S is pressed at same time");
             this.position.y += 10;
             this.position.x += 10;
             this.velocity.y += 10;
             this.velocity.x += 10;
-        } else if (this.game.keys["d"] && this.game.keys["w"]) {
+        } else if (this.game.keys["d"] && this.game.keys["w"] || this.game.keys["ArrowRight"] && this.game.keys["ArrowUp"]) {
             console.log("D and W is pressed at same time");
             this.position.y -= 10;
             this.position.x += 10;
