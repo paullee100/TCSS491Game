@@ -15,6 +15,7 @@ ASSET_MANAGER.queueDownload("./sprites/Knight_Attack1.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Attack2.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Run.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Knight_Roll.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Skeleton.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeletonwalking.png");

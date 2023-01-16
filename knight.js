@@ -6,8 +6,8 @@ class Knight {
         this.position = {x: 550, y:540};
         this.game.Knight = this;
         this.velocity = {x: 0, y: 0};
-        this.facing = -1; // right = 1, left = -1
-        this.state = 3; // running = 0, attack = 1, idle = 3
+        this.facing = 1; // right = 1, left = -1
+        this.state = 3; // running = 0, attack = 1, idle = 3, rolling = 4
         
         this.spritesheet = [];
         this.animation = [];
@@ -16,11 +16,14 @@ class Knight {
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Attack1.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Attack2.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Idle.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Roll.png"));
 
+        //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
         this.animation.push(new Animator(this.spritesheet[0], 43, 41, 30, 40, 10, 0.1, 90, false, true));
         this.animation.push(new Animator(this.spritesheet[1], 37, 37, 85, 45, 4, 0.1, 35, false, true));
         this.animation.push(new Animator(this.spritesheet[2], 30, 40, 88, 40, 6, 0.1, 32, false, true));
         this.animation.push(new Animator(this.spritesheet[3], 45, 43, 20, 36, 10, 0.1, 100, false, true));
+        this.animation.push(new Animator(this.spritesheet[4], 42, 41, 42, 37, 12, 0.1, 78, false, true));
     
         this.readyToAttack = 0;
         this.updateBB();
@@ -66,6 +69,8 @@ class Knight {
             this.state = 1;
             this.updateBB();
 
+        } else if (this.game.keys["Shift"]) {
+            this.state = 4;
         } else {
             this.state = 3;
             this.velocity.x = 0;
