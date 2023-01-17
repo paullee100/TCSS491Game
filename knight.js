@@ -126,7 +126,7 @@ class Knight {
             //mid-air physics
             //vertical physics
             if (this.velocity.y < 0 && this.game.keys["w"]) { // holding A while jumping jumps higher
-                this.velocity.y -= 1000;
+                //this.velocity.y -= 1000;
             };
 
             // horizontal physics
