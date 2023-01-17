@@ -53,75 +53,31 @@ class Knight {
         const TICK = this.game.clockTick;
 
         if (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2) {
-            if (this.game.keys["a"] || this.game.keys["ArrowLeft"]) {
+            if (this.game.keys["a"] || this.game.keys["ArrowLeft"]) { // move left
                 console.log("A is pressed");
                 this.facing = -1;
                 this.state = 0;
                 //this.position.x -= 10;
                 this.velocity.x = -RUN;
-            } else if (this.game.keys["d"] || this.game.keys["ArrowRight"]) {
+            } else if (this.game.keys["d"] || this.game.keys["ArrowRight"]) { // move right
                 console.log("D is pressed");
                 this.facing = 1;
                 this.state = 0;
                 //this.position.x += 10;
                 this.velocity.x = RUN;
-            } /*else if (this.game.keys["w"] || this.game.keys["ArrowUp"]) {
-                console.log("W is pressed");
-                //this.position.y -= 10;
-                //this.velocity.y = -RUN;
-            } else if (this.game.keys["s"] || this.game.keys["ArrowDown"]) {
-                console.log("S is pressed");
-                //this.position.y += 10;
-                //this.velocity.y = RUN;
-
-                // attack
-            } */ else if (this.game.keys["k"] || this.game.click) {
+            } else if (this.game.keys["k"] || this.game.click) { // attack
                 this.state = 1;
                 this.updateBB();
-
-            } else if (this.game.keys["Shift"] || (this.game.keys["Shift"] && (this.game.keys["a"] || this.game.keys["d"]))) {
+            } else if (this.game.keys["Shift"] || (this.game.keys["Shift"] && (this.game.keys["a"] || this.game.keys["d"]))) { // roll
                 this.state = 4;
                 this.velocity.x = 500 * (this.facing);
-                this.spritesheet[this.state].ad
+            } else if (this.game.keys["w"]) { // jump
+                this.velocity.y = JUMP;
+                this.state = 5;
             } else {
                 this.state = 3;
                 this.velocity.x = 0;
                 this.velocity.y = 0;
-            }
-
-            /* if (this.game.keys["a"] && this.game.keys["s"] || this.game.keys["ArrowLeft"] && this.game.keys["ArrowDown"]) {
-                console.log("A and S is pressed at same time");
-                //this.position.y += 10;
-                //this.position.x -= 10;
-                this.velocity.y += 10;
-                this.velocity.x -= 10;
-                this.state = 0;
-            } else if (this.game.keys["a"] && this.game.keys["w"] || this.game.keys["ArrowLeft"] && this.game.keys["ArrowUp"]) {
-                console.log("A and W is pressed at same time");
-                //this.position.y -= 10;
-                //this.position.x -= 10;
-                this.velocity.y -= 10;
-                this.velocity.x -= 10;
-                this.state = 0;
-            } else if (this.game.keys["d"] && this.game.keys["s"] || this.game.keys["ArrowRight"] && this.game.keys["ArrowDown"]) {
-                console.log("D and S is pressed at same time");
-                //this.position.y += 10;
-                //this.position.x += 10;
-                this.velocity.y += 10;
-                this.velocity.x += 10;
-                this.state = 0;
-            } else if (this.game.keys["d"] && this.game.keys["w"] || this.game.keys["ArrowRight"] && this.game.keys["ArrowUp"]) {
-                console.log("D and W is pressed at same time");
-                //this.position.y -= 10;
-                //this.position.x += 10;
-                this.velocity.y -= 10;
-                this.velocity.x += 10;
-                this.state = 0;
-            }  */
-
-            if (this.game.keys["w"]) { // jump
-                this.velocity.y = JUMP;
-                this.state = 5;
             }
     }
     else {
@@ -142,7 +98,7 @@ class Knight {
 
         };
 
-        if (this.position.y < 540) {
+        if (this.position.y < 540) { //Just for testing. Replace with floor collision to reset sprite later
             this.velocity.y += FALL * TICK;
         }
 
