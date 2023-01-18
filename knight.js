@@ -21,10 +21,10 @@ class Knight {
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
         this.animation.push(new Animator(this.spritesheet[0], 43, 41, 30, 40, 10, 0.060, 90, false, true));
-        this.animation.push(new Animator(this.spritesheet[1], 37, 37, 85, 45, 4, 0.1, 35, false, true));
-        this.animation.push(new Animator(this.spritesheet[2], 30, 40, 88, 40, 6, 0.1, 32, false, true));
+        this.animation.push(new Animator(this.spritesheet[1], 37, 37, 85, 45, 4, 0.1, 35, false, false));
+        this.animation.push(new Animator(this.spritesheet[2], 30, 40, 88, 40, 6, 0.1, 32, false, false));
         this.animation.push(new Animator(this.spritesheet[3], 45, 43, 20, 36, 10, 0.1, 100, false, true));
-        this.animation.push(new Animator(this.spritesheet[4], 42, 41, 42, 37, 12, 0.075, 78, false, true));
+        this.animation.push(new Animator(this.spritesheet[4], 42, 41, 42, 37, 12, 0.075, 78, false, false));
         this.animation.push(new Animator(this.spritesheet[5], 43, 41, 30, 40, 12, 0.075, 90, false, true));
     
         this.readyToAttack = 0;
@@ -80,6 +80,14 @@ class Knight {
                 this.velocity.y = 0;
             }
     }
+    else if (this.state == 1) {
+        if (this.animation[this.state].currentFrame() + 1 >= 2) {
+            if (this.game.keys["k"] || this.game.click) { // attack
+                this.animation[1].elapsedTime = 0;
+                this.state = 2;
+            }
+        }
+    }
     else {
             //mid-air physics
             //vertical physics
@@ -120,7 +128,12 @@ class Knight {
             this.position.y = 540;
             this.state = 3;
         };
-    };
+        if (this.animation[this.state].isDone()) {
+            var tempState = this.state;
+            this.state = 3;
+            this.animation[tempState].elapsedTime = 0;
+        };
+    }
 
     draw(ctx) {
         // let canvas = document.getElementById("gameWorld");
@@ -145,6 +158,7 @@ class Knight {
         var stateMod = 0;
         if(this.state == 0) stateMod = 20;
         else if (this.state == 1) stateMod = 100;
+        else if (this.state == 2) stateMod = 100;
         else if (this.state == 4) stateMod = 50;
 
         if(this.facing == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x - stateMod), this.position.y, 5);
