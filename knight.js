@@ -3,7 +3,7 @@ class Knight {
 
         Object.assign(this, {game});
 
-        this.position = {x: 550, y:540};
+        this.position = {x: 550, y:520};
         this.game.Knight = this;
         this.velocity = {x: 0, y: 0};
         this.facing = 1; // right = 1, left = -1
@@ -106,28 +106,36 @@ class Knight {
 
         };
 
-        if (this.position.y < 540) { //Just for testing. Replace with floor collision to reset sprite later
+        //if (this.position.y < 540) { //Just for testing. Replace with floor collision to reset sprite later
             this.velocity.y += FALL * TICK;
-        }
+        //}
 
         this.position.x += this.velocity.x * TICK;
         this.position.y += this.velocity.y * TICK;
+        this.updateBB();
 
 
         // collision
+        var that = this;
+        console.log(this.BB.bottom);
         this.game.entities.forEach(entity => {
             if (entity.BB && this.BB.collide(entity.BB)) {
                 if (entity instanceof Skeleton &&
                     this.state == 1) {
 
                     entity.dead = true;
+                }
+                else if (entity instanceof Tile && (this.BB.bottom) <= entity.BB.top) {
+                    console.log(entity.BB.top);
+                    this.position.y = entity.BB.top;
+                    this.velocity.y = 0;
                 };
             };
         });
-        if (this.position.y > 700) { //Just for testing. Replace with floor collision to reset sprite later
+        /* if (this.position.y > 700) { //Just for testing. Replace with floor collision to reset sprite later
             this.position.y = 540;
             this.state = 3;
-        };
+        }; */
         if (this.animation[this.state].isDone()) {
             var tempState = this.state;
             this.state = 3;
