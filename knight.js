@@ -117,18 +117,18 @@ class Knight {
 
         // collision
         var that = this;
+        console.log(this.BB.top);
         console.log(this.BB.bottom);
         this.game.entities.forEach(entity => {
-            if (entity.BB && this.BB.collide(entity.BB)) {
+            if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Skeleton &&
                     this.state == 1) {
 
                     entity.dead = true;
                 }
-                else if (entity instanceof Tile && (this.BB.bottom) <= entity.BB.top) {
-                    console.log(entity.BB.top);
-                    this.position.y = entity.BB.top;
-                    this.velocity.y = 0;
+                else if (entity instanceof Tile && (that.lastBB.bottom) <= entity.BB.top) {
+                    that.position.y = entity.BB.top;
+                    that.velocity.y = 0;
                 };
             };
         });
@@ -146,6 +146,7 @@ class Knight {
     draw(ctx) {
         // let canvas = document.getElementById("gameWorld");
         // canvas.style.backgroundColor = "black
+        ctx.strokeText(this.BB.bottom, 50, 50)
         ctx.strokeStyle = "black";
         ctx.strokeRect(this.position.x, this.position.y, 100, 181);
 
