@@ -28,7 +28,8 @@ ASSET_MANAGER.downloadAll(() => {
 	gameEngine.init(ctx);
 	gameEngine.addEntity(new Skeleton(gameEngine));
 	gameEngine.addEntity(new Knight(gameEngine));
-	gameEngine.addEntity(new Background());
+	//gameEngine.addEntity(new Background());
+	gameEngine.addEntity(new SceneManager(gameEngine));
 
 	gameEngine.start();
 });

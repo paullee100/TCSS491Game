@@ -81,7 +81,7 @@ class Knight {
             }
     }
     else if (this.state == 1) {
-        if (this.animation[this.state].currentFrame() + 1 >= 2) {
+        if (this.animation[this.state].currentFrame() + 1 >= 3) {
             if (this.game.keys["k"] || this.game.click) { // attack
                 this.animation[1].elapsedTime = 0;
                 this.state = 2;
