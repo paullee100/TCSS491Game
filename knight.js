@@ -127,11 +127,25 @@ class Knight {
 
                     entity.dead = true;
                 }
-                if (entity instanceof Tile && (that.lastBB.bottom) <= entity.BB.top) {
-                    that.position.y = entity.y - 171.25;
-                    that.velocity.y === 0;
-                    if(that.state === 5) that.state = 3;
-                    that.updateBB();
+                if (entity instanceof Tile) {
+                    if ((that.lastBB.bottom) <= entity.BB.top) {
+                        that.position.y = entity.y - 171.25;
+                        that.velocity.y === 0;
+                        if (that.state == 5) that.state = 3;
+                        that.updateBB();
+                    }
+                    if ((that.lastBB.right) <= entity.BB.left && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
+                        that.x = entity.BB.left;
+                        that.state = 3;
+                        if (that.velocity.x > 0) that.velocity.x = 0;
+                        that.updateBB();
+                        } 
+                    if ((that.lastBB.left) >= entity.BB.right && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
+                        that.x = entity.BB.right;
+                        that.state = 3;
+                        if (that.velocity.x < 0) that.velocity.x = 0;
+                        that.updateBB();
+                    }
                 };
             };
         });

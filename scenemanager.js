@@ -12,7 +12,9 @@ class SceneManager {
         this.game.addEntity(new Tile("./tileset/forest/forest_tiles01.png", 251, 715 ,64,64));
         this.game.addEntity(new Tile("./tileset/forest/forest_tiles01.png", 315, 715 ,64,64));
         this.game.addEntity(new Tile("./tileset/forest/forest_tiles01.png", 379, 715 ,64,64));
+        this.game.addEntity(new Tile("./tileset/forest/forest_tiles01.png", 379, 779 ,64,64));
         this.game.addEntity(new Tile("./tileset/forest/forest_tiles01.png", 443, 715 ,64,64));
+        this.game.addEntity(new Tile("./tileset/forest/forest_tiles01.png", 433, 651 ,64,64));
         this.game.addEntity(new Tile("./tileset/forest/forest_tiles01.png", 507, 715 ,64,64));
         this.game.addEntity(new Tile("./tileset/forest/forest_tiles01.png", 571, 715 ,64,64));
         this.game.addEntity(new Tile("./tileset/forest/forest_tiles01.png", 635, 715 ,64,64));
@@ -39,7 +41,9 @@ class SceneManager {
         new Tile("./tileset/forest/forest_tiles01.png", 251, 715 ,64,64).draw(ctx);
         new Tile("./tileset/forest/forest_tiles01.png", 315, 715 ,64,64).draw(ctx);
         new Tile("./tileset/forest/forest_tiles01.png", 379, 715 ,64,64).draw(ctx);
+        new Tile("./tileset/forest/forest_tiles01.png", 379, 651 ,64,64).draw(ctx);
         new Tile("./tileset/forest/forest_tiles01.png", 443, 715 ,64,64).draw(ctx);
+        new Tile("./tileset/forest/forest_tiles01.png", 433, 651 ,64,64).draw(ctx);
         new Tile("./tileset/forest/forest_tiles01.png", 507, 715 ,64,64).draw(ctx);
         new Tile("./tileset/forest/forest_tiles01.png", 571, 715 ,64,64).draw(ctx);
         new Tile("./tileset/forest/forest_tiles01.png", 635, 715 ,64,64).draw(ctx);
