@@ -3,7 +3,7 @@ class Knight {
 
         Object.assign(this, {game});
 
-        this.position = {x: 550, y:520};
+        this.position = {x: 550, y:543.75};
         this.game.Knight = this;
         this.velocity = {x: 0, y: 0};
         this.facing = 1; // right = 1, left = -1
@@ -33,15 +33,14 @@ class Knight {
 
     updateBB() {
         this.lastBB = this.BB;
-        if (this.state == 1) {
+        /* if (this.state == 1) {
             if (this.facing == 1) {
                 this.BB = new BoundingBox(this.position.x + 200, this.position.y + 10, 192, 205);
             } else if (this.facing == -1) {
                 this.BB = new BoundingBox(this.position.x - 300, this.position.y + 10, 192, 205);
             }
-        } else if (this.state == 3 || this.state == 0) {
-            this.BB = new BoundingBox(this.position.x, this.position.y, 100, 181);
-        }
+        } else { */
+        this.BB = new BoundingBox(this.position.x, this.position.y, 100, 181);
     };
 
     update() {
@@ -59,18 +58,22 @@ class Knight {
                 this.state = 0;
                 //this.position.x -= 10;
                 this.velocity.x = -RUN;
+                this.velocity.y = 0;
             } else if (this.game.keys["d"] || this.game.keys["ArrowRight"]) { // move right
                 console.log("D is pressed");
                 this.facing = 1;
                 this.state = 0;
                 //this.position.x += 10;
                 this.velocity.x = RUN;
+                this.velocity.y = 0;
             } else if (this.game.keys["k"] || this.game.click) { // attack
                 this.state = 1;
-                this.updateBB();
+                //this.updateBB();
+                this.velocity.y = 0;
             } else if (this.game.keys["Shift"] || (this.game.keys["Shift"] && (this.game.keys["a"] || this.game.keys["d"]))) { // roll
                 this.state = 4;
                 this.velocity.x = 500 * (this.facing);
+                this.velocity.y = 0;
             } else if (this.game.keys["w"]) { // jump
                 this.velocity.y = JUMP;
                 this.state = 5;
@@ -85,6 +88,7 @@ class Knight {
             if (this.game.keys["k"] || this.game.click) { // attack
                 this.animation[1].elapsedTime = 0;
                 this.state = 2;
+                this.velocity.y = 0;
             }
         }
     }
@@ -96,18 +100,17 @@ class Knight {
             };
 
             // horizontal physics
-            if (this.game.keys["d"] || this.game.keys["ArrowRight"] && !(this.game.keys["a"] || this.game.keys["ArrowLeft"])) {
+            if (this.state != 4 && this.game.keys["d"] || this.game.keys["ArrowRight"] && !(this.game.keys["a"] || this.game.keys["ArrowLeft"])) {
                 this.velocity.x = RUN/2;
-            } else if ((this.game.keys["a"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
+            } else if (this.state != 4 && (this.game.keys["a"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
                 this.velocity.x = -RUN/2;
             } else {
                     // does nothing
             };
 
         };
-
         //if (this.position.y < 540) { //Just for testing. Replace with floor collision to reset sprite later
-            this.velocity.y += FALL * TICK;
+        this.velocity.y += FALL * TICK;
         //}
 
         this.position.x += this.velocity.x * TICK;
@@ -117,8 +120,6 @@ class Knight {
 
         // collision
         var that = this;
-        console.log(this.BB.top);
-        console.log(this.BB.bottom);
         this.game.entities.forEach(entity => {
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Skeleton &&
@@ -126,9 +127,11 @@ class Knight {
 
                     entity.dead = true;
                 }
-                else if (entity instanceof Tile && (that.lastBB.bottom) <= entity.BB.top) {
-                    that.position.y = entity.BB.top;
-                    that.velocity.y = 0;
+                if (entity instanceof Tile && (that.lastBB.bottom) <= entity.BB.top) {
+                    that.position.y = entity.y - 171.25;
+                    that.velocity.y === 0;
+                    if(that.state === 5) that.state = 3;
+                    that.updateBB();
                 };
             };
         });
@@ -146,7 +149,6 @@ class Knight {
     draw(ctx) {
         // let canvas = document.getElementById("gameWorld");
         // canvas.style.backgroundColor = "black
-        ctx.strokeText(this.BB.bottom, 50, 50)
         ctx.strokeStyle = "black";
         ctx.strokeRect(this.position.x, this.position.y, 100, 181);
 
@@ -164,14 +166,15 @@ class Knight {
             ctx.scale(1, 1);
         }
 
-        var stateMod = 0;
-        if(this.state == 0) stateMod = 20;
-        else if (this.state == 1) stateMod = 100;
-        else if (this.state == 2) stateMod = 100;
-        else if (this.state == 4) stateMod = 50;
+        var stateModx = 0;
+        var stateMody = 0;
+        if(this.state == 0) stateModx = 20, stateMody = 10;
+        else if (this.state == 1) stateModx = 100, stateMody = 30;
+        else if (this.state == 2) stateModx = 100, stateMody = 18;
+        else if (this.state == 4) stateModx = 50;
 
-        if(this.facing == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x - stateMod), this.position.y, 5);
-        else this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 100 + (stateMod * this.facing), this.position.y, 5);
+        if(this.facing == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x - stateModx), this.position.y - stateMody, 5);
+        else this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 100 + (stateModx * this.facing), this.position.y - stateMody, 5);
         ctx.restore();
     };
 }

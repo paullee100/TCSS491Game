@@ -5,17 +5,16 @@ class Tile {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.BB = new BoundingBox(this.x, this.y, width, height);
+        this.BB = new BoundingBox(this.x, this.y+10, width, height);
     };
 
     update() {
-        console.log(this.BB.top);
+        
     };
 
     draw(ctx) {
         ctx.strokeStyle = "black";
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
-        ctx.strokeText(this.BB.top, 20, 20)
+        ctx.strokeRect(this.x, this.y + 10, this.width, this.height);
         ctx.drawImage(ASSET_MANAGER.getAsset(this.image), this.x, this.y, this.width, this.height);
     };
 };
