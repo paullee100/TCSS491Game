@@ -17,7 +17,8 @@ class Knight {
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Attack2.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Idle.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Roll.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Roll.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Jump.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Death.png"));
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
         this.animation.push(new Animator(this.spritesheet[0], 43, 41, 30, 40, 10, 0.060, 90, false, true));
@@ -25,8 +26,9 @@ class Knight {
         this.animation.push(new Animator(this.spritesheet[2], 30, 40, 88, 40, 6, 0.1, 32, false, false));
         this.animation.push(new Animator(this.spritesheet[3], 45, 43, 20, 36, 10, 0.1, 100, false, true));
         this.animation.push(new Animator(this.spritesheet[4], 42, 41, 42, 37, 12, 0.075, 78, false, false));
-        this.animation.push(new Animator(this.spritesheet[5], 43, 41, 30, 40, 12, 0.075, 90, false, true));
-    
+        this.animation.push(new Animator(this.spritesheet[5], 43, 41, 30, 40, 3, 0.075, 90, false, true));
+        this.animation.push(new Animator(this.spritesheet[6], 19, 40, 50, 40, 10, 0.1, 69, false, false));
+
         this.readyToAttack = 0;
         this.updateBB();
     };
@@ -40,6 +42,8 @@ class Knight {
                 this.BB = new BoundingBox(this.position.x - 300, this.position.y + 10, 192, 205);
             }
         } else if (this.state == 3 || this.state == 0) {
+            this.BB = new BoundingBox(this.position.x, this.position.y, 100, 181);
+        } else {
             this.BB = new BoundingBox(this.position.x, this.position.y, 100, 181);
         }
     };
