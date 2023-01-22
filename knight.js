@@ -54,7 +54,6 @@ class Knight {
         const FALL = 1750;
 
         const TICK = this.game.clockTick;
-        console.log("STATE " + this.state);
 
         if (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7) {
             if (this.game.keys["a"] || this.game.keys["ArrowLeft"]) { // move left
