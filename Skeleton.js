@@ -48,6 +48,7 @@ class Skeleton {
 					console.log("entity has collided")
 					this.state = 1;
 					this.speed = 0;
+					
 					//entity.dead = true;
 				} else {
 					if (this.facing == 1) {
