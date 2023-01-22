@@ -21,6 +21,7 @@ ASSET_MANAGER.queueDownload("./sprites/Knight_Death.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Skeleton.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeletonwalking.png");
+ASSET_MANAGER.queueDownload("./sprites/Skeletonattack.png")
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");

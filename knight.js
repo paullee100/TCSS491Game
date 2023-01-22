@@ -83,6 +83,7 @@ class Knight {
                 this.velocity.x = 0;
                 this.velocity.y = 0;
             }
+            this.updateBB();
     }
     else if (this.state == 1) {
         if (this.animation[this.state].currentFrame() + 1 >= 2) {

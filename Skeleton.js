@@ -3,9 +3,24 @@ class Skeleton {
 		Object.assign(this, {game});
 		this.x = 100;
 		this.y = 540;
+		this.speed = 100;
+		this.facing = 1; // right = 1 left = -1
+		this.state = 0; // walkingright = 0, attack = 1, dead = 2,
 		this.game.Skeleton = this;
+
+		this.spritesheet = [];
+		this.animation = [];
+
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonwalking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonattack.png"));
+		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+		this.animation.push(new Animator(this.spritesheet[0], 71, 0, 71, 75, 8, 0.1, 1, false, true));
+		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 95, 90, 4, 0.2, 1, false, true));
+
 		// (spritesheet, XStart, YStart, width, height, frameCount, frameDuration)
-		this.animator = new Animator(ASSET_MANAGER.getAsset("./sprites/Skeletonwalking.png"), 71, 0, 71, 75, 8, 0.1, 1, false, true);
+		//this.animator = new Animator(ASSET_MANAGER.getAsset("./sprites/Skeletonwalking.png"), 71, 0, 71, 75, 8, 0.1, 1, false, true);
+		//this.animator = new Animator(ASSET_MANAGER.getAsset("./sprites/Skeletonattack2.png"), 0, 0, 95, 90, 4, 0.2, 1, false, true);
+
 		this.dead = false;
 		this.updateBB();
 	};
@@ -16,18 +31,71 @@ class Skeleton {
 	}
 
 	update() {
-
+		this.x += this.speed * this.game.clockTick;
+		this.updateBB();
+		if (this.x > 500) {
+			this.speed = -100;
+			this.facing = -1;
+			this.state = 0;
+		} else if (this.x < 100) {
+			this.speed = 100;
+			this.facing = 1;
+			this.state = 0;
+		}
+		this.game.entities.forEach(entity => {
+			if (entity.BB && this.BB.collide(entity.BB)) {
+				if (entity instanceof Knight) {
+					console.log("entity has collided")
+					this.state = 1;
+					this.speed = 0;
+					//entity.dead = true;
+				} else {
+					if (this.facing == 1) {
+						this.speed = 100;
+					} else {
+						this.speed = -100;
+					}
+					this.state = 0;
+				};
+			};
+		});
 	};
 
 	draw(ctx) {
 		ctx.strokeStyle = "green";
 		ctx.strokeRect(this.x, this.y, 100, 185);
+
+		ctx.strokeStyle = "red";
+		ctx.strokeRect(100, this.y, 500, 185);
+
+		if (this.facing == -1) {
+			ctx.save()
+			ctx.scale(-1, 1)
+		} else if (this.facing == 1) {
+			ctx.save()
+			ctx.scale(1, 1)
+		}
+		var stateMod = 0;
+		if (this.state == 0) stateMod = 0;
+		else if (this.state == 1) stateMod = -48;
+		else if (this.state == 2) stateMod = 0;
+		else if (this.state == 4) stateMod = 0;
+
 		if (this.dead == false) {
-			this.animator.drawFrame(this.game.clockTick, ctx, 100, 540, 2.5);
+			if (this.facing == 1) {
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x * this.facing, 540 + stateMod, 2.5)
+			} else {
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x * this.facing - 95, 540 + stateMod, 2.5)
+			}
+		
+			//this.animator.drawFrame(this.game.clockTick, ctx, this.x, 540, 2.5);
 		} else {
 			this.removeFromWorld = true;
 			console.log("is ded");
 		}
+
+		ctx.restore();
+
 		//ctx.drawImage(ASSET_MANAGER.getAsset("./Skeletonwalking.png"), 0, 0);
 	};
 }
