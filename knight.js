@@ -7,7 +7,7 @@ class Knight {
         this.game.Knight = this;
         this.velocity = {x: 0, y: 0};
         this.facing = 1; // right = 1, left = -1
-        this.state = 3; // running = 0, attack = 1, idle = 3, rolling = 4, jump = 5
+        this.state = 3; // running = 0, attack1 = 1, attack2 = 2, idle = 3, rolling = 4, jump = 5, death = 6, fall = 7
         
         this.spritesheet = [];
         this.animation = [];
@@ -19,6 +19,7 @@ class Knight {
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Roll.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Jump.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Death.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Fall.png"));
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
         this.animation.push(new Animator(this.spritesheet[0], 43, 41, 30, 40, 10, 0.060, 90, false, true));
@@ -28,6 +29,7 @@ class Knight {
         this.animation.push(new Animator(this.spritesheet[4], 42, 41, 42, 37, 12, 0.075, 78, false, false));
         this.animation.push(new Animator(this.spritesheet[5], 43, 41, 30, 40, 3, 0.075, 90, false, true));
         this.animation.push(new Animator(this.spritesheet[6], 19, 40, 50, 40, 10, 0.1, 69, false, false));
+        this.animation.push(new Animator(this.spritesheet[7], 36, 43, 32, 36, 3, 0.5, 90, false, true));
 
         this.readyToAttack = 0;
         this.updateBB();
