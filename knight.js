@@ -29,7 +29,7 @@ class Knight {
         this.animation.push(new Animator(this.spritesheet[4], 42, 41, 42, 37, 12, 0.075, 78, false, false));
         this.animation.push(new Animator(this.spritesheet[5], 43, 41, 30, 40, 3, 0.075, 90, false, true));
         this.animation.push(new Animator(this.spritesheet[6], 19, 40, 50, 40, 10, 0.1, 69, false, false));
-        this.animation.push(new Animator(this.spritesheet[7], 36, 43, 32, 36, 3, 0.5, 90, false, true));
+        this.animation.push(new Animator(this.spritesheet[7], 36, 43, 32, 36, 3, 0.1, 90, false, true));
 
         this.readyToAttack = 0;
         this.updateBB();
@@ -55,50 +55,48 @@ class Knight {
 
         const TICK = this.game.clockTick;
 
-        if (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2) {
+        if (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7) {
             if (this.game.keys["a"] || this.game.keys["ArrowLeft"]) { // move left
                 console.log("A is pressed");
                 this.facing = -1;
                 this.state = 0;
-                //this.position.x -= 10;
                 this.velocity.x = -RUN;
-                this.velocity.y = 0;
+                //this.velocity.y = 0;
             } else if (this.game.keys["d"] || this.game.keys["ArrowRight"]) { // move right
                 console.log("D is pressed");
                 this.facing = 1;
                 this.state = 0;
-                //this.position.x += 10;
                 this.velocity.x = RUN;
-                this.velocity.y = 0;
+                //this.velocity.y = 0;
             } else if (this.game.keys["k"] || this.game.click) { // attack
                 this.state = 1;
-                //this.updateBB();
-                this.velocity.y = 0;
+                //this.velocity.y = 0;
             } else if (this.game.keys["Shift"] || (this.game.keys["Shift"] && (this.game.keys["a"] || this.game.keys["d"]))) { // roll
                 this.state = 4;
                 this.velocity.x = 500 * (this.facing);
-                this.velocity.y = 0;
+                //this.velocity.y = 0;
             } else if (this.game.keys["w"]) { // jump
                 this.velocity.y = JUMP;
                 this.state = 5;
             } else {
                 this.state = 3;
                 this.velocity.x = 0;
-                this.velocity.y = 0;
+                //this.velocity.y = 0;
             }
     }
     else if (this.state == 1) {
         if (this.animation[this.state].currentFrame() + 1 >= 3) {
             if (this.game.keys["k"] || this.game.click) { // attack
-                this.animation[1].elapsedTime = 0;
                 this.state = 2;
-                this.velocity.y = 0;
+                this.animation[1].elapsedTime = 0;
+                //this.velocity.y = 0;
             }
         }
     }
     else {
             //mid-air physics
             //vertical physics
+            if (this.state == 5 && this.velocity.y > 0) this.state = 7;
             if (this.velocity.y < 0 && this.game.keys["w"]) { // holding A while jumping jumps higher
                 //this.velocity.y -= 25;
             };
@@ -135,18 +133,18 @@ class Knight {
                     if ((that.lastBB.bottom) <= entity.BB.top) {
                         that.position.y = entity.y - 171.25;
                         that.velocity.y === 0;
-                        if (that.state == 5) that.state = 3;
+                        if (that.state == 5 || that.state == 7) that.state = 3;
                         that.updateBB();
                     }
                     if ((that.lastBB.right) <= entity.BB.left && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
                         that.x = entity.BB.left;
-                        that.state = 3;
+                        //that.state = 3;
                         if (that.velocity.x > 0) that.velocity.x = 0;
                         that.updateBB();
                         } 
                     if ((that.lastBB.left) >= entity.BB.right && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
                         that.x = entity.BB.right;
-                        that.state = 3;
+                        //that.state = 3;
                         if (that.velocity.x < 0) that.velocity.x = 0;
                         that.updateBB();
                     }
