@@ -5,6 +5,7 @@ class SceneManager {
         this.knight = new Knight(game);
         this.x = 0;
         this.game.addEntity(this.knight);
+        this.game.addEntity(new Lich(this.game, 300, 390));
         this.game.addEntity(new Skeleton(this.game));
         this.game.addEntity(new Tree(55, 270));
         this.game.addEntity(new Bush(655, 270));

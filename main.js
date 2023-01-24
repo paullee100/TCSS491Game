@@ -23,6 +23,14 @@ ASSET_MANAGER.queueDownload("./sprites/Knight_Fall.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeleton.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeletonwalking.png");
 
+// boss
+ASSET_MANAGER.queueDownload("./sprites/Lich_Idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Lich_Walking.png");
+ASSET_MANAGER.queueDownload("./sprites/Lich_Attack1.png");
+ASSET_MANAGER.queueDownload("./sprites/Lich_Attack2.png");
+ASSET_MANAGER.queueDownload("./sprites/Lich_Attack3.png");
+ASSET_MANAGER.queueDownload("./sprites/Lich_Death.png");
+
 ASSET_MANAGER.downloadAll(() => {
 	const gameEngine = new GameEngine();
 
@@ -32,7 +40,7 @@ ASSET_MANAGER.downloadAll(() => {
 	const ctx = canvas.getContext("2d");
 	PARAMS.CANVAS_WIDTH = canvas.width;
 	PARAMS.CANVAS_HEIGHT = canvas.height;
-	//ctx.imageSmoothingEnabled = false;
+	ctx.imageSmoothingEnabled = false;
 
 	gameEngine.init(ctx);
 	// gameEngine.addEntity(new Skeleton(gameEngine));

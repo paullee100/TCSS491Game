@@ -37,13 +37,16 @@ class Knight {
 
     updateBB() {
         this.lastBB = this.BB;
-        /* if (this.state == 1) {
+        this.lastSwordBB = this.SwordBB
+         if (this.state == 1) {
             if (this.facing == 1) {
-                this.BB = new BoundingBox(this.position.x + 200, this.position.y + 10, 192, 205);
+                this.SwordBB = new BoundingBox(this.position.x + 200, this.position.y + 10, 192, 205);
             } else if (this.facing == -1) {
-                this.BB = new BoundingBox(this.position.x - 300, this.position.y + 10, 192, 205);
+                this.SwordBB = new BoundingBox(this.position.x - 300, this.position.y + 10, 192, 205);
             }
-        } else { */
+        } else { 
+            this.SwordBB = new BoundingBox(0, 0, 0, 0);
+        }
         this.BB = new BoundingBox(this.position.x, this.position.y, 100, 181);
     };
 
@@ -123,12 +126,17 @@ class Knight {
         // collision
         var that = this;
         this.game.entities.forEach(entity => {
-            if (entity.BB && that.BB.collide(entity.BB)) {
+            if (entity.BB && that.SwordBB.collide(entity.BB)) {
                 if (entity instanceof Skeleton &&
                     this.state == 1) {
 
-                    entity.dead = true;
+                    entity.removeFromWorld = true;
+                } else if (entity instanceof Lich && this.state == 1) {
+                    console.log(entity.health);
+                    entity.health -= 1;
                 }
+            }
+            if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Tile) {
                     if ((that.lastBB.bottom) <= entity.BB.top) {
                         that.position.y = entity.y - 171.25;
