@@ -191,8 +191,8 @@ class Knight {
         else if (this.state == 2) stateModx = 100, stateMody = 18;
         else if (this.state == 4) stateModx = 50;
 
-        if(this.facing == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x - stateModx), this.position.y - stateMody, 5);
-        else this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 100 + (stateModx * this.facing), this.position.y - stateMody, 5);
+        if(this.facing == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x - stateModx)- this.game.camera.x, this.position.y - stateMody, 5);
+        else this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 100 + (stateModx * this.facing) - this.game.camera.x, this.position.y - stateMody, 5);
         ctx.restore();
     };
 }

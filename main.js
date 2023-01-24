@@ -24,15 +24,21 @@ ASSET_MANAGER.queueDownload("./sprites/Skeleton.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeletonwalking.png");
 
 ASSET_MANAGER.downloadAll(() => {
+	const gameEngine = new GameEngine();
+
+	PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH * PARAMS.SCALE;
+
 	const canvas = document.getElementById("gameWorld");
 	const ctx = canvas.getContext("2d");
-	ctx.imageSmoothingEnabled = false;
+	PARAMS.CANVAS_WIDTH = canvas.width;
+	PARAMS.CANVAS_HEIGHT = canvas.height;
+	//ctx.imageSmoothingEnabled = false;
 
 	gameEngine.init(ctx);
-	gameEngine.addEntity(new Skeleton(gameEngine));
-	gameEngine.addEntity(new Knight(gameEngine));
-	//gameEngine.addEntity(new Background());
-	gameEngine.addEntity(new SceneManager(gameEngine));
-
+	// gameEngine.addEntity(new Skeleton(gameEngine));
+	// gameEngine.addEntity(new Knight(gameEngine));
+	// //gameEngine.addEntity(new Background());
+	// gameEngine.addEntity(new SceneManager(gameEngine));
+	new SceneManager(gameEngine)
 	gameEngine.start();
 });
