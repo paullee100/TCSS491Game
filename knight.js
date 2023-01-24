@@ -38,7 +38,7 @@ class Knight {
     updateBB() {
         this.lastBB = this.BB;
         this.lastSwordBB = this.SwordBB
-         if (this.state == 1) {
+         if (this.state == 1 || this.state == 2) {
             if (this.facing == 1) {
                 this.SwordBB = new BoundingBox(this.position.x + 200, this.position.y + 10, 192, 205);
             } else if (this.facing == -1) {
