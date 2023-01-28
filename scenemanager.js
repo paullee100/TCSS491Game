@@ -4,6 +4,10 @@ class SceneManager {
         this.game.camera = this;
         this.knight = new Knight(game);
         this.x = 0;
+        this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
+
+
+
         this.game.addEntity(this.knight);
         this.game.addEntity(new Lich(this.game, 300, 390));
         this.game.addEntity(new Skeleton(this.game));
@@ -36,6 +40,16 @@ class SceneManager {
         this.game.addEntity(new Background3());
         this.game.addEntity(new Background2());
         this.game.addEntity(new Background1());
+    };
+
+    loadlevel(level, x, y, transition, title) {
+        this.title = title;
+        this.level = level;
+        //this.clearEntities();
+        x = 0;
+        this.knight.position.x = x;
+        this.knight.position.y = y;
+
     };
 
     update() {
