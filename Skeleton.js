@@ -71,10 +71,10 @@ class Skeleton {
 	draw(ctx) {
 		//hit box
 		ctx.strokeStyle = "green";
-		ctx.strokeRect(this.x, this.y, 100, 185);
+		ctx.strokeRect(this.x- this.game.camera.x, this.y, 100, 185);
 
 		ctx.strokeStyle = "red";
-		ctx.strokeRect(100, this.y, 500, 185);
+		ctx.strokeRect(100- this.game.camera.x, this.y, 500, 185);
 
 		if (this.facing == -1) {
 			ctx.save()
@@ -90,9 +90,9 @@ class Skeleton {
 		else if (this.state == 3) stateMod = 0;
 		if (this.dead == false) {
 			if (this.facing == 1) {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x * this.facing, 540 + stateMod, 2.5)
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing)- this.game.camera.x, 540 + stateMod, 2.5)
 			} else {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x * this.facing - 95, 540 + stateMod, 2.5)
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95)- this.game.camera.x, 540 + stateMod, 2.5)
 			}
 
 			//this.animator.drawFrame(this.game.clockTick, ctx, this.x, 540, 2.5);
