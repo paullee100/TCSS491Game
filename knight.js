@@ -1,10 +1,10 @@
 class Knight {
-    constructor(game, xp, yp,) {
+    constructor(game, x, y,) {
 
-        Object.assign(this, {game});
+        Object.assign(this, {game,x,y});
 
         //this.position = {x: 550, y:543.75};
-        this.position = {x: xp, y: yp};
+        this.position = {x: this.x, y: this.y};
 
         this.game.Knight = this;
         this.velocity = {x: 0, y: 0};
