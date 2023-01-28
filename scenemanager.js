@@ -4,7 +4,7 @@ class SceneManager {
         this.game.camera = this;
         this.knight = new Knight(game);
         this.x = 0;
-        this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
+        this.loadLevel(1, 34.375 * PARAMS.BLOCKWIDTH, 8.49609375 * PARAMS.BLOCKWIDTH, false, true);
 
 
 
@@ -42,7 +42,7 @@ class SceneManager {
         this.game.addEntity(new Background1());
     };
 
-    loadlevel(level, x, y, transition, title) {
+    loadLevel(level, x, y, transition, title) {
         this.title = title;
         this.level = level;
         //this.clearEntities();
