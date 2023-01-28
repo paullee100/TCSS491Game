@@ -178,6 +178,11 @@ class Knight {
                 this.game.click = null;
             }
         };
+
+        //reseting character
+        if(this.position.y > 2000){
+            this.position ={x:9 * PARAMS.BLOCKWIDTH, y:6 * PARAMS.BLOCKWIDTH}
+        }
     }
 
     draw(ctx) {

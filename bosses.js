@@ -6,7 +6,7 @@ class Lich {
 
         this.game.Lich = this;
         this.state = 0; // idle = 0, walking = 1, attack1 = 2, attack2 = 3, attack3 = 4, death = 5
-        this.facing = 1; // right = 1, left = -1
+        this.facing = -1; // right = 1, left = -1
         this.dead = false;
         this.deadCounter = 0;
         this.health = 100;
@@ -82,7 +82,8 @@ class Lich {
                 this.summonCounter += this.game.clockTick;
                 if (this.summonCounter >= 2.5) {
                     this.maxSummon++;
-                    this.game.addEntitySpecific(new Skeleton(this.game), 1);
+                    let rand = Math.floor(Math.random()*(3-1+1))+1;
+                    this.game.addEntitySpecific(new Skeleton(this.game,this.x+(rand * PARAMS.BLOCKWIDTH),(540/64)* PARAMS.BLOCKWIDTH), 1);
                     this.summonCounter = 0;
                 }
             } else {

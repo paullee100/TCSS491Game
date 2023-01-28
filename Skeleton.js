@@ -1,8 +1,7 @@
 class Skeleton {
-	constructor(game) {
-		Object.assign(this, { game });
-		this.x = 100;
-		this.y = 540;
+	constructor(game,x,y) {
+		Object.assign(this, { game,x,y });
+
 		this.speed = 100;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 0; // walking = 0, attack = 1, dead = 2,
@@ -90,9 +89,9 @@ class Skeleton {
 		else if (this.state == 3) stateMod = 0;
 		if (this.dead == false) {
 			if (this.facing == 1) {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing)- this.game.camera.x, 540 + stateMod, 2.5)
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing)- this.game.camera.x, this.y + stateMod, 2.5)
 			} else {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95)- (this.game.camera.x * this.facing), 540 + stateMod, 2.5)
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95)- (this.game.camera.x * this.facing), this.y + stateMod, 2.5)
 			}
 
 			//this.animator.drawFrame(this.game.clockTick, ctx, this.x, 540, 2.5);
