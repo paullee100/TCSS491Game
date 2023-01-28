@@ -59,7 +59,7 @@ class Lich {
 
     update() {
         if (this.health <= 0) {
-            this.state = 5;
+            this.state = 4;
             this.dead = true;
             this.deadCounter += this.game.clockTick;
             if (this.deadCounter >= 1) this.removeFromWorld = true;
