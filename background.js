@@ -44,8 +44,8 @@ class Background3{
 }
 
 class Tree{
-    constructor(x,y){
-        Object.assign(this, {x,y});
+    constructor(game, x,y){
+        Object.assign(this, {game,x,y});
         this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/foreground0.png")
     };
 
@@ -54,13 +54,13 @@ class Tree{
     };
 
     draw(ctx){
-        ctx.drawImage(this.spritesheet, this.x, this.y ,448, 448,);
+        ctx.drawImage(this.spritesheet, this.x- this.game.camera.x, this.y ,448, 448,);
     };
 }
 
 class Bush{
-    constructor(x,y){
-        Object.assign(this, {x,y});
+    constructor(game,x,y){
+        Object.assign(this, {game,x,y});
         this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/sprite_0.png")
     };
 
@@ -69,6 +69,6 @@ class Bush{
     };
 
     draw(ctx){
-        ctx.drawImage(this.spritesheet, this.x, this.y ,224, 448,);
+        ctx.drawImage(this.spritesheet, this.x- this.game.camera.x, this.y ,224, 448,);
     };
 }

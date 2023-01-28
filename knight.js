@@ -146,18 +146,18 @@ class Knight {
                         if (that.state == 5 || that.state == 7) that.state = 3;
                         that.updateBB();
                     }
-                    if ((that.lastBB.right) <= entity.BB.left && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
+                    /* if ((that.lastBB.right) <= entity.BB.left && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
                         that.x = entity.BB.left;
                         //that.state = 3;
                         if (that.velocity.x > 0) that.velocity.x = 0;
                         that.updateBB();
-                        } 
+                    } 
                     if ((that.lastBB.left) >= entity.BB.right && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
                         that.x = entity.BB.right;
                         //that.state = 3;
                         if (that.velocity.x < 0) that.velocity.x = 0;
                         that.updateBB();
-                    }
+                    } */
                 };
             };
         });
@@ -176,13 +176,13 @@ class Knight {
         // let canvas = document.getElementById("gameWorld");
         // canvas.style.backgroundColor = "black
         ctx.strokeStyle = "black";
-        ctx.strokeRect(this.position.x, this.position.y, 100, 181);
+        ctx.strokeRect(this.position.x - this.game.camera.x, this.position.y, 100, 181);
 
         ctx.strokeStyle = "purple";
-        ctx.strokeRect(this.position.x + 200, this.position.y + 10, 192, 205);
+        ctx.strokeRect(this.position.x + 200- this.game.camera.x, this.position.y + 10, 192, 205);
 
         ctx.strokeStyle = "purple";
-        ctx.strokeRect(this.position.x - 300, this.position.y + 10, 192, 205);
+        ctx.strokeRect(this.position.x - 300- this.game.camera.x, this.position.y + 10, 192, 205);
         
         if (this.facing == -1) {
             ctx.save();
@@ -200,7 +200,7 @@ class Knight {
         else if (this.state == 4) stateModx = 50;
 
         if(this.facing == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x - stateModx)- this.game.camera.x, this.position.y - stateMody, 5);
-        else this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 100 + (stateModx * this.facing) - this.game.camera.x, this.position.y - stateMody, 5);
+        else this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 100 + (stateModx * this.facing) - (this.game.camera.x * this.facing), this.position.y - stateMody, 5);
         ctx.restore();
     };
 }

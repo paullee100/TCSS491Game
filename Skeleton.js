@@ -21,9 +21,9 @@ class Skeleton {
 
 	draw(ctx) {
 		ctx.strokeStyle = "green";
-		ctx.strokeRect(this.x, this.y, 100, 185);
+		ctx.strokeRect(this.x- this.game.camera.x, this.y, 100, 185);
 		if (this.dead == false) {
-			this.animator.drawFrame(this.game.clockTick, ctx, 100, 540, 2.5);
+			this.animator.drawFrame(this.game.clockTick, ctx, 100- this.game.camera.x, 540, 2.5);
 		} else {
 			this.removeFromWorld = true;
 			console.log("is ded");
