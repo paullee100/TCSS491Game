@@ -59,8 +59,8 @@ class Tree{
 }
 
 class Bush{
-    constructor(x,y){
-        Object.assign(this, {x,y});
+    constructor(game,x,y){
+        Object.assign(this, {game,x,y});
         this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/sprite_0.png")
     };
 

@@ -1,9 +1,9 @@
 class Knight {
-    constructor(game) {
+    constructor(game,x,y) {
 
-        Object.assign(this, {game});
+        Object.assign(this, {game,x,y});
 
-        this.position = {x: 550, y:543.75};
+        //this.position = {x: 512, y:384};
         this.game.Knight = this;
         this.velocity = {x: 0, y: 0};
         this.facing = 1; // right = 1, left = -1
@@ -44,7 +44,7 @@ class Knight {
                 this.BB = new BoundingBox(this.position.x - 300, this.position.y + 10, 192, 205);
             }
         } else { */
-        this.BB = new BoundingBox(this.position.x, this.position.y, 100, 181);
+        this.BB = new BoundingBox(this.x-this.game.camera.x, this.y, 100, 181);
     };
 
     update() {
@@ -115,8 +115,8 @@ class Knight {
         this.velocity.y += FALL * TICK;
         //}
 
-        this.position.x += this.velocity.x * TICK;
-        this.position.y += this.velocity.y * TICK;
+        this.x += this.velocity.x * TICK;
+        this.y += this.velocity.y * TICK;
         this.updateBB();
 
 
@@ -131,7 +131,7 @@ class Knight {
                 }
                 if (entity instanceof Tile) {
                     if ((that.lastBB.bottom) <= entity.BB.top) {
-                        that.position.y = entity.y - 171.25;
+                        that.y = entity.y - 171.25;
                         that.velocity.y === 0;
                         if (that.state == 5 || that.state == 7) that.state = 3;
                         that.updateBB();
@@ -166,13 +166,13 @@ class Knight {
         // let canvas = document.getElementById("gameWorld");
         // canvas.style.backgroundColor = "black
         ctx.strokeStyle = "black";
-        ctx.strokeRect(this.position.x, this.position.y, 100, 181);
+        ctx.strokeRect(this.x- this.game.camera.x, this.y, 100, 181);
 
         ctx.strokeStyle = "purple";
-        ctx.strokeRect(this.position.x + 200, this.position.y + 10, 192, 205);
+        ctx.strokeRect(this.x + 200- this.game.camera.x, this.y + 10, 192, 205);
 
         ctx.strokeStyle = "purple";
-        ctx.strokeRect(this.position.x - 300, this.position.y + 10, 192, 205);
+        ctx.strokeRect(this.x - 300- this.game.camera.x, this.y + 10, 192, 205);
         
         if (this.facing == -1) {
             ctx.save();
@@ -189,8 +189,11 @@ class Knight {
         else if (this.state == 2) stateModx = 100, stateMody = 18;
         else if (this.state == 4) stateModx = 50;
 
-        if(this.facing == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x - stateModx) - this.game.camera.x, this.position.y - stateMody, 5);
-        else this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.position.x * this.facing) - 100 + (stateModx * this.facing)) - this.game.camera.x, this.position.y - stateMody, 5);
+        if(this.facing == 1) {
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModx- this.game.camera.x) , this.y - stateMody, 5);
+        }else {
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 100 + (stateModx * this.facing)) - (this.game.camera.x*this.facing), this.y - stateMody, 5);
+        }
         ctx.restore();
     };
 }
