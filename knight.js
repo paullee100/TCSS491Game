@@ -97,6 +97,10 @@ class Knight {
                 this.animation[1].elapsedTime = 0;
                 //this.velocity.y = 0;
             }
+        } else {
+            if (this.game.click != null) {
+                this.game.click = null;
+            }
         }
     }
     else {
@@ -170,6 +174,9 @@ class Knight {
             var tempState = this.state;
             this.state = 3;
             this.animation[tempState].elapsedTime = 0;
+            if (this.game.click != null) {
+                this.game.click = null;
+            }
         };
     }
 

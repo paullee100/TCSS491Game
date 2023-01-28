@@ -92,7 +92,7 @@ class Skeleton {
 			if (this.facing == 1) {
 				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing)- this.game.camera.x, 540 + stateMod, 2.5)
 			} else {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95)- this.game.camera.x, 540 + stateMod, 2.5)
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95)- (this.game.camera.x * this.facing), 540 + stateMod, 2.5)
 			}
 
 			//this.animator.drawFrame(this.game.clockTick, ctx, this.x, 540, 2.5);

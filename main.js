@@ -44,10 +44,8 @@ ASSET_MANAGER.downloadAll(() => {
 	ctx.imageSmoothingEnabled = false;
 
 	gameEngine.init(ctx);
-	// gameEngine.addEntity(new Skeleton(gameEngine));
-	// gameEngine.addEntity(new Knight(gameEngine));
-	// //gameEngine.addEntity(new Background());
-	// gameEngine.addEntity(new SceneManager(gameEngine));
-	new SceneManager(gameEngine)
+
+	new SceneManager(gameEngine);
+
 	gameEngine.start();
 });
