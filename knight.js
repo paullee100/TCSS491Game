@@ -125,8 +125,8 @@ class Knight {
         this.velocity.y += FALL * TICK;
         //}
 
-        this.position.x += this.velocity.x * TICK;
-        this.position.y += this.velocity.y * TICK;
+        this.x += this.velocity.x * TICK;
+        this.y += this.velocity.y * TICK;
         this.updateBB();
 
 
@@ -146,7 +146,7 @@ class Knight {
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Tile) {
                     if ((that.lastBB.bottom) <= entity.BB.top) {
-                        that.position.y = entity.y - 171.25;
+                        that.y = entity.y - 171.25;
                         that.velocity.y === 0;
                         if (that.state == 5 || that.state == 7) that.state = 3;
                         that.updateBB();

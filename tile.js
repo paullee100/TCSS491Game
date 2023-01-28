@@ -1,11 +1,6 @@
 class Tile {
-    constructor(game, image, x, y, width, height) {
-        this.game = game
-        this.image = image;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    constructor(game,image, x, y, width, height) {
+        Object.assign(this, { game,image, x, y, width, height });
         this.BB = new BoundingBox(this.x, this.y+10, width, height);
     };
 
