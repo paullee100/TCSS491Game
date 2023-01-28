@@ -1,6 +1,7 @@
-class Background{
+class Background1{
     constructor(){
-
+        // Object.assign(this, {game});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/BG1.png")
     };
 
     update(){
@@ -8,27 +9,66 @@ class Background{
     };
 
     draw(ctx){
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/BG1.png"), 0, 0 ,1024, 768);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/BG2.png"), 0, 0 ,1024, 768);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/BG3.png"), 0, 0 ,1024, 768);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles00.png"), -5, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 59, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 123, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 187, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 251, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 315, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 379, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 443, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 507, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 571, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 635, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 699, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 763, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 827, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles01.png"), 891, 715 ,64,64);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/forest_tiles02.png"), 955, 715 ,64,64);
-        //decor
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/foreground0.png"), 55, 270 ,448,448);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/forest/sprite_0.png"), 655, 270 ,224,448);
-    }
+        ctx.drawImage(this.spritesheet, 0, 0 ,1024, 768,);
+    };
+}
+
+class Background2{
+    constructor(){
+        // Object.assign(this, {game});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/BG2.png")
+    };
+
+    update(){
+
+    };
+
+    draw(ctx){
+        ctx.drawImage(this.spritesheet, 0, 0 ,1024, 768,);
+    };
+}
+
+class Background3{
+    constructor(){
+        // Object.assign(this, {game});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/BG3.png")
+    };
+
+    update(){
+
+    };
+
+    draw(ctx){
+        ctx.drawImage(this.spritesheet, 0, 0 ,1024, 768,);
+    };
+}
+
+class Tree{
+    constructor(x,y){
+        Object.assign(this, {x,y});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/foreground0.png")
+    };
+
+    update(){
+
+    };
+
+    draw(ctx){
+        ctx.drawImage(this.spritesheet, this.x, this.y ,448, 448,);
+    };
+}
+
+class Bush{
+    constructor(x,y){
+        Object.assign(this, {x,y});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/sprite_0.png")
+    };
+
+    update(){
+
+    };
+
+    draw(ctx){
+        ctx.drawImage(this.spritesheet, this.x, this.y ,224, 448,);
+    };
 }

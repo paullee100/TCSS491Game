@@ -80,6 +80,10 @@ class GameEngine {
         this.entities.push(entity);
     };
 
+    addEntitySpecific(entity, index) {
+        this.entities.splice(index, 0, entity);
+    };
+
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
