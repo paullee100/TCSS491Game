@@ -75,6 +75,7 @@ class Knight {
                 //this.velocity.y = 0;
             } else if (this.game.keys["k"] || this.game.click) { // attack
                 this.state = 1;
+                ASSET_MANAGER.playAsset("./sounds/knight_attack1.mp3");
                 //this.velocity.y = 0;
             } else if (this.game.keys["Shift"] || (this.game.keys["Shift"] && (this.game.keys["a"] || this.game.keys["d"]))) { // roll
                 this.state = 4;
@@ -95,6 +96,7 @@ class Knight {
             if (this.game.keys["k"] || this.game.click) { // attack
                 this.state = 2;
                 this.animation[1].elapsedTime = 0;
+                ASSET_MANAGER.playAsset("./sounds/knight_attack2.mp3");
                 //this.velocity.y = 0;
             }
         } else {
