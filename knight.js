@@ -140,7 +140,6 @@ class Knight {
 
                     entity.dead = true;
                 } else if (entity instanceof Lich && this.state == 1) {
-                    console.log(entity.health);
                     entity.health -= 20;
                 }
             }
