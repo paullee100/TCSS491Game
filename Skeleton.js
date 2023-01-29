@@ -1,8 +1,7 @@
 class Skeleton {
-	constructor(game) {
-		Object.assign(this, { game });
-		this.x = 100;
-		this.y = 540;
+	constructor(game,x,y) {
+		Object.assign(this, { game,x,y });
+
 		this.speed = 100;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 0; // walking = 0, attack = 1, dead = 2,
