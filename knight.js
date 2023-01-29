@@ -100,6 +100,7 @@ class Knight {
         } else {
             if (this.game.click != null) {
                 this.game.click = null;
+                this.state = 2;
             }
         }
     }
@@ -137,10 +138,10 @@ class Knight {
                 if (entity instanceof Skeleton &&
                     this.state == 1) {
 
-                    entity.removeFromWorld = true;
+                    entity.dead = true;
                 } else if (entity instanceof Lich && this.state == 1) {
                     console.log(entity.health);
-                    entity.health -= 1;
+                    entity.health -= 20;
                 }
             }
             if (entity.BB && that.BB.collide(entity.BB)) {
