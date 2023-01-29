@@ -1,7 +1,8 @@
 class Skeleton {
 	constructor(game,x,y) {
 		Object.assign(this, { game,x,y });
-
+		this.leftbound = this.x - 300;
+		this.rightbound = this.x + 300;
 		this.speed = 100;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 0; // walking = 0, attack = 1, dead = 2,
@@ -39,11 +40,11 @@ class Skeleton {
 	update() {
 		this.x += this.speed * this.game.clockTick;
 		// walking path
-		if (this.x > 500) {
+		if (this.x > this.rightbound) {
 			this.speed = -100;
 			this.facing = -1;
 			//this.state = 0;
-		} else if (this.x < 100) {
+		} else if (this.x < this.leftbound) {
 			this.speed = 100;
 			this.facing = 1;
 			//this.state = 0;
@@ -101,7 +102,7 @@ class Skeleton {
 		ctx.strokeRect(this.x - this.game.camera.x, this.y, 100, 185);
 		// vision box
 		ctx.strokeStyle = "red";
-		ctx.strokeRect((100 - this.game.camera.x), this.y, 500, 185);
+		ctx.strokeRect((this.leftbound) - this.game.camera.x, this.y, 695, 185);
 		
 		if (this.facing == -1) {
 			ctx.save()
