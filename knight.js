@@ -76,6 +76,7 @@ class Knight {
             } else if (this.game.keys["k"] || this.game.click) { // attack
                 this.state = 1;
                 //this.velocity.y = 0;
+                ASSET_MANAGER.playAsset("./sounds/knight_attack1.mp3");
             } else if (this.game.keys["Shift"] || (this.game.keys["Shift"] && (this.game.keys["a"] || this.game.keys["d"]))) { // roll
                 this.state = 4;
                 this.velocity.x = 500 * (this.facing);
@@ -96,6 +97,7 @@ class Knight {
                 this.state = 2;
                 this.animation[1].elapsedTime = 0;
                 //this.velocity.y = 0;
+                ASSET_MANAGER.playAsset("./sounds/knight_attack2.mp3");
             }
         } else {
             if (this.game.click != null) {
@@ -137,10 +139,11 @@ class Knight {
             if (entity.BB && that.SwordBB.collide(entity.BB)) {
                 if (entity instanceof Skeleton &&
                     this.state == 1) {
-
                     entity.health -= 20;
+                    //ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
                 } else if (entity instanceof Lich && this.state == 1) {
                     entity.health -= 20;
+                    //ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
                 }
             }
             if (entity.BB && that.BB.collide(entity.BB)) {
