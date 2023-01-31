@@ -138,7 +138,7 @@ class Knight {
                 if (entity instanceof Skeleton &&
                     this.state == 1) {
 
-                    entity.dead = true;
+                    entity.health -= 20;
                 } else if (entity instanceof Lich && this.state == 1) {
                     entity.health -= 20;
                 }

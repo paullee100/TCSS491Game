@@ -25,7 +25,8 @@ ASSET_MANAGER.queueDownload("./sprites/Knight_Fall.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Skeleton.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeletonwalking.png");
-ASSET_MANAGER.queueDownload("./sprites/Skeletonattack.png")
+ASSET_MANAGER.queueDownload("./sprites/Skeletonattack.png");
+ASSET_MANAGER.queueDownload("./sprites/Skeletondeath.png");
 
 // boss
 ASSET_MANAGER.queueDownload("./sprites/Lich_Idle.png");

@@ -4,18 +4,22 @@ class Skeleton {
 		this.leftbound = this.x - 300;
 		this.rightbound = this.x + 300;
 		this.speed = 100;
+		this.health = 50;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 0; // walking = 0, attack = 1, dead = 2,
 		this.game.Skeleton = this;
+		this.deathtime = 0;
 		this.attacktime = 0;
 		this.spritesheet = [];
 		this.animation = [];
 		
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonwalking.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonattack.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletondeath.png"));
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
 		this.animation.push(new Animator(this.spritesheet[0], 71, 0, 71, 75, 8, 0.1, 1, false, true));
 		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 95, 90, 4, 0.2, 1, false, false));
+		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 68, 75, 6, 0.2, 1, false, false));
 
 		this.dead = false;
 		this.updateBB();
@@ -87,6 +91,14 @@ class Skeleton {
 				this.speed = -100;
 			}
 		};
+		if (this.health <= 0) {
+			this.speed = 0;
+			this.state = 2;
+			this.deathtime += this.game.clockTick;
+			if (this.deathtime >= 1) {
+				this.dead = true;
+			}
+		}
 	};
 
 	draw(ctx) {
