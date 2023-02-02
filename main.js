@@ -8,6 +8,9 @@ ASSET_MANAGER.queueDownload("./tileset/forest/BG3.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/forest_tiles00.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/forest_tiles01.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/forest_tiles02.png")
+ASSET_MANAGER.queueDownload("./tileset/forest/forest_tiles26.png")
+ASSET_MANAGER.queueDownload("./tileset/forest/forest_tiles27.png")
+ASSET_MANAGER.queueDownload("./tileset/forest/forest_tiles28.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/foreground0.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/sprite_0.png")
 // spritesheet
@@ -22,7 +25,8 @@ ASSET_MANAGER.queueDownload("./sprites/Knight_Fall.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Skeleton.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeletonwalking.png");
-ASSET_MANAGER.queueDownload("./sprites/Skeletonattack.png")
+ASSET_MANAGER.queueDownload("./sprites/Skeletonattack.png");
+ASSET_MANAGER.queueDownload("./sprites/Skeletondeath.png");
 
 // boss
 ASSET_MANAGER.queueDownload("./sprites/Lich_Idle.png");
@@ -32,8 +36,10 @@ ASSET_MANAGER.queueDownload("./sprites/Lich_Attack2.png");
 ASSET_MANAGER.queueDownload("./sprites/Lich_Attack3.png");
 ASSET_MANAGER.queueDownload("./sprites/Lich_Death.png");
 
+// sound effects
 ASSET_MANAGER.queueDownload("./sounds/knight_attack1.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_attack2.mp3");
+ASSET_MANAGER.queueDownload("./sounds/knight_attack_hit.mp3");
 
 ASSET_MANAGER.downloadAll(() => {
 	const gameEngine = new GameEngine();

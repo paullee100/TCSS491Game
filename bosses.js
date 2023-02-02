@@ -6,7 +6,7 @@ class Lich {
 
         this.game.Lich = this;
         this.state = 0; // idle = 0, walking = 1, attack1 = 2, attack2 = 3, attack3 = 4, death = 5
-        this.facing = 1; // right = 1, left = -1
+        this.facing = -1; // right = 1, left = -1
         this.dead = false;
         this.deadCounter = 0;
         this.health = 100;
@@ -31,17 +31,18 @@ class Lich {
         this.animation.push(new Animator(this.spritesheet[1], 0, 5, 54, 83, 8, 0.15, 43, false, true));
         this.animation.push(new Animator(this.spritesheet[2], 19, 15, 62, 90, 5, 0.55, 30, false, true));
         this.animation.push(new Animator(this.spritesheet[3], 13, 8, 69, 90, 5, 0.1, 23, false, true));
-        this.animation.push(new Animator(this.spritesheet[4], 0, 1, 70, 90, 10, 0.1, 21, false, true));
-        this.determineState();
+        this.animation.push(new Animator(this.spritesheet[4], 10, 4, 62, 90, 5, 0.1, 30, false, true));
+        this.animation.push(new Animator(this.spritesheet[5], 0, 1, 70, 90, 10, 0.1, 21, false, true));
         this.updateBB();
     };
 
     determineState() {
         this.waitTime = 0;
+        if (this.health <= 0) {
+            return;
+        }
         let rng = Math.floor(Math.random() * 100);
-        console.log(rng);
-        if (rng < 50) {
-            this.maxSummon = 0;
+        if (rng < 50 && this.maxSummon <= 5) {
             this.state = 2;
         } else if (rng >= 50 && rng <= 70) {
             this.state = 3;
@@ -59,10 +60,12 @@ class Lich {
 
     update() {
         if (this.health <= 0) {
-            this.state = 4;
-            this.dead = true;
+            this.state = 5;
             this.deadCounter += this.game.clockTick;
-            if (this.deadCounter >= 1) this.removeFromWorld = true;
+            if (this.deadCounter >= 1) {
+                this.dead = true;
+                this.removeFromWorld = true;
+            }
         } else if (this.state == 1) {
             if (this.x > 840) {
                 this.facing = -1;
@@ -78,24 +81,23 @@ class Lich {
                 this.y -= this.game.clockTick * this.velocity.y;
             }
         } else if (this.state == 2) {
-            if (this.maxSummon != 3) {
+            if (this.maxSummon != 5) {
                 this.summonCounter += this.game.clockTick;
                 if (this.summonCounter >= 2.5) {
                     this.maxSummon++;
-                    this.game.addEntitySpecific(new Skeleton(this.game), 1);
+                    let rand = Math.floor(Math.random()*(3-1+1))+1;
+                    this.game.addEntitySpecific(new Skeleton(this.game,this.x+(rand * PARAMS.BLOCKWIDTH),(540/64)* PARAMS.BLOCKWIDTH), 1);
                     this.summonCounter = 0;
                 }
             } else {
                 this.determineState();
             }
         } else if (this.state == 3) {
-            console.log("attack2");
             this.waitTime += this.game.clockTick;
             if (this.waitTime >= 3) {
                 this.determineState();
             }
         } else if (this.state == 4) {
-            console.log("attack3");
             this.waitTime += this.game.clockTick;
             if (this.waitTime >= 3) {
                 this.determineState();
@@ -133,13 +135,16 @@ class Lich {
         let stateModX = 0;
         let stateModY = 0;
         if (this.state == 2 || this.state == 3) stateModY = 25;
+        else if (this.state == 4) stateModY = 15;
 
         if (this.dead == true) {
             //this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.position.x - stateModX, this.position.y - stateModY, 4);
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY - this.game.camera.y, 4);
+
         } else if (this.facing == 1) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY - this.game.camera.y, 4);
         } else if (this.facing == -1) {
+
             //this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 200 + (stateModX * this.facing), this.position.y - stateModY, 4);
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 200 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), this.y - stateModY - this.game.camera.y, 4);
         }

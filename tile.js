@@ -6,7 +6,7 @@ class Tile {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.BB = new BoundingBox(this.x, this.y+10, width, height);
+        this.BB = new BoundingBox(this.x, this.y+10, width, height - 10);
     };
 
     update() {
