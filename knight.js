@@ -89,7 +89,7 @@ class Knight {
                 this.velocity.x = 0;
                 //this.velocity.y = 0;
             }
-            this.updateBB();
+            //this.updateBB();
     }
     else if (this.state == 1) {
         if (this.animation[this.state].currentFrame() + 1 >= 3) {
@@ -150,25 +150,21 @@ class Knight {
                 if (entity instanceof Tile) {
                     if ((that.lastBB.bottom) <= entity.BB.top) {
                         that.position.y = entity.y - 171.25;
-                        that.velocity.y === 0;
+                        that.velocity.y = 0;
                         if (that.state == 5 || that.state == 7) that.state = 3;
-                        that.updateBB();
                     }
-                    /* if ((that.lastBB.right) <= entity.BB.left && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
-                        that.x = entity.BB.left;
-                        //that.state = 3;
+                    if ((that.lastBB.right) <= entity.BB.left) {
+                        that.position.x = entity.BB.left - 100;
                         if (that.velocity.x > 0) that.velocity.x = 0;
-                        that.updateBB();
                     } 
-                    if ((that.lastBB.left) >= entity.BB.right && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
-                        that.x = entity.BB.right;
-                        //that.state = 3;
+                    if ((that.lastBB.left) >= entity.BB.right) {
+                        that.position.x = entity.BB.right;
                         if (that.velocity.x < 0) that.velocity.x = 0;
-                        that.updateBB();
-                    } */
+                    }
                 };
             };
         });
+        that.updateBB();
         /* if (this.position.y > 700) { //Just for testing. Replace with floor collision to reset sprite later
             this.position.y = 540;
             this.state = 3;
