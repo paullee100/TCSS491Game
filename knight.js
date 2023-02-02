@@ -75,6 +75,7 @@ class Knight {
                 //this.velocity.y = 0;
             } else if (this.game.keys["k"] || this.game.click) { // attack
                 this.state = 1;
+                ASSET_MANAGER.playAsset("./sounds/knight_attack1.mp3");
                 //this.velocity.y = 0;
                 ASSET_MANAGER.playAsset("./sounds/knight_attack1.mp3");
             } else if (this.game.keys["Shift"] || (this.game.keys["Shift"] && (this.game.keys["a"] || this.game.keys["d"]))) { // roll
@@ -96,6 +97,7 @@ class Knight {
             if (this.game.keys["k"] || this.game.click) { // attack
                 this.state = 2;
                 this.animation[1].elapsedTime = 0;
+                ASSET_MANAGER.playAsset("./sounds/knight_attack2.mp3");
                 //this.velocity.y = 0;
                 ASSET_MANAGER.playAsset("./sounds/knight_attack2.mp3");
             }
@@ -188,13 +190,13 @@ class Knight {
         // let canvas = document.getElementById("gameWorld");
         // canvas.style.backgroundColor = "black
         ctx.strokeStyle = "black";
-        ctx.strokeRect(this.position.x - this.game.camera.x, this.position.y, 100, 181);
+        ctx.strokeRect(this.position.x - this.game.camera.x, this.position.y - this.game.camera.y, 100, 181);
 
         ctx.strokeStyle = "purple";
-        ctx.strokeRect(this.position.x + 200- this.game.camera.x, this.position.y + 10, 192, 205);
+        ctx.strokeRect(this.position.x + 200- this.game.camera.x, this.position.y + 10 - this.game.camera.y, 192, 205);
 
         ctx.strokeStyle = "purple";
-        ctx.strokeRect(this.position.x - 300- this.game.camera.x, this.position.y + 10, 192, 205);
+        ctx.strokeRect(this.position.x - 300- this.game.camera.x, this.position.y + 10 - this.game.camera.y, 192, 205);
         
         if (this.facing == -1) {
             ctx.save();
@@ -211,8 +213,8 @@ class Knight {
         else if (this.state == 2) stateModx = 100, stateMody = 18;
         else if (this.state == 4) stateModx = 50;
 
-        if(this.facing == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x - stateModx)- this.game.camera.x, this.position.y - stateMody, 5);
-        else this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 100 + (stateModx * this.facing) - (this.game.camera.x * this.facing), this.position.y - stateMody, 5);
+        if(this.facing == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x - stateModx)- this.game.camera.x, this.position.y - stateMody - this.game.camera.y, 5);
+        else this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 100 + (stateModx * this.facing) - (this.game.camera.x * this.facing), this.position.y - stateMody - this.game.camera.y, 5);
         ctx.restore();
     };
 }

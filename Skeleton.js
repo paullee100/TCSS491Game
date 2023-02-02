@@ -111,11 +111,12 @@ class Skeleton {
 		}
 		// hurt box
 		ctx.strokeStyle = "green";
-		ctx.strokeRect(this.x - this.game.camera.x, this.y, 100, 185);
-		// vision box
+
+		ctx.strokeRect(this.x- this.game.camera.x, this.y - this.game.camera.y, 100, 185);
+
 		ctx.strokeStyle = "red";
-		ctx.strokeRect((this.leftbound) - this.game.camera.x, this.y, 695, 185);
-		
+		ctx.strokeRect(100- this.game.camera.x, this.y- this.game.camera.y, 500, 185);
+    
 		if (this.facing == -1) {
 			ctx.save()
 			ctx.scale(-1, 1)
@@ -130,9 +131,10 @@ class Skeleton {
 		else if (this.state == 3) stateMod = 0;
 		if (this.dead == false) {
 			if (this.facing == 1) {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing)- this.game.camera.x, this.y + stateMod, 2.5)
+
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing)- this.game.camera.x, 540 + stateMod - this.game.camera.y, 2.5)
 			} else {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95)- (this.game.camera.x * this.facing), this.y + stateMod, 2.5)
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95)- (this.game.camera.x * this.facing), 540 + stateMod - this.game.camera.y, 2.5)
 			}
 
 		} else {
