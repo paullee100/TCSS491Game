@@ -15,6 +15,12 @@ class SceneManager {
         this.game.addEntity(new Bush(this.game, 655, 4 * PARAMS.BLOCKWIDTH));
         this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles00.png", 0*PARAMS.BLOCKWIDTH, 11 * PARAMS.BLOCKWIDTH ,64, 64));
         this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles01.png", 1*PARAMS.BLOCKWIDTH, 11* PARAMS.BLOCKWIDTH ,64,64));
+
+        this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles01.png", 1*PARAMS.BLOCKWIDTH, 10* PARAMS.BLOCKWIDTH,64,64));
+        this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles01.png", 2*PARAMS.BLOCKWIDTH, 10* PARAMS.BLOCKWIDTH,64,64));
+        this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles01.png", 3*PARAMS.BLOCKWIDTH, 10* PARAMS.BLOCKWIDTH,64,64));
+        this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles01.png", 4*PARAMS.BLOCKWIDTH, 10* PARAMS.BLOCKWIDTH,64,64));
+
         this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles01.png", 2*PARAMS.BLOCKWIDTH, 11 * PARAMS.BLOCKWIDTH ,64,64));
         this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles01.png", 3*PARAMS.BLOCKWIDTH, 11 * PARAMS.BLOCKWIDTH ,64,64));
         this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles01.png", 4*PARAMS.BLOCKWIDTH, 11 * PARAMS.BLOCKWIDTH ,64,64));

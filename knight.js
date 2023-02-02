@@ -76,6 +76,7 @@ class Knight {
             } else if (this.game.keys["k"] || this.game.click) { // attack
                 this.state = 1;
                 //this.velocity.y = 0;
+                ASSET_MANAGER.playAsset("./sounds/knight_attack1.mp3");
             } else if (this.game.keys["Shift"] || (this.game.keys["Shift"] && (this.game.keys["a"] || this.game.keys["d"]))) { // roll
                 this.state = 4;
                 this.velocity.x = 500 * (this.facing);
@@ -88,7 +89,7 @@ class Knight {
                 this.velocity.x = 0;
                 //this.velocity.y = 0;
             }
-            this.updateBB();
+            //this.updateBB();
     }
     else if (this.state == 1) {
         if (this.animation[this.state].currentFrame() + 1 >= 3) {
@@ -96,6 +97,7 @@ class Knight {
                 this.state = 2;
                 this.animation[1].elapsedTime = 0;
                 //this.velocity.y = 0;
+                ASSET_MANAGER.playAsset("./sounds/knight_attack2.mp3");
             }
         } else {
             if (this.game.click != null) {
@@ -137,35 +139,32 @@ class Knight {
             if (entity.BB && that.SwordBB.collide(entity.BB)) {
                 if (entity instanceof Skeleton &&
                     this.state == 1) {
-
                     entity.health -= 20;
+                    //ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
                 } else if (entity instanceof Lich && this.state == 1) {
                     entity.health -= 20;
+                    //ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
                 }
             }
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Tile) {
                     if ((that.lastBB.bottom) <= entity.BB.top) {
                         that.position.y = entity.y - 171.25;
-                        that.velocity.y === 0;
+                        that.velocity.y = 0;
                         if (that.state == 5 || that.state == 7) that.state = 3;
-                        that.updateBB();
                     }
-                    /* if ((that.lastBB.right) <= entity.BB.left && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
-                        that.x = entity.BB.left;
-                        //that.state = 3;
+                    if ((that.lastBB.right) <= entity.BB.left) {
+                        that.position.x = entity.BB.left - 100;
                         if (that.velocity.x > 0) that.velocity.x = 0;
-                        that.updateBB();
                     } 
-                    if ((that.lastBB.left) >= entity.BB.right && that.lastBB.bottom >= entity.BB.top && that.lastBB.top <= entity.BB.bottom) {
-                        that.x = entity.BB.right;
-                        //that.state = 3;
+                    if ((that.lastBB.left) >= entity.BB.right) {
+                        that.position.x = entity.BB.right;
                         if (that.velocity.x < 0) that.velocity.x = 0;
-                        that.updateBB();
-                    } */
+                    }
                 };
             };
         });
+        that.updateBB();
         /* if (this.position.y > 700) { //Just for testing. Replace with floor collision to reset sprite later
             this.position.y = 540;
             this.state = 3;
