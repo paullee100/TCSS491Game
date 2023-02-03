@@ -54,7 +54,7 @@ class Tree{
     };
 
     draw(ctx){
-        ctx.drawImage(this.spritesheet, this.x- this.game.camera.x, this.y - this.game.camera.y ,448, 448,);
+        ctx.drawImage(this.spritesheet, this.x- this.game.camera.x, this.y ,448, 448,);
     };
 }
 
@@ -69,6 +69,6 @@ class Bush{
     };
 
     draw(ctx){
-        ctx.drawImage(this.spritesheet, this.x- this.game.camera.x, this.y  - this.game.camera.y,224, 448,);
+        ctx.drawImage(this.spritesheet, this.x- this.game.camera.x, this.y ,224, 448,);
     };
 }

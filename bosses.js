@@ -121,7 +121,7 @@ class Lich {
 
     draw(ctx) {
         ctx.strokeStyle="purple";
-        ctx.strokeRect(this.x- this.game.camera.x, this.y - this.game.camera.y, 200, 330);
+        ctx.strokeRect(this.x- this.game.camera.x, this.y, 200, 330);
         //ctx.strokeRect(this.position.x, this.position.y, 200, 330);
 
         if (this.facing == -1) {
@@ -138,15 +138,11 @@ class Lich {
         else if (this.state == 4) stateModY = 15;
 
         if (this.dead == true) {
-            //this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.position.x - stateModX, this.position.y - stateModY, 4);
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY - this.game.camera.y, 4);
-
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY, 4);
         } else if (this.facing == 1) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY - this.game.camera.y, 4);
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY, 4);
         } else if (this.facing == -1) {
-
-            //this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 200 + (stateModX * this.facing), this.position.y - stateModY, 4);
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 200 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), this.y - stateModY - this.game.camera.y, 4);
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 200 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), this.y - stateModY, 4);
         }
         ctx.restore();
     };
