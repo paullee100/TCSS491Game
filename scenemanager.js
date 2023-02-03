@@ -4,11 +4,13 @@ class SceneManager {
         this.game.camera = this;
         this.knight = new Knight(game);
         this.x = 0;
+        this.y = 0;
         this.loadLevel(1, 9 * PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH, false, true);
 
 
 
         this.game.addEntity(this.knight);
+
         this.game.addEntity(new Lich(this.game, 35*PARAMS.BLOCKWIDTH, (390/64)*PARAMS.BLOCKWIDTH));
         this.game.addEntity(new Skeleton(this.game,5*PARAMS.BLOCKWIDTH, (540/64)* PARAMS.BLOCKWIDTH));
         this.game.addEntity(new Tree(this.game, 55, 4 * PARAMS.BLOCKWIDTH));
@@ -68,6 +70,7 @@ class SceneManager {
         this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles27.png", 48*PARAMS.BLOCKWIDTH, 11 * PARAMS.BLOCKWIDTH ,64,64));
         this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles27.png", 49*PARAMS.BLOCKWIDTH, 11 * PARAMS.BLOCKWIDTH ,64,64));
         this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles28.png", 50*PARAMS.BLOCKWIDTH, 11 * PARAMS.BLOCKWIDTH ,64,64));
+
         this.game.addEntity(new Background3());
         this.game.addEntity(new Background2());
         this.game.addEntity(new Background1());
@@ -86,7 +89,8 @@ class SceneManager {
     update() {
         let midpoint = PARAMS.CANVAS_WIDTH/2 - PARAMS.BLOCKWIDTH / 2;
         //console.log("MMMMM " + midpoint);
-        this.x = this.knight.position.x - midpoint; 
+        this.x = this.knight.position.x - midpoint;
+        this.y = this.knight.position.y - midpoint;
     };
 
     draw(ctx) {
