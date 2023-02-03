@@ -30,7 +30,8 @@ ASSET_MANAGER.queueDownload("./sprites/Skeletonattack.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeletondeath.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Idle.png");
-ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Jump.png"); 
+ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Jump.png");
+ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Jump2.png"); 
 
 // boss
 ASSET_MANAGER.queueDownload("./sprites/Lich_Idle.png");
