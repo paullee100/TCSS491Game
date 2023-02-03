@@ -23,10 +23,14 @@ ASSET_MANAGER.queueDownload("./sprites/Knight_Jump.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Death.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Fall.png");
 
+// enemies
 ASSET_MANAGER.queueDownload("./sprites/Skeleton.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeletonwalking.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeletonattack.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeletondeath.png");
+
+ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Jump.png"); 
 
 // boss
 ASSET_MANAGER.queueDownload("./sprites/Lich_Idle.png");

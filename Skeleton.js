@@ -145,3 +145,31 @@ class Skeleton {
 		//ctx.drawImage(ASSET_MANAGER.getAsset("./Skeletonwalking.png"), 0, 0);
 	};
 }
+class Slime {
+	constructor(game,x,y) {
+		Object.assign(this, { game, x, y });
+		this.speed = 100;
+		this.health = 50;
+		this.facing = 1; // right = 1 left = -1
+		this.state = 0; // idle = 0,  jump = 1, damaged = 2, death = 3 
+		this.game.Slime = this;
+		this.deathtime = 0;
+		this.attacktime = 0;
+		this.spritesheet = [];
+		this.animation = [];
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Idle.png"));
+		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 15.9, 18, 9, 0.1, 1, false, true));
+	}
+	updateBB() {
+
+	}
+	update() {
+
+	}
+	draw(ctx) {
+		ctx.save();
+		this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - this.game.camera.x, this.y, 10)
+		ctx.restore();
+	}
+}

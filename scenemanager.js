@@ -10,7 +10,8 @@ class SceneManager {
 
         this.game.addEntity(this.knight);
         this.game.addEntity(new Lich(this.game, 35*PARAMS.BLOCKWIDTH, (390/64)*PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Skeleton(this.game,5*PARAMS.BLOCKWIDTH, (540/64)* PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Skeleton(this.game, 5 * PARAMS.BLOCKWIDTH, (540 / 64) * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Slime(this.game, 14 * PARAMS.BLOCKWIDTH, (540 / 64) * PARAMS.BLOCKWIDTH));
         this.game.addEntity(new Tree(this.game, 55, 4 * PARAMS.BLOCKWIDTH));
         this.game.addEntity(new Bush(this.game, 655, 4 * PARAMS.BLOCKWIDTH));
         this.game.addEntity(new Tile(this.game, "./tileset/forest/forest_tiles00.png", 0*PARAMS.BLOCKWIDTH, 11 * PARAMS.BLOCKWIDTH ,64, 64));
