@@ -1,5 +1,5 @@
 var levelOne = {
-    Lich: [{x:35,y:(390/64)}],
+    Lich: [{x:37,y:(390/64)}],
     Skeleton: [{x:15,y:(540/64)}],
     Tree: [{x:(55/64),y:4}],
     Bush: [{x:(655/64),y:4}],
@@ -15,15 +15,15 @@ var levelOne = {
     {sprite:"./tileset/forest/forest_tiles08.png",x:0,y:13,size:1},
     {sprite:"./tileset/forest/forest_tiles07.png",x:1,y:13,size:19},
     {sprite:"./tileset/forest/forest_tiles10.png",x:20,y:13,size:1},
-    {sprite:"./tileset/forest/forest_tiles26.png",x:23,y:11,size:1},
-    {sprite:"./tileset/forest/forest_tiles27.png",x:24,y:11,size:28},
-    {sprite:"./tileset/forest/forest_tiles28.png",x:52,y:11,size:1},
-    {sprite:"./tileset/forest/forest_tiles34.png",x:23,y:12,size:1},
-    {sprite:"./tileset/forest/forest_tiles35.png",x:24,y:12,size:28},
-    {sprite:"./tileset/forest/forest_tiles36.png",x:52,y:12,size:1},
-    {sprite:"./tileset/forest/forest_tiles34.png",x:23,y:13,size:1},
-    {sprite:"./tileset/forest/forest_tiles35.png",x:24,y:13,size:28},
-    {sprite:"./tileset/forest/forest_tiles36.png",x:52,y:13,size:1}
+    {sprite:"./tileset/forest/forest_tiles26.png",x:25,y:11,size:1},
+    {sprite:"./tileset/forest/forest_tiles27.png",x:26,y:11,size:28},
+    {sprite:"./tileset/forest/forest_tiles28.png",x:54,y:11,size:1},
+    {sprite:"./tileset/forest/forest_tiles34.png",x:25,y:12,size:1},
+    {sprite:"./tileset/forest/forest_tiles35.png",x:26,y:12,size:28},
+    {sprite:"./tileset/forest/forest_tiles36.png",x:54,y:12,size:1},
+    {sprite:"./tileset/forest/forest_tiles34.png",x:25,y:13,size:1},
+    {sprite:"./tileset/forest/forest_tiles35.png",x:26,y:13,size:28},
+    {sprite:"./tileset/forest/forest_tiles36.png",x:54,y:13,size:1}
 ]
 
 };
