@@ -71,7 +71,7 @@ class Lich {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 200, 330);
+        this.BB = new BoundingBox(this.x, this.y, 200, 330, "enemy", this);
     };
 
     update() {
