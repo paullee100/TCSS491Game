@@ -15,7 +15,7 @@ class Tile {
 
     draw(ctx) {
         ctx.strokeStyle = "black";
-        ctx.strokeRect(this.x- this.game.camera.x, this.y + 10, this.width, this.height - 10);
-        ctx.drawImage(ASSET_MANAGER.getAsset(this.image), this.x- this.game.camera.x, this.y, this.width, this.height);
+        ctx.strokeRect(this.x- this.game.camera.x, this.y + 10- this.game.camera.y, this.width, this.height - 10);
+        ctx.drawImage(ASSET_MANAGER.getAsset(this.image), this.x- this.game.camera.x, this.y - this.game.camera.y, this.width, this.height);
     };
 };
