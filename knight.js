@@ -42,9 +42,9 @@ class Knight {
         this.lastSwordBB = this.SwordBB
          if (this.state == 1 || this.state == 2) {
             if (this.facing == 1) {
-                this.SwordBB = new BoundingBox(this.position.x + 200, this.position.y + 10, 192, 205);
+                this.SwordBB = new BoundingBox(this.position.x + 100 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
             } else if (this.facing == -1) {
-                this.SwordBB = new BoundingBox(this.position.x - 300, this.position.y + 10, 192, 205);
+                this.SwordBB = new BoundingBox(this.position.x - 200 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
             }
         } else { 
             this.SwordBB = new BoundingBox(0, 0, 0, 0);
@@ -102,7 +102,6 @@ class Knight {
         } else {
             if (this.game.click != null) {
                 this.game.click = null;
-                this.state = 2;
             }
         }
     }
@@ -188,13 +187,13 @@ class Knight {
         // let canvas = document.getElementById("gameWorld");
         // canvas.style.backgroundColor = "black
         ctx.strokeStyle = "black";
-        ctx.strokeRect(this.position.x - this.game.camera.x, this.position.y- this.game.camera.y, 100, 181);
+        ctx.strokeRect(this.position.x - this.game.camera.x, this.position.y - this.game.camera.y, 100, 181);
 
         ctx.strokeStyle = "purple";
-        ctx.strokeRect(this.position.x + 200- this.game.camera.x, this.position.y + 10- this.game.camera.y, 192, 205);
+        ctx.strokeRect(this.position.x + 100 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
 
         ctx.strokeStyle = "purple";
-        ctx.strokeRect(this.position.x - 300- this.game.camera.x, this.position.y + 10- this.game.camera.y, 192, 205);
+        ctx.strokeRect(this.position.x - 200 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
         
         if (this.facing == -1) {
             ctx.save();

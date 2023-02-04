@@ -6,18 +6,23 @@ class Lich {
 
         this.game.Lich = this;
         this.state = 0; // idle = 0, walking = 1, attack1 = 2, attack2 = 3, attack3 = 4, death = 5
+        this.attackState = 0; // initiate attack = 0, explosion = 1, fire = 2
         this.facing = -1; // right = 1, left = -1
         this.dead = false;
         this.deadCounter = 0;
-        this.health = 100;
+        this.health = 10000;
         this.damage = 10;
 
         this.maxSummon = 0;
         this.summonCounter = 0;
         this.waitTime = 0;
+        this.attackTime = 0;
 
         this.spritesheet = [];
         this.animation = [];
+
+        this.attackSpritesheet = [];
+        this.attackAnimation = [];
 
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Idle.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Walking.png"));
@@ -26,6 +31,10 @@ class Lich {
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Attack3.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Death.png"));
 
+        this.attackSpritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Pellet.png"));
+        this.attackSpritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Explosion.png"));
+        this.attackSpritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Fire.png"));
+
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
         this.animation.push(new Animator(this.spritesheet[0], 0, 5, 52, 83, 4, 0.25, 40, false, true));
         this.animation.push(new Animator(this.spritesheet[1], 0, 5, 54, 83, 8, 0.15, 43, false, true));
@@ -33,18 +42,25 @@ class Lich {
         this.animation.push(new Animator(this.spritesheet[3], 13, 8, 69, 90, 5, 0.1, 23, false, true));
         this.animation.push(new Animator(this.spritesheet[4], 10, 4, 62, 90, 5, 0.1, 30, false, true));
         this.animation.push(new Animator(this.spritesheet[5], 0, 1, 70, 90, 10, 0.1, 21, false, true));
+
+        this.attackAnimation.push(new Animator(this.attackSpritesheet[0], 42, 26, 15, 136, 1, 0.5, 0, false, true));
+        this.attackAnimation.push(new Animator(this.attackSpritesheet[1], 0, 8, 130, 136, 10, 0.1, 100, false, true));
+        this.attackAnimation.push(new Animator(this.attackSpritesheet[2], 5, 8, 15, 24, 8, 0.5, 9, false, true));
+
         this.updateBB();
     };
 
     determineState() {
+        this.attackTime = 0;
         this.waitTime = 0;
+        this.attackState = 0;
         if (this.health <= 0) {
             return;
         }
         let rng = Math.floor(Math.random() * 100);
-        if (rng < 50 && this.maxSummon <= 5) {
+        if (rng < 50 && this.maxSummon <= -1) {
             this.state = 2;
-        } else if (rng >= 50 && rng <= 70) {
+        } else if (rng >= 0 && rng <= 70) { // 50
             this.state = 3;
         } else if (rng >= 71 && rng <= 80) {
             this.state = 4;
@@ -94,12 +110,19 @@ class Lich {
             }
         } else if (this.state == 3) {
             this.waitTime += this.game.clockTick;
+            if (this.waitTime >= 1 && this.waitTime < 1.5) {
+                this.attackState = 1;
+            }
             if (this.waitTime >= 3) {
                 this.determineState();
+                
             }
         } else if (this.state == 4) {
             this.waitTime += this.game.clockTick;
-            if (this.waitTime >= 3) {
+            if (this.waitTime >= 1 && this.waitTime < 1.5) {
+                this.attackState = 3;
+            }
+            if (this.waitTime >= 6.5) {
                 this.determineState();
             }
         } else if (this.state == 0) {
@@ -137,6 +160,7 @@ class Lich {
         if (this.state == 2 || this.state == 3) stateModY = 25;
         else if (this.state == 4) stateModY = 15;
 
+        
         if (this.dead == true) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY- this.game.camera.y, 4);
         } else if (this.facing == 1) {
@@ -145,5 +169,38 @@ class Lich {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 200 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), this.y - stateModY- this.game.camera.y, 4);
         }
         ctx.restore();
+
+        if (this.state == 3) {
+            if (this.attackState == 0) {
+                let xPlacement = 100
+                let yPlacement = 100
+                let xRand = Math.floor(Math.random(6) + 1)
+                let yRand = Math.floor(Math.random(3))
+                if (xRand % 2 == 0) xPlacement * -1
+                this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, (this.game.Knight.position.x + (xPlacement * xRand)) - this.game.camera.x, this.game.Knight.position.y - (yPlacement * yRand), 3)
+            } else if (this.attackState == 1) {
+                this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, this.game.Knight.position.x - this.game.camera.x, this.game.Knight.position.y - 150, 3)
+            }
+        } else if (this.state == 4) {
+            // for (let i = 1; i <= 5; i++) {
+            this.attackTime += this.game.clockTick;
+            this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 1) - this.game.camera.x, this.y + 85, 10);
+            if (this.attackTime >= 1.5) {
+                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 2) - this.game.camera.x, this.y + 85, 10);
+            }
+
+            if (this.attackTime >= 3) {
+                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 3) - this.game.camera.x, this.y + 85, 10);
+            }
+
+            if (this.attackTime >= 4.5) {
+                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 4) - this.game.camera.x, this.y + 85, 10);
+            }
+
+            if (this.attackTime >= 6) {
+                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 5) - this.game.camera.x, this.y + 85, 10);
+            }
+        }
+
     };
 }

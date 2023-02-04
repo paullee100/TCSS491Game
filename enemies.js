@@ -145,3 +145,41 @@ class Skeleton {
 		//ctx.drawImage(ASSET_MANAGER.getAsset("./Skeletonwalking.png"), 0, 0);
 	};
 }
+
+class Cyclops {
+	constructor(game, x, y) {
+		Object.assign(this, {game, x, y})
+
+		this.state = 0; // idle = 0, walking = 1, attack1 = 2, attack2 = 3, attack3 = 4, death = 5
+		this.spritesheet = [];
+		this.animation = [];
+
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Idle.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Walking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack1.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack2.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack3.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Death.png"));
+		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+		this.animation.push(new Animator(this.spritesheet[0], 13, 9, 46, 80, 10, 0.5, 99, false, true));
+		this.animation.push(new Animator(this.spritesheet[1], 8, 15, 50, 81, 6, 0.35, 103, false, true));
+		this.animation.push(new Animator(this.spritesheet[2], 19, 13, 139, 81, 5, 0.2, 6, false, true));
+		this.animation.push(new Animator(this.spritesheet[3], 16, 7, 104, 132, 5, 0.2, 41, false, true));
+		this.animation.push(new Animator(this.spritesheet[4], 34, 20, 88, 175, 5, 0.2, 57, false, true));
+		this.animation.push(new Animator(this.spritesheet[5], 39, 13, 58, 79, 7, 0.25, 89, false, true));
+
+		this.updateBB();
+	};
+
+	updateBB() {
+
+	};
+
+	update() {
+
+	};
+
+	draw(ctx) {
+		this.animation[this.state].drawFrame(this.game.clockTick, ctx, 100, 50, 3);
+	};
+}
