@@ -45,6 +45,13 @@ class SceneManager {
             }
         }
 
+        if(level.Rock){
+            for (var i = 0; i < level.Rock.length; i++) {
+                let rock = level.Rock[i];
+                this.game.addEntity(new Rock(this.game, rock.x * PARAMS.BLOCKWIDTH, rock.y * PARAMS.BLOCKWIDTH));
+            }
+        }
+
         if(level.Ground){
             for (var i = 0; i < level.Ground.length; i++) {
                 let ground = level.Ground[i];
