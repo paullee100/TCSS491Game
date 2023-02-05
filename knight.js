@@ -203,7 +203,7 @@ class Knight {
         };
 
         //reseting character
-        if(this.position.y > 2000){
+        if(this.position.y > 10000){
             this.position ={x:9 * PARAMS.BLOCKWIDTH, y:6 * PARAMS.BLOCKWIDTH}
         }
     }

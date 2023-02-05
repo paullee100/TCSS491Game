@@ -72,3 +72,18 @@ class Bush{
         ctx.drawImage(this.spritesheet, this.x- this.game.camera.x, this.y- this.game.camera.y ,224, 448,);
     };
 }
+
+class Rock{
+    constructor(game,x,y){
+        Object.assign(this, {game,x,y});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/sprite_1.png")
+    };
+
+    update(){
+
+    };
+
+    draw(ctx){
+        ctx.drawImage(this.spritesheet, this.x- this.game.camera.x, this.y- this.game.camera.y ,224, 448,);
+    };
+}

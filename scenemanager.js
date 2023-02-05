@@ -45,11 +45,23 @@ class SceneManager {
             }
         }
 
+        if(level.Rock){
+            for (var i = 0; i < level.Rock.length; i++) {
+                let rock = level.Rock[i];
+                this.game.addEntity(new Rock(this.game, rock.x * PARAMS.BLOCKWIDTH, rock.y * PARAMS.BLOCKWIDTH));
+            }
+        }
+
         if(level.Ground){
             for (var i = 0; i < level.Ground.length; i++) {
                 let ground = level.Ground[i];
                 for (var j = 0; j < ground.size; j++) {
-                    this.game.addEntity(new Tile(this.game, ground.sprite, (ground.x+j) * PARAMS.BLOCKWIDTH, ground.y * PARAMS.BLOCKWIDTH,64,64));
+                    if(ground.c){
+                        this.game.addEntity(new TileClear(this.game, ground.sprite, (ground.x+j) * PARAMS.BLOCKWIDTH, ground.y * PARAMS.BLOCKWIDTH,64,64));
+                    }else{
+                        this.game.addEntity(new Tile(this.game, ground.sprite, (ground.x+j) * PARAMS.BLOCKWIDTH, ground.y * PARAMS.BLOCKWIDTH,64,64));
+                    }
+                    
                 }
             }
         }
