@@ -78,7 +78,12 @@ class Knight {
             } else if (this.game.keys["k"] || this.game.click) { // attack
                 this.state = 1;
                 //this.velocity.y = 0;
-                this.swordBB = new AttackBox(this.game, this, this.position.x, this.position.y, 280, 181, this.game.timer.tick, this.game.timer.tick + 1, this.damage);
+                if (this.facing == 1) {
+                    this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.gameTime, this.game.timer.gameTime + 1, this.damage);
+                }
+                else {
+                    this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.gameTime, this.game.timer.gameTime + 1, this.damage);
+                }
                 /* this.game.entities.forEach(entity => {
                     if (this.swordBB !== undefined) {
                         if (entity.BB && this.swordBB.collide(entity.BB)) {
@@ -111,7 +116,12 @@ class Knight {
                 this.state = 2;
                 this.animation[1].elapsedTime = 0;
                 //this.velocity.y = 0;
-                this.swordBB = new AttackBox(this.game, this, this.position.x, this.position.y, 280, 181, this.game.timer.tick, this.game.timer.tick + 10000, this.damage);
+                if (this.facing == 1) {
+                    this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.tick, this.game.timer.tick + 1, this.damage);
+                }
+                else {
+                    this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.tick, this.game.timer.tick + 1, this.damage);
+                }
                 /* this.game.entities.forEach(entity => {
                     if (this.swordBB !== undefined) {
                         if (entity.BB && this.swordBB.collide(entity.BB)) {
@@ -166,22 +176,22 @@ class Knight {
                     if (entity.BB.type == "enemy" &&
                         (this.state == 1 || this.state == 2) && this.swordBB.removeFromWorld !== true) {
                         this.swordBB.damageDeal(entity);
-                        //ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
+                        ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
                     }
                 }
             }   
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Tile) {
-                    if ((that.lastBB.bottom) <= entity.BB.top) {
+                    if ((that.lastBB.bottom) <= entity.BB.top) { //landing
                         that.position.y = entity.y - 171.25;
                         that.velocity.y = 0;
                         if (that.state == 5 || that.state == 7) that.state = 3;
                     }
-                    if ((that.lastBB.right) <= entity.BB.left) {
+                    else if ((that.lastBB.right) <= entity.BB.left) {
                         that.position.x = entity.BB.left - 100;
                         if (that.velocity.x > 0) that.velocity.x = 0;
                     } 
-                    if ((that.lastBB.left) >= entity.BB.right) {
+                    else if ((that.lastBB.left) >= entity.BB.right) {
                         that.position.x = entity.BB.right;
                         if (that.velocity.x < 0) that.velocity.x = 0;
                     }
@@ -219,6 +229,10 @@ class Knight {
 
         ctx.strokeStyle = "purple";
         ctx.strokeRect(this.position.x - 200 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
+
+        if (this.swordBB) {
+            this.swordBB.draw(ctx);
+        }
         
         if (this.facing == -1) {
             ctx.save();
