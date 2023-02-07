@@ -58,6 +58,8 @@ ASSET_MANAGER.queueDownload("./sprites/Lich_Fire.png");
 ASSET_MANAGER.queueDownload("./sounds/knight_attack1.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_attack2.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_attack_hit.mp3");
+ASSET_MANAGER.queueDownload("./sounds/knight_blocked_attack.mp3");
+ASSET_MANAGER.queueDownload("./sounds/knight_parry.mp3");
 
 ASSET_MANAGER.downloadAll(() => {
 	const gameEngine = new GameEngine();

@@ -18,20 +18,26 @@ class AttackBox {
 
     damageDeal(entity) {
         entity.health -= this.damage;
-        ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
+        //ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
         this.removeFromWorld = true;
     }
 
     update() {
-        if (this.game.timer.tick >= this.endtime) {
+        if (this.game.timer.gameTime >= this.endtime) {
             this.removeFromWorld = true;
         };
-        this.x = this.attacker.position.x;
-        this.y = this.attacker.position.y;
+        if (this.attacker.facing == 1) {
+            this.x = this.attacker.position.x + 100;
+            this.y = this.attacker.position.y;
+        }
+        if (this.attacker.facing == -1) {
+            this.x = this.attacker.position.x - 200;
+            this.y = this.attacker.position.y;
+        }
     };
 
     draw(ctx) {
-        ctx.fillStyle = "red";
-        ctx.fillRect(0, 0, 1000, 1000);
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, this.width, this.height);
     };
 };
