@@ -30,15 +30,15 @@ class Skeleton {
 		this.lastSwordBB = this.SwordBB;
 		if (this.state == 1 && this.attacktime >= 0.5) {
 			if (this.facing == 1) {
-				//this.SwordBB = new BoundingBox(this.x + 100, this.y, 122, 185);
+				this.SwordBB = new BoundingBox(this.x + 100, this.y, 122, 185);
 			} else {
-				//this.SwordBB = new BoundingBox(this.x - 123, this.y, 122, 185);
+				this.SwordBB = new BoundingBox(this.x - 123, this.y, 122, 185);
 			}
 			this.attacktime = 0;
 		} else {
-			//this.SwordBB = new BoundingBox(0, 0, 0, 0);
+			this.SwordBB = new BoundingBox(0, 0, 0, 0);
 		}
-		this.BB = new BoundingBox(this.x, this.y, 100, 185, "enemy", this);
+		this.BB = new BoundingBox(this.x, this.y, 100, 185);
 	}
 
 	update() {
@@ -68,11 +68,11 @@ class Skeleton {
 		
 		var that = this;
 		this.game.entities.forEach(entity => {
-			/* if (entity.BB && that.SwordBB.collide(entity.BB)) {
+			if (entity.BB && that.SwordBB.collide(entity.BB)) {
 				if (entity instanceof Knight && this.state == 1) {
 					console.log("skeleton hurts the knight!")
 				}
-			} */
+			}
 			if (entity.BB && that.BB.collide(entity.BB)) {
 				if (entity instanceof Knight) {
 					this.state = 1;
