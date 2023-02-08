@@ -38,7 +38,7 @@ class Knight {
         this.animation.push(new Animator(this.spritesheet[6], 19, 40, 50, 40, 10, 0.1, 69, false, false));
         this.animation.push(new Animator(this.spritesheet[7], 36, 43, 32, 36, 3, 0.1, 90, false, true));
         this.animation.push(new Animator(this.spritesheet[8], 36, 41, 30, 40, 1, 0.5, 90, false, false));
-        this.animation.push(new Animator(this.spritesheet[9], 42, 41, 31, 50, 5, 0.125, 83, false, false));
+        this.animation.push(new Animator(this.spritesheet[9], 42, 41, 31, 50, 3, 0.25, 83, false, false));
         this.animation.push(new Animator(this.spritesheet[10], 42, 41, 30, 40, 1, 0.5, 90, false, true));
 
         this.readyToAttack = 0;
@@ -57,11 +57,17 @@ class Knight {
         } else { 
             //this.SwordBB = new BoundingBox(0, 0, 0, 0);
         }
+        if (this.state == 9 || this.state == 10) {
+            this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
+        }
+        else {
+            //this.blockBB = new BoundingBox(0, 0, 0, 0, "player", this);
+        }
         this.BB = new BoundingBox(this.position.x, this.position.y, 100, 181, "player", this);
     };
 
     update() {
-
+        console.log(this.health);
         const RUN = 750;
         const JUMP = -900;
         const FALL = 1750;
@@ -112,15 +118,26 @@ class Knight {
                 ASSET_MANAGER.playAsset("./sounds/knight_jump.mp3");
             }else if (this.game.keys["l"]) { // TEST FOR HIT ANIMATION
                 //this.velocity.y = JUMP;
-                if (this.state == 10) this.state = 10;
+                if (this.state == 10) {
+                    this.state = 10;
+                    this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
+                }
+                
                 else {
                     this.state = 9;
+                    if (this.facing == 1){
+                        this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
+                    }
+                    else if (this.facing == -1){
+                        this.blockBB = new BoundingBox(this.position.x, this.position.y, 50, 181, "player", this);
+                    }
                     ASSET_MANAGER.playAsset("./sounds/knight_block.mp3");
                 }
             } 
             else {
                 this.state = 3;
                 this.velocity.x = 0;
+                this.blockBB = new BoundingBox(0, 0, 0, 0, "player", this);
                 //this.velocity.y = 0;
             }
             //this.updateBB();
@@ -211,10 +228,35 @@ class Knight {
                     }
                 };
             };
-            if (entity.BB && entity.attackBB && that.BB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true) {
+            if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
+            && this.state == 9 && this.animation[9].currentFrame() == 0) {
+                //entity.attackBB.removeFromWorld == true;
+                //this.animation[9].isDone() = true;
+                //entity.animation[entity.state].isDone() = true;
+                entity.attackBB = undefined;
+                entity.animation[entity.state].elapsedTime = 0;
+                entity.state = 3;
+                this.state = 0;
+                this.animation[9].elapsedTime = 0;
+                ASSET_MANAGER.playAsset("./sounds/knight_parry.mp3");
+            }
+            else if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
+            && (this.state == 9 || this.state == 10)) {
+                //tempAttBB = new AttackBox(entity.attackBB.game, entity.attackBB.attacker, entity.attackBB.x, entity.attackBB.y, entity.attackBB.width, entity.attackBB.height, entity.attackBB.game, )
+                entity.attackBB.damage /= 2;
+                entity.attackBB.damageDeal(this);
+                if (entity.attackBB.attacker.facing == -1) that.velocity.x = Math.max(-600, -40 * entity.attackBB.damage)/2;
+                else if (entity.attackBB.attacker.facing == 1) that.velocity.x = Math.min(600, 40 * entity.attackBB.damage)/2;
+                ASSET_MANAGER.playAsset("./sounds/knight_blocked_attack.mp3");
+                entity.attackBB = undefined;
+            }
+            else if (entity.BB && entity.attackBB && that.BB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true &&
+            !(this.state == 4 && this.animation[4].currentFrame() < 8) && (this.state !== 9 || this.state !== 10)) {
                 that.state = 8;
+                entity.attackBB.damageDeal(this);
                 if (entity.attackBB.attacker.facing == -1) that.velocity.x = Math.max(-600, -40 * entity.attackBB.damage);
                 else if (entity.attackBB.attacker.facing == 1) that.velocity.x = Math.min(600, 40 * entity.attackBB.damage);
+                entity.attackBB = undefined;
             }
         });
         that.updateBB();
@@ -249,6 +291,12 @@ class Knight {
 
         ctx.strokeStyle = "purple";
         ctx.strokeRect(this.position.x - 200 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
+
+        if (this.state == 9 || this.state == 10) {
+            ctx.strokeStyle = "green";
+            ctx.strokeRect(this.position.x + 50 - this.game.camera.x, this.position.y - this.game.camera.y, 50, 181);
+            ctx.strokeRect(this.position.x - this.game.camera.x, this.position.y - this.game.camera.y, 50, 181);
+        }
 
         if (this.swordBB && (this.state == 1 || this.state == 2) && this.swordBB.removeFromWorld !== true) {
             this.swordBB.draw(ctx);

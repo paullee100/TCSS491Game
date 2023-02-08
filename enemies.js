@@ -6,7 +6,7 @@ class Skeleton {
 		this.speed = 100;
 		this.health = 50;
 		this.facing = 1; // right = 1 left = -1
-		this.state = 0; // walking = 0, attack = 1, dead = 2,
+		this.state = 0; // walking = 0, attack = 1, dead = 2, stunned = 3;
 		this.game.Skeleton = this;
 		this.deathtime = 0;
 		this.attacktime = 0;
@@ -17,10 +17,12 @@ class Skeleton {
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonwalking.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonattack.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletondeath.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonwalking.png"));
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
 		this.animation.push(new Animator(this.spritesheet[0], 71, 0, 71, 75, 8, 0.1, 1, false, true));
 		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 95, 90, 4, 0.2, 1, false, false));
 		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 68, 75, 6, 0.2, 1, false, false));
+		this.animation.push(new Animator(this.spritesheet[3], 71, 0, 71, 75, 3, 0.25, 1, false, false));
 
 		this.dead = false;
 		this.updateBB();
@@ -74,7 +76,7 @@ class Skeleton {
 					console.log("skeleton hurts the knight!")
 				}
 			} */
-			if (entity.BB && that.BB.collide(entity.BB)) {
+			if (entity.BB && that.BB.collide(entity.BB) && this.state !== 3) {
 				if (entity instanceof Knight) {
 					this.state = 1;
 					this.speed = 0;
@@ -86,6 +88,9 @@ class Skeleton {
 							this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
 						}
 					}
+					/* else if (this.attackBB) {
+						this.attackBB.removeFromWorld = true;
+					}; */
 					console.log("skeleton has collided")
 				}
 			};
