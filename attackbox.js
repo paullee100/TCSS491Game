@@ -23,21 +23,23 @@ class AttackBox {
     }
 
     update() {
-        if (this.game.timer.gameTime >= this.endtime) {
+        if ((this.attacker.state == 1 && this.attacker.animation[1].currentFrame() == this.endtime) || (this.attacker.state == 2 && this.attacker.animation[2].currentFrame() == this.endtime)) {
             this.removeFromWorld = true;
         };
-        if (this.attacker.facing == 1) {
+        if (this.attacker.facing == 1 && this.attacker instanceof Knight) {
             this.x = this.attacker.position.x + 100;
             this.y = this.attacker.position.y;
         }
-        if (this.attacker.facing == -1) {
+        if (this.attacker.facing == -1 && this.attacker instanceof Knight) {
             this.x = this.attacker.position.x - 200;
             this.y = this.attacker.position.y;
         }
     };
 
     draw(ctx) {
-        ctx.strokeStyle = "red";
-        ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, this.width, this.height);
+        if (this.removeFromWorld !== false) {
+            ctx.strokeStyle = "red";
+            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, this.width, this.height);
+        };
     };
 };

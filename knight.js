@@ -11,7 +11,7 @@ class Knight {
         this.game.Knight = this;
         this.velocity = {x: 0, y: 0};
         this.facing = 1; // right = 1, left = -1
-        this.state = 3; // running = 0, attack1 = 1, attack2 = 2, idle = 3, rolling = 4, jump = 5, death = 6, fall = 7
+        this.state = 3; // running = 0, attack1 = 1, attack2 = 2, idle = 3, rolling = 4, jump = 5, death = 6, fall = 7, hit = 8, parry = 9, block = 10;
         
         this.spritesheet = [];
         this.animation = [];
@@ -24,6 +24,9 @@ class Knight {
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Jump.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Death.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Fall.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Hit.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Parry.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Knight_Block.png"));
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
         this.animation.push(new Animator(this.spritesheet[0], 43, 41, 30, 40, 10, 0.060, 90, false, true));
@@ -34,6 +37,9 @@ class Knight {
         this.animation.push(new Animator(this.spritesheet[5], 43, 41, 30, 40, 3, 0.075, 90, false, true));
         this.animation.push(new Animator(this.spritesheet[6], 19, 40, 50, 40, 10, 0.1, 69, false, false));
         this.animation.push(new Animator(this.spritesheet[7], 36, 43, 32, 36, 3, 0.1, 90, false, true));
+        this.animation.push(new Animator(this.spritesheet[8], 36, 41, 30, 40, 1, 0.5, 90, false, false));
+        this.animation.push(new Animator(this.spritesheet[9], 42, 41, 31, 50, 5, 0.125, 83, false, false));
+        this.animation.push(new Animator(this.spritesheet[10], 42, 41, 30, 40, 1, 0.5, 90, false, true));
 
         this.readyToAttack = 0;
         this.updateBB();
@@ -62,7 +68,7 @@ class Knight {
 
         const TICK = this.game.clockTick;
 
-        if (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7) {
+        if (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7 && this.state != 8 && this.state != 9) {
             if (this.game.keys["a"] || this.game.keys["ArrowLeft"]) { // move left
                 console.log("A is pressed");
                 this.facing = -1;
@@ -79,10 +85,10 @@ class Knight {
                 this.state = 1;
                 //this.velocity.y = 0;
                 if (this.facing == 1) {
-                    this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.gameTime, this.game.timer.gameTime + 1, this.damage);
+                    this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.gameTime, 2, this.damage);
                 }
                 else {
-                    this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.gameTime, this.game.timer.gameTime + 1, this.damage);
+                    this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.gameTime, 2, this.damage);
                 }
                 /* this.game.entities.forEach(entity => {
                     if (this.swordBB !== undefined) {
@@ -99,11 +105,20 @@ class Knight {
             } else if (this.game.keys["Shift"] || (this.game.keys["Shift"] && (this.game.keys["a"] || this.game.keys["d"]))) { // roll
                 this.state = 4;
                 this.velocity.x = 500 * (this.facing);
-                //this.velocity.y = 0;
+                ASSET_MANAGER.playAsset("./sounds/knight_roll.mp3");
             } else if (this.game.keys["w"]) { // jump
                 this.velocity.y = JUMP;
                 this.state = 5;
-            } else {
+                ASSET_MANAGER.playAsset("./sounds/knight_jump.mp3");
+            }else if (this.game.keys["l"]) { // TEST FOR HIT ANIMATION
+                //this.velocity.y = JUMP;
+                if (this.state == 10) this.state = 10;
+                else {
+                    this.state = 9;
+                    ASSET_MANAGER.playAsset("./sounds/knight_block.mp3");
+                }
+            } 
+            else {
                 this.state = 3;
                 this.velocity.x = 0;
                 //this.velocity.y = 0;
@@ -117,10 +132,10 @@ class Knight {
                 this.animation[1].elapsedTime = 0;
                 //this.velocity.y = 0;
                 if (this.facing == 1) {
-                    this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.tick, this.game.timer.tick + 1, this.damage);
+                    this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.tick, 3, this.damage);
                 }
                 else {
-                    this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.tick, this.game.timer.tick + 1, this.damage);
+                    this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.tick, 3, this.damage);
                 }
                 /* this.game.entities.forEach(entity => {
                     if (this.swordBB !== undefined) {
@@ -167,14 +182,13 @@ class Knight {
         this.position.y += this.velocity.y * TICK;
         this.updateBB();
 
-
         // collision
         var that = this;
         this.game.entities.forEach(entity => {
-            if (that.swordBB !== undefined) {
+            if (that.swordBB) {
                 if (entity.BB && that.swordBB.collide(entity.BB)) {
                     if (entity.BB.type == "enemy" &&
-                        (this.state == 1 || this.state == 2) && this.swordBB.removeFromWorld !== true) {
+                        (this.state == 1 || this.state == 2) && that.swordBB.removeFromWorld !== true) {
                         this.swordBB.damageDeal(entity);
                         ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
                     }
@@ -197,6 +211,11 @@ class Knight {
                     }
                 };
             };
+            if (entity.BB && entity.attackBB && that.BB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true) {
+                that.state = 8;
+                if (entity.attackBB.attacker.facing == -1) that.velocity.x = Math.max(-600, -40 * entity.attackBB.damage);
+                else if (entity.attackBB.attacker.facing == 1) that.velocity.x = Math.min(600, 40 * entity.attackBB.damage);
+            }
         });
         that.updateBB();
         /* if (this.position.y > 700) { //Just for testing. Replace with floor collision to reset sprite later
@@ -205,7 +224,8 @@ class Knight {
         }; */
         if (this.animation[this.state].isDone()) {
             var tempState = this.state;
-            this.state = 3;
+            if (this.state == 9) this.state = 10;
+            else this.state = 3;
             this.animation[tempState].elapsedTime = 0;
             if (this.game.click != null) {
                 this.game.click = null;
@@ -230,7 +250,7 @@ class Knight {
         ctx.strokeStyle = "purple";
         ctx.strokeRect(this.position.x - 200 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
 
-        if (this.swordBB) {
+        if (this.swordBB && (this.state == 1 || this.state == 2) && this.swordBB.removeFromWorld !== true) {
             this.swordBB.draw(ctx);
         }
         
@@ -248,6 +268,9 @@ class Knight {
         else if (this.state == 1) stateModx = 100, stateMody = 30;
         else if (this.state == 2) stateModx = 100, stateMody = 18;
         else if (this.state == 4) stateModx = 50;
+        else if (this.state == 8) stateModx = 35;
+        else if (this.state == 9) stateModx = 25, stateMody = 20;
+        else if (this.state == 10) stateModx = 20, stateMody = 15;
 
         if(this.facing == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x - stateModx)- this.game.camera.x, this.position.y - stateMody- this.game.camera.y, 5);
         else this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.position.x * this.facing) - 100 + (stateModx * this.facing) - (this.game.camera.x * this.facing), this.position.y - stateMody- this.game.camera.y, 5);

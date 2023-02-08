@@ -12,6 +12,7 @@ class Skeleton {
 		this.attacktime = 0;
 		this.spritesheet = [];
 		this.animation = [];
+		this.damage = 5;
 		
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonwalking.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonattack.png"));
@@ -77,6 +78,14 @@ class Skeleton {
 				if (entity instanceof Knight) {
 					this.state = 1;
 					this.speed = 0;
+					if (this.animation[1].currentFrame() == 2) {
+						if (this.facing == 1) {
+							this.attackBB = new AttackBox(this.game, this, this.x + 100, this.y, 122, 185, 2, 3, this.damage);
+						}
+						else {
+							this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
+						}
+					}
 					console.log("skeleton has collided")
 				}
 			};
