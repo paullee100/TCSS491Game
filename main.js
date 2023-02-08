@@ -34,6 +34,9 @@ ASSET_MANAGER.queueDownload("./sprites/Knight_Roll.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Jump.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Death.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Fall.png");
+ASSET_MANAGER.queueDownload("./sprites/Knight_Hit.png");
+ASSET_MANAGER.queueDownload("./sprites/Knight_Block.png");
+ASSET_MANAGER.queueDownload("./sprites/Knight_Parry.png");
 
 // enemy
 ASSET_MANAGER.queueDownload("./sprites/Skeleton.png");
@@ -65,6 +68,13 @@ ASSET_MANAGER.queueDownload("./sounds/knight_attack2.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_attack_hit.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_blocked_attack.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_parry.mp3");
+ASSET_MANAGER.queueDownload("./sounds/knight_roll.mp3");
+ASSET_MANAGER.queueDownload("./sounds/knight_step.mp3");
+ASSET_MANAGER.queueDownload("./sounds/knight_jump.mp3");
+ASSET_MANAGER.queueDownload("./sounds/knight_block.mp3");
+
+// music
+ASSET_MANAGER.queueDownload("./music/forsaken_forest.mp3"); //greenpath from hollow knight
 
 ASSET_MANAGER.downloadAll(() => {
 	const gameEngine = new GameEngine();

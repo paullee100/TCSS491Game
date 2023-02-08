@@ -16,7 +16,7 @@ class SceneManager {
         this.knight.position.x = xp;
         this.knight.position.y = yp;
         this.game.addEntity(this.knight);
-
+        //ASSET_MANAGER.playAsset("./music/forsaken_forest.mp3");
         if(level.Lich){
             for (var i = 0; i < level.Lich.length; i++) {
                 let lich = level.Lich[i];
