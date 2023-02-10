@@ -30,7 +30,7 @@ class Skeleton {
 
 	updateBB() {
 		this.lastBB = this.BB;
-		this.lastSwordBB = this.SwordBB;
+		this.lastVisionBB = this.VisionBB;
 		if (this.state == 1 && this.attacktime >= 0.5) {
 			if (this.facing == 1) {
 				//this.SwordBB = new BoundingBox(this.x + 100, this.y, 122, 185);
@@ -41,6 +41,7 @@ class Skeleton {
 		} else {
 			//this.SwordBB = new BoundingBox(0, 0, 0, 0);
 		}
+		this.VisionBB = new BoundingBox(this.leftbound, this.y, 695, 185, "enemy", this);
 		this.BB = new BoundingBox(this.x, this.y, 100, 185, "enemy", this);
 	}
 
@@ -76,6 +77,20 @@ class Skeleton {
 					console.log("skeleton hurts the knight!")
 				}
 			} */
+			if (entity.BB && that.VisionBB.collide(entity.BB)) {
+				if (entity instanceof Knight) {
+					if ((that.lastBB.right) <= entity.BB.left) {
+						//console.log("skeleton Collide RIGHT KNIGHT!")
+						this.facing = 1;
+						this.speed = 150;
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) {
+						this.facing = -1;
+						this.speed = -150;
+						//console.log("skeleton Collide LEFT KNIGHT!")
+					}
+				}
+			}
 			if (entity.BB && that.BB.collide(entity.BB) && this.state !== 3) {
 				if (entity instanceof Knight) {
 					this.state = 1;
@@ -196,4 +211,87 @@ class Cyclops {
 	draw(ctx) {
 		this.animation[this.state].drawFrame(this.game.clockTick, ctx, 100, 50, 3);
 	};
+}
+class Slime {
+	constructor(game, x, y) {
+		Object.assign(this, { game, x, y });
+		this.speed = 150;
+		this.health = 50;
+		this.facing = 1; // right = 1 left = -1
+		this.state = 1; // idle = 0,  jump = 1, jump2 = 2, damaged = 3, death = 4 
+		this.game.Slime = this;
+		this.deathtime = 0;
+		this.idletime = 0;
+		this.spritesheet = [];
+		this.animation = [];
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Idle.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Jump.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Jump2.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Damage.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Death.png"));
+		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 15.9, 18, 9, 0.1, 1, false, false));
+		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 15.15, 30, 10, 0.1, 1, false, false));
+		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 15.16, 47, 10, 0.1, 1, false, true));
+		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 15, 18, 5, 0.1, 0.1, false, true));
+		this.animation.push(new Animator(this.spritesheet[4], 0, 0, 15, 18, 5, 0.1, 0.1, false, true));
+		this.updateBB();
+	}
+	updateBB() {
+		this.lastBB = this.BB;
+
+		this.BB = new BoundingBox(this.x, this.y + 10, 95, 160, "enemy", this);
+	}
+	update() {
+
+		//this.x += this.speed * this.game.clockTick;
+		this.idletime += this.game.clockTick;
+		if (this.idletime >= 2) {
+			this.state = 1;
+			this.idletime = 0;
+			this.speed = 150;
+		}
+		// collision
+		var that = this;
+		this.game.entities.forEach(entity => {
+			if (entity.BB && that.BB.collide(entity.BB) /*&& this.state !== 3*/) {
+				if (entity instanceof Knight) {
+					this.state = 3;
+					this.speed = 0;
+					if (this.animation[1].currentFrame() == 2) {
+						if (this.facing == 1) {
+							//this.attackBB = new AttackBox(this.game, this, this.x + 100, this.y, 122, 185, 2, 3, this.damage);
+						}
+						else {
+							//this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
+						}
+					}
+					console.log("skeleton has collided")
+				}
+			};
+		});
+		if (this.animation[this.state].isDone()) {
+			var tempState = this.state;
+			this.state = 0;
+			this.animation[tempState].elapsedTime = 0;
+			if (this.facing == 1) {
+				this.speed = 0;
+			} else {
+				this.speed = -100;
+			}
+		};
+	}
+	draw(ctx) {
+		// hitbox
+		ctx.strokeStyle = "red";
+		ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
+		ctx.save();
+		var stateMod = 0;
+		if (this.state == 0) stateMod = 80;
+		else if (this.state == 1) stateMod = 0;
+		else if (this.state == 2) stateMod = 0;
+		else if (this.state == 3) stateMod = 0;
+		this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - this.game.camera.x, this.y - this.game.camera.y + stateMod, 6)
+		ctx.restore();
+	}
 }

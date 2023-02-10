@@ -51,6 +51,11 @@ ASSET_MANAGER.queueDownload("./sprites/Cyclops_Attack2.png");
 ASSET_MANAGER.queueDownload("./sprites/Cyclops_Attack3.png");
 ASSET_MANAGER.queueDownload("./sprites/Cyclops_Death.png");
 
+ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Damage.png");
+ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Death.png");
+ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Jump.png");
+ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Jump2.png");
 // boss
 ASSET_MANAGER.queueDownload("./sprites/Lich_Idle.png");
 ASSET_MANAGER.queueDownload("./sprites/Lich_Walking.png");
