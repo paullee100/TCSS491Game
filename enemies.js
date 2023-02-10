@@ -30,7 +30,7 @@ class Skeleton {
 
 	updateBB() {
 		this.lastBB = this.BB;
-		this.lastSwordBB = this.SwordBB;
+		this.lastVisionBB = this.VisionBB;
 		if (this.state == 1 && this.attacktime >= 0.5) {
 			if (this.facing == 1) {
 				//this.SwordBB = new BoundingBox(this.x + 100, this.y, 122, 185);
@@ -41,6 +41,7 @@ class Skeleton {
 		} else {
 			//this.SwordBB = new BoundingBox(0, 0, 0, 0);
 		}
+		this.VisionBB = new BoundingBox(this.leftbound, this.y, 695, 185, "enemy", this);
 		this.BB = new BoundingBox(this.x, this.y, 100, 185, "enemy", this);
 	}
 
@@ -76,6 +77,20 @@ class Skeleton {
 					console.log("skeleton hurts the knight!")
 				}
 			} */
+			if (entity.BB && that.VisionBB.collide(entity.BB)) {
+				if (entity instanceof Knight) {
+					if ((that.lastBB.right) <= entity.BB.left) {
+						//console.log("skeleton Collide RIGHT KNIGHT!")
+						this.facing = 1;
+						this.speed = 150;
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) {
+						this.facing = -1;
+						this.speed = -150;
+						//console.log("skeleton Collide LEFT KNIGHT!")
+					}
+				}
+			}
 			if (entity.BB && that.BB.collide(entity.BB) && this.state !== 3) {
 				if (entity instanceof Knight) {
 					this.state = 1;
@@ -223,18 +238,38 @@ class Slime {
 		this.updateBB();
 	}
 	updateBB() {
+		this.lastBB = this.BB;
 
+		this.BB = new BoundingBox(this.x, this.y + 10, 95, 160, "enemy", this);
 	}
 	update() {
 
-		this.x += this.speed * this.game.clockTick;
+		//this.x += this.speed * this.game.clockTick;
 		this.idletime += this.game.clockTick;
 		if (this.idletime >= 2) {
 			this.state = 1;
 			this.idletime = 0;
 			this.speed = 150;
 		}
-
+		// collision
+		var that = this;
+		this.game.entities.forEach(entity => {
+			if (entity.BB && that.BB.collide(entity.BB) /*&& this.state !== 3*/) {
+				if (entity instanceof Knight) {
+					this.state = 3;
+					this.speed = 0;
+					if (this.animation[1].currentFrame() == 2) {
+						if (this.facing == 1) {
+							//this.attackBB = new AttackBox(this.game, this, this.x + 100, this.y, 122, 185, 2, 3, this.damage);
+						}
+						else {
+							//this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
+						}
+					}
+					console.log("skeleton has collided")
+				}
+			};
+		});
 		if (this.animation[this.state].isDone()) {
 			var tempState = this.state;
 			this.state = 0;
@@ -247,13 +282,16 @@ class Slime {
 		};
 	}
 	draw(ctx) {
+		// hitbox
+		ctx.strokeStyle = "red";
+		ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
 		ctx.save();
 		var stateMod = 0;
 		if (this.state == 0) stateMod = 80;
 		else if (this.state == 1) stateMod = 0;
 		else if (this.state == 2) stateMod = 0;
 		else if (this.state == 3) stateMod = 0;
-		this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - this.game.camera.x, this.y + stateMod, 6)
+		this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - this.game.camera.x, this.y - this.game.camera.y + stateMod, 6)
 		ctx.restore();
 	}
 }
