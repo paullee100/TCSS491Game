@@ -30,7 +30,12 @@ class SceneManager {
                 this.game.addEntity(new Skeleton(this.game, skeleton.x * PARAMS.BLOCKWIDTH, skeleton.y * PARAMS.BLOCKWIDTH));
             }
         }
-
+        if (level.Slime) {
+            for (var i = 0; i < level.Slime.length; i++) {
+                let slime = level.Slime[i];
+                this.game.addEntity(new Slime(this.game, slime.x * PARAMS.BLOCKWIDTH, slime.y * PARAMS.BLOCKWIDTH));
+            }
+        }
         if(level.Tree){
             for (var i = 0; i < level.Tree.length; i++) {
                 let tree = level.Tree[i];
