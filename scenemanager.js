@@ -33,7 +33,7 @@ class SceneManager {
         if (level.Slime) {
             for (var i = 0; i < level.Slime.length; i++) {
                 let slime = level.Slime[i];
-                //this.game.addEntity(new Slime(this.game, slime.x * PARAMS.BLOCKWIDTH, slime.y * PARAMS.BLOCKWIDTH));
+                this.game.addEntity(new Slime(this.game, slime.x * PARAMS.BLOCKWIDTH, slime.y * PARAMS.BLOCKWIDTH));
             }
         }
         if(level.Tree){

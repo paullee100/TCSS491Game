@@ -233,31 +233,35 @@ class Slime {
 		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 15.9, 18, 9, 0.1, 1, false, false));
 		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 15.15, 30, 10, 0.1, 1, false, false));
 		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 15.16, 47, 10, 0.1, 1, false, true));
-		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 15, 18, 5, 0.1, 0.1, false, true));
-		this.animation.push(new Animator(this.spritesheet[4], 0, 0, 15, 18, 5, 0.1, 0.1, false, true));
+		this.animation.push(new Animator(this.spritesheet[3], 1, 0, 15, 18, 5, 0.1, 0.1, false, true));
+		this.animation.push(new Animator(this.spritesheet[4], 0, 0, 15.5, 18, 5, .1, 1, false, true));
 		this.updateBB();
 	}
 	updateBB() {
 		this.lastBB = this.BB;
-
 		this.BB = new BoundingBox(this.x, this.y + 10, 95, 160, "enemy", this);
 	}
 	update() {
 
-		//this.x += this.speed * this.game.clockTick;
+		this.x += this.speed * this.game.clockTick;
 		this.idletime += this.game.clockTick;
 		if (this.idletime >= 2) {
 			this.state = 1;
 			this.idletime = 0;
-			this.speed = 150;
+			if (this.facing == 1) {
+				this.speed = 150;
+			} else {
+				this.speed = -150;
+			}
 		}
 		// collision
 		var that = this;
 		this.game.entities.forEach(entity => {
 			if (entity.BB && that.BB.collide(entity.BB) /*&& this.state !== 3*/) {
 				if (entity instanceof Knight) {
-					this.state = 3;
+					this.state = 4;
 					this.speed = 0;
+					this.facing = -1;
 					if (this.animation[1].currentFrame() == 2) {
 						if (this.facing == 1) {
 							//this.attackBB = new AttackBox(this.game, this, this.x + 100, this.y, 122, 185, 2, 3, this.damage);
@@ -266,8 +270,21 @@ class Slime {
 							//this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
 						}
 					}
-					console.log("skeleton has collided")
+					console.log("slime has collided")
 				}
+				if (entity instanceof Tile) {
+					if ((that.lastBB.right) <= entity.BB.left) {
+						//console.log("COLLIDED")
+						this.facing = -1;
+						this.speed = -150;
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) {
+						//console.log("COLLIDED")
+						this.facing = 1;
+						this.speed = 150;
+						
+					}
+				};
 			};
 		});
 		if (this.animation[this.state].isDone()) {
@@ -277,21 +294,35 @@ class Slime {
 			if (this.facing == 1) {
 				this.speed = 0;
 			} else {
-				this.speed = -100;
+				this.speed = 0;
 			}
 		};
+		this.updateBB();
 	}
 	draw(ctx) {
 		// hitbox
 		ctx.strokeStyle = "red";
 		ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
-		ctx.save();
+		
+		if (this.facing == -1) {
+			ctx.save()
+			ctx.scale(-1, 1)
+		} else if (this.facing == 1) {
+			ctx.save()
+			ctx.scale(1, 1)
+		}
+		//ctx.save();
 		var stateMod = 0;
 		if (this.state == 0) stateMod = 80;
 		else if (this.state == 1) stateMod = 0;
 		else if (this.state == 2) stateMod = 0;
-		else if (this.state == 3) stateMod = 0;
-		this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - this.game.camera.x, this.y - this.game.camera.y + stateMod, 6)
+		else if (this.state == 3) stateMod = 65;
+		else if (this.state == 4) stateMod = 65;
+		if (this.facing == 1) {
+			this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - this.game.camera.x, this.y - this.game.camera.y + stateMod, 6)
+		} else {
+			this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95) - (this.facing * this.game.camera.x), this.y - this.game.camera.y + stateMod, 6)
+		}
 		ctx.restore();
 	}
 }
