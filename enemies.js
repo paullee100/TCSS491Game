@@ -89,7 +89,7 @@ class Skeleton {
 					}
 				}
 			}
-			if (entity.BB && that.BB.collide(entity.BB) && this.state !== 3) {
+			if (entity.BB && that.BB.collide(entity.BB) && this.state !== 0) {
 				if (entity instanceof Knight) {
 					this.state = 2;
 					this.speed = 0;
