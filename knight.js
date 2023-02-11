@@ -75,51 +75,27 @@ class Knight {
         const FALL = 1750;
 
         const TICK = this.game.clockTick;
-
-        if (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7 && this.state != 8 && this.state != 9 && this.state != 11) {
-            if (this.game.keys["a"] || this.game.keys["ArrowLeft"]) { // move left
-                console.log("A is pressed");
-                this.facing = -1;
-                this.state = 0;
-                this.velocity.x = -RUN;
-                //this.velocity.y = 0;
-            } else if (this.game.keys["d"] || this.game.keys["ArrowRight"]) { // move right
-                console.log("D is pressed");
-                this.facing = 1;
-                this.state = 0;
-                this.velocity.x = RUN;
-                //this.velocity.y = 0;
-            } else if (this.game.keys["k"] || this.game.click) { // attack
+        if (this.state == 0 || (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7 && this.state != 8 && this.state != 9 && this.state != 11)) {
+            if (this.game.keys["k"] || this.game.keys["K"] || this.game.click) { // attack
                 this.state = 1;
-                //this.velocity.y = 0;
                 if (this.facing == 1) {
                     this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.gameTime, 2, this.damage);
                 }
                 else {
                     this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.gameTime, 2, this.damage);
                 }
-                /* this.game.entities.forEach(entity => {
-                    if (this.swordBB !== undefined) {
-                        if (entity.BB && this.swordBB.collide(entity.BB)) {
-                            if (entity.BB.type == "enemy" &&
-                                this.state == 1) {
-                                this.swordBB.damageDeal(entity);
-                                ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
-                            }
-                        }
-                    }   
-                }); */
+                this.velocity.x = 0;
                 ASSET_MANAGER.playAsset("./sounds/knight_attack1.mp3");
-            } else if (this.game.keys["Shift"] || (this.game.keys["Shift"] && (this.game.keys["a"] || this.game.keys["d"]))) { // roll
+            } else if (this.game.keys["Shift"]) { // roll
                 this.state = 4;
                 this.velocity.x = 500 * (this.facing);
                 ASSET_MANAGER.playAsset("./sounds/knight_roll.mp3");
-            } else if (this.game.keys["w"]) { // jump
+            } else if (this.game.keys["w"] || this.game.keys["W"]) { // jump
                 this.velocity.y = JUMP;
                 this.state = 5;
+                this.velocity.x = 0;
                 ASSET_MANAGER.playAsset("./sounds/knight_jump.mp3");
-            }else if (this.game.keys["l"]) { // TEST FOR HIT ANIMATION
-                //this.velocity.y = JUMP;
+            }else if (this.game.keys["l"] || this.game.keys["L"]) { // block
                 if (this.state == 10) {
                     this.state = 10;
                     this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
@@ -135,8 +111,20 @@ class Knight {
                     }
                     ASSET_MANAGER.playAsset("./sounds/knight_block.mp3");
                 }
-            } 
-            else {
+                this.velocity.x = 0;
+            } else if (this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) { // move left
+                console.log("A is pressed");
+                this.facing = -1;
+                this.state = 0;
+                this.velocity.x = -RUN;
+                //this.velocity.y = 0;
+            } else if (this.game.keys["d"] || this.game.keys["D"] || this.game.keys["ArrowRight"]) { // move right
+                console.log("D is pressed");
+                this.facing = 1;
+                this.state = 0;
+                this.velocity.x = RUN;
+                //this.velocity.y = 0;
+            } else {
                 this.state = 3;
                 this.velocity.x = 0;
                 this.blockBB = new BoundingBox(0, 0, 0, 0, "player", this);
@@ -146,7 +134,7 @@ class Knight {
     }
     else if (this.state == 1) {
         if (this.animation[this.state].currentFrame() + 1 >= 3) {
-            if (this.game.keys["k"] || this.game.click) { // attack
+            if (this.game.keys["k"] || this.game.keys["K"] ||this.game.click) { // attack
                 this.state = 2;
                 this.animation[1].elapsedTime = 0;
                 //this.velocity.y = 0;
@@ -156,17 +144,6 @@ class Knight {
                 else {
                     this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.tick, 3, this.damage);
                 }
-                /* this.game.entities.forEach(entity => {
-                    if (this.swordBB !== undefined) {
-                        if (entity.BB && this.swordBB.collide(entity.BB)) {
-                            if (entity.BB.type == "enemy" &&
-                                this.state == 2) {
-                                this.swordBB.damageDeal(entity);
-                                ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
-                            }
-                        }
-                    }   
-                }); */
                 ASSET_MANAGER.playAsset("./sounds/knight_attack2.mp3");
             }
         } else {
@@ -184,14 +161,24 @@ class Knight {
             };
 
             // horizontal physics
-            if (this.state != 4 && this.game.keys["d"] || this.game.keys["ArrowRight"] && !(this.game.keys["a"] || this.game.keys["ArrowLeft"])) {
-                this.velocity.x = RUN/2;
-            } else if (this.state != 4 && (this.game.keys["a"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
-                this.velocity.x = -RUN/2;
-            } else {
-                    // does nothing
-            };
-
+            if (this.state == 5 || this.state == 7) {
+                if (this.game.keys["d"] || this.game.keys["D"] || this.game.keys["ArrowRight"] && !(this.game.keys["a"] || this.game.keys["ArrowLeft"])) {
+                    this.velocity.x = (RUN*3)/4;
+                } else if ((this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
+                    this.velocity.x = (-RUN*3)/4;
+                } else {
+                        // does nothing
+                };
+            }
+            /* else if (this.state == 1 || this.state == 2 || this.state == 7) {
+                if (this.game.keys["d"] || this.game.keys["ArrowRight"] && !(this.game.keys["a"] || this.game.keys["ArrowLeft"])) {
+                    this.velocity.x = RUN;
+                } else if ((this.game.keys["a"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
+                    this.velocity.x = -RUN;
+                } else {
+                        // does nothing
+                };
+            } */
         };
         //if (this.position.y < 540) { //Just for testing. Replace with floor collision to reset sprite later
         this.velocity.y += FALL * TICK;
@@ -237,7 +224,7 @@ class Knight {
                 //entity.animation[entity.state].isDone() = true;
                 entity.attackBB = undefined;
                 entity.animation[entity.state].elapsedTime = 0;
-                entity.state = 3;
+                entity.state = 0;
                 this.state = 0;
                 this.animation[9].elapsedTime = 0;
                 ASSET_MANAGER.playAsset("./sounds/knight_parry.mp3");
