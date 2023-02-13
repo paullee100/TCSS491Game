@@ -75,7 +75,9 @@ class Knight {
         const FALL = 1750;
 
         const TICK = this.game.clockTick;
-        if (this.state == 0 || (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7 && this.state != 8 && this.state != 9 && this.state != 11)) {
+        //lock movement when title is on screen
+        if(!this.game.camera.title){
+             if (this.state == 0 || (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7 && this.state != 8 && this.state != 9 && this.state != 11)) {
             if (this.game.keys["k"] || this.game.keys["K"] || this.game.click) { // attack
                 this.state = 1;
                 if (this.facing == 1) {
@@ -270,6 +272,8 @@ class Knight {
         if(this.position.y > 10000){
             this.position ={x:9 * PARAMS.BLOCKWIDTH, y:6 * PARAMS.BLOCKWIDTH}
         }
+        
+     }//test  
     }
 
     draw(ctx) {

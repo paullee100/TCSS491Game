@@ -4,18 +4,28 @@ class SceneManager {
         this.game.camera = this;
         this.knight = new Knight(game);
         this.x = 0;
-        this.loadLevel(levelOne, 6 * PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH, false, false);
+        this.title = true;
+        this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
 
     };
-
+    clearEntities() {
+        this.game.entities.forEach(function (entity) {
+            entity.removeFromWorld = true;
+        });
+    };
     loadLevel(level, xp, yp, transition, title) {
         this.title = title;
         this.level = level;
-        //this.clearEntities();
+        this.clearEntities();
         //x = 0;
         this.knight.position.x = xp;
         this.knight.position.y = yp;
-        this.game.addEntity(this.knight);
+        if(!this.title){// no title     
+            this.game.addEntity(this.knight);
+            
+        }
+        
+        
         //ASSET_MANAGER.playAsset("./music/forsaken_forest.mp3");
         if(level.Lich){
             for (var i = 0; i < level.Lich.length; i++) {
@@ -79,6 +89,11 @@ class SceneManager {
     };
 
     update() {
+        if(this.title && this.game.click){
+            this.title = false;
+            this.loadLevel(levelOne, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
+        }
+
         let midpoint = PARAMS.CANVAS_WIDTH/2 - PARAMS.BLOCKWIDTH / 2;
         //console.log("MMMMM " + midpoint);
         this.x = this.knight.position.x - midpoint;
@@ -86,7 +101,10 @@ class SceneManager {
     };
 
     draw(ctx) {
-       
-    };
+        if(this.title){
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/title_950_164.png") , 0.75 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 950, 164);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/start_455_127.png") , 4.5 * PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH, 455, 127);
+        }
+    }
 
 };
