@@ -14,10 +14,10 @@ class Skeleton {
 		this.animation = [];
 		this.damage = 5;
 		
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonwalking.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonwalking.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletonattack.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeletondeath.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonwalking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonwalking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonattack.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletondeath.png"));
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
 		this.animation.push(new Animator(this.spritesheet[0], 71, 0, 71, 75, 3, 0.25, 1, false, false));
 		this.animation.push(new Animator(this.spritesheet[1], 71, 0, 71, 75, 8, 0.1, 1, false, true));
@@ -276,7 +276,7 @@ class Cyclops {
 	};
 }
 
-class Slime {
+class GreenSlime {
 	constructor(game, x, y) {
 		Object.assign(this, { game, x, y });
 		this.dead = false;
@@ -284,17 +284,17 @@ class Slime {
 		this.health = 50;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 1; // idle = 0,  jump = 1, jump2 = 2, damaged = 3, death = 4 
-		this.game.Slime = this;
+		this.game.GreenSlime = this;
 		this.deathtime = 0;
 		this.idletime = 0;
 		this.spritesheet = [];
 		this.animation = [];
 		this.damage = 5;
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Idle.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Jump.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Jump2.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Damage.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Death.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Idle.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Jump.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Jump2.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Damage.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Death.png"));
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
 		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 15.9, 18, 9, 0.1, 1, false, false));
 		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 15.15, 30, 10, 0.1, 1, false, false));
@@ -404,3 +404,45 @@ class Slime {
 		ctx.restore();
 	}
 }
+class RedSlime {
+	constructor(game, x, y) {
+		Object.assign(this, { game, x, y });
+		this.dead = false;
+		this.speed = 150;
+		this.health = 50;
+		this.facing = 1; // right = 1 left = -1
+		this.state = 0; // idle = 0,  jump = 1, jump2 = 2, damaged = 3, death = 4 
+		this.game.RedSlime = this;
+		this.deathtime = 0;
+		this.idletime = 0;
+		this.spritesheet = [];
+		this.animation = [];
+		this.damage = 5;
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Idle.png"));
+		/*
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Jump.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Jump2.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Damage.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green_Slime_Death.png"));
+		*/
+		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+		this.animation.push(new Animator(this.spritesheet[0], 1, 0, 16, 17, 10, .1, 0, false, true));
+		/*
+		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 15.15, 30, 10, 0.1, 1, false, false));
+		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 15.16, 47, 10, 0.1, 1, false, true));
+		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 16, 18, 5, 0.1, 0.1, false, true));
+		this.animation.push(new Animator(this.spritesheet[4], 0, 0, 15.5, 18, 5, .15, 1, false, true));
+		*/
+		this.updateBB();
+	};
+	updateBB() {
+
+	};
+	update() {
+
+	};
+	draw(ctx) {
+		//this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
+		this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 6)
+	};
+};
