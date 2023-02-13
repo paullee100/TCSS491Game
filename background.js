@@ -87,3 +87,21 @@ class Rock{
         ctx.drawImage(this.spritesheet, this.x- this.game.camera.x, this.y- this.game.camera.y ,224, 448,);
     };
 }
+class TitleScreen{
+    constructor(){
+        // Object.assign(this, {game});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/title/title_950_164.png")
+    };
+
+    update(){
+
+    };
+
+    draw(ctx){
+        ctx.drawImage(this.spritesheet , 0.75 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 950, 164);
+        // test menu
+        ctx.fillStyle = this.game.mouse
+
+
+    };
+}
