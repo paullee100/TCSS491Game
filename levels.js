@@ -102,7 +102,7 @@ var levelOne = {
     {sprite:"./tileset/forest/forest_tiles08.png",x:0+(25*2),y:13,size:1,c:true},
     {sprite:"./tileset/forest/forest_tiles07.png",x:1+(25*2),y:13,size:24,c:true},
     //cave
-    {sprite:"./tileset/forest/forest_tiles41.png",x:-4,y:14,size:74,c:true},
+    {sprite:"./tileset/forest/forest_tiles41.png",x:-3,y:14,size:73,c:true},
     {sprite:"./tileset/forest/forest_tiles41.png",x:-3,y:15,size:73,c:true},
     {sprite:"./tileset/forest/forest_tiles41.png",x:-2,y:16,size:72,c:true},
     {sprite:"./tileset/forest/forest_tiles41.png",x:-1,y:17,size:71,c:true},
@@ -113,6 +113,7 @@ var levelOne = {
     {sprite:"./tileset/forest/forest_tiles07.png",x:-5,y:22,size:75,c:true},
     {sprite:"./tileset/forest/forest_tiles07.png",x:-5,y:23,size:75,c:true},
     //platform up
+    {sprite:"./tileset/forest/forest_tiles01.png",x:-4,y:14,size:1},
     {sprite:"./tileset/forest/forest_tiles06.png",x:-4,y:15,size:1},
     {sprite:"./tileset/forest/forest_tiles06.png",x:-3,y:16,size:1},
     {sprite:"./tileset/forest/forest_tiles06.png",x:-2,y:17,size:1},
