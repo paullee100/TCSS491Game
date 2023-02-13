@@ -40,6 +40,7 @@ class SceneManager {
                 this.game.addEntity(new Skeleton(this.game, skeleton.x * PARAMS.BLOCKWIDTH, skeleton.y * PARAMS.BLOCKWIDTH));
             }
         }
+
         if (level.Slime) {
             for (var i = 0; i < level.Slime.length; i++) {
                 let slime = level.Slime[i];

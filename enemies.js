@@ -177,10 +177,15 @@ class Cyclops {
 	constructor(game, x, y) {
 		Object.assign(this, {game, x, y})
 
-		this.state = 0; // idle = 0, walking = 1, attack1 = 2, attack2 = 3, attack3 = 4, death = 5
+		this.state = 1; // stunned = 0, idle = 1, walking = 2, attack1 = 3, attack2 = 4, attack3 = 5, death = 6
+		this.facing = 1; // right = 1, left = -1
+		this.health = 100;
+		this.attack = -10;
+		this.speed = 100;
 		this.spritesheet = [];
 		this.animation = [];
 
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Walking.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Idle.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Walking.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack1.png"));
@@ -188,28 +193,89 @@ class Cyclops {
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack3.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Death.png"));
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-		this.animation.push(new Animator(this.spritesheet[0], 13, 9, 46, 80, 10, 0.5, 99, false, true));
-		this.animation.push(new Animator(this.spritesheet[1], 8, 15, 50, 81, 6, 0.35, 103, false, true));
-		this.animation.push(new Animator(this.spritesheet[2], 19, 13, 139, 81, 5, 0.2, 6, false, true));
-		this.animation.push(new Animator(this.spritesheet[3], 16, 7, 104, 132, 5, 0.2, 41, false, true));
-		this.animation.push(new Animator(this.spritesheet[4], 34, 20, 88, 175, 5, 0.2, 57, false, true));
-		this.animation.push(new Animator(this.spritesheet[5], 39, 13, 58, 79, 7, 0.25, 89, false, true));
+		this.animation.push(new Animator(this.spritesheet[0], 19, 13, 139, 81, 5, 0.2, 6, false, true));
+		this.animation.push(new Animator(this.spritesheet[1], 13, 9, 46, 80, 10, 0.5, 99, false, true));
+		this.animation.push(new Animator(this.spritesheet[2], 8, 15, 50, 81, 6, 0.35, 103, false, true));
+		this.animation.push(new Animator(this.spritesheet[3], 19, 13, 139, 81, 5, 0.2, 6, false, true));
+		this.animation.push(new Animator(this.spritesheet[4], 16, 7, 104, 132, 5, 0.2, 41, false, true));
+		this.animation.push(new Animator(this.spritesheet[5], 34, 20, 88, 175, 5, 0.2, 57, false, true));
+		this.animation.push(new Animator(this.spritesheet[6], 39, 13, 58, 79, 7, 0.25, 89, false, true));
 
 		this.updateBB();
 	};
 
 	updateBB() {
+		this.lastBB = this.BB;
 
+		this.BB = new BoundingBox(this.x, this.y, 120, 240, "enemy", this);
 	};
 
 	update() {
+		if (this.game.Knight.position.x > this.x) {
+			this.facing = 1;
+		} else if (this.game.Knight.position.x < this.x) {
+			this.facing = -1;
+		}
 
+		if (this.health <= 0) {
+			this.state = 6;
+			if (this.animation[this.state].isDone()) {
+				this.removeFromWorld = true;
+			}
+		}
+
+		if (this.state < 3) {
+			this.x += this.speed * this.game.clockTick * this.facing;
+		}
+		if (this.x !== 0) {
+			this.state = 2;
+		} else {
+			this.state = 1;
+		}
+
+		this.game.entities.forEach((entity) => {
+			if (entity.BB && this.BB.collide(entity.BB)) {
+				if (entity instanceof Knight) {
+					this.state = 3;
+				}
+			}
+		});
+
+		if (this.animation[this.state].isDone()) {
+			const tempState = this.state;
+			this.state = 0;
+			this.animation[tempState].elapsedTime = 0;
+		}
+
+		this.updateBB();
 	};
 
 	draw(ctx) {
-		this.animation[this.state].drawFrame(this.game.clockTick, ctx, 100, 50, 3);
+		ctx.strokeStyle = "purple";
+		ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 120, 240);
+
+		if (this.facing == -1) {
+			ctx.save();
+			ctx.scale(-1, 1);
+		} else if (this.facing == 1) {
+			ctx.save();
+			ctx.scale(1, 1);
+		}
+
+		let stateModX = 0;
+		let stateModY = 0;
+
+		if (this.facing == 1) {
+			this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3);
+		} else if (this.facing == -1) {
+			this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - 120 - (this.game.camera.x * this.facing), this.y - this.game.camera.y, 3);
+
+		}
+
+		ctx.restore();
 	};
 }
+
 class Slime {
 	constructor(game, x, y) {
 		Object.assign(this, { game, x, y });

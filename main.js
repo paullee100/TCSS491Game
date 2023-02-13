@@ -70,6 +70,16 @@ ASSET_MANAGER.queueDownload("./sprites/Lich_Pellet.png");
 ASSET_MANAGER.queueDownload("./sprites/Lich_Explosion.png");
 ASSET_MANAGER.queueDownload("./sprites/Lich_Fire.png");
 
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Walking.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Melee1.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Melee2.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Melee3.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range1.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range2.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range3.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Death.png");
+
 // sound effects
 ASSET_MANAGER.queueDownload("./sounds/knight_attack1.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_attack2.mp3");
