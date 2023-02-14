@@ -61,6 +61,9 @@ ASSET_MANAGER.queueDownload("./sprites/Green/Green_Slime_Jump.png");
 ASSET_MANAGER.queueDownload("./sprites/Green/Green_Slime_Jump2.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Red/Red_Slime_Idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Red/Red_Slime_Jump.png");
+ASSET_MANAGER.queueDownload("./sprites/Red/Red_Slime_Death.png");
+ASSET_MANAGER.queueDownload("./sprites/Red/Red_Slime_Damage.png");
 
 // boss
 ASSET_MANAGER.queueDownload("./sprites/Lich_Idle.png");
