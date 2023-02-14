@@ -306,7 +306,7 @@ class GreenSlime {
 	}
 	updateBB() {
 		this.lastBB = this.BB;
-		this.BB = new BoundingBox(this.x, this.y + 10, 95, 160, "enemy", this);
+		this.BB = new BoundingBox(this.x, this.y + 10, 90, 160, "enemy", this);
 	}
 	update() {
 
@@ -337,9 +337,9 @@ class GreenSlime {
 						}
 					}
 					if (this.state == 1) {
-						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
+						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 90, 160, 2, 3, this.damage);
 					} else if (this.state == 3) {
-						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 70, 95, 90, 2, 3, this.damage);
+						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 70, 90, 90, 2, 3, this.damage);
 					}
 					//this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
 					console.log("slime has collided")
@@ -380,11 +380,18 @@ class GreenSlime {
 	draw(ctx) {
 		// hitbox
 		ctx.strokeStyle = "red";
+		if (this.state == 1) {
+			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 90, 160);
+		} else {
+			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 90, 90);
+		}
+		/*
 		if (this.state == 3) {
 			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
 		} else {
 			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
 		}
+		*/
 		//ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
 		
 		if (this.facing == -1) {
@@ -518,10 +525,143 @@ class RedSlime {
 	draw(ctx) {
 		// hitbox
 		ctx.strokeStyle = "red";
-		if (this.state == 2) {
-			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
-		} else if (this.state == 1) {
+		if (this.state == 1) {
 			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
+		} else {
+			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
+		}
+		if (this.facing == -1) {
+			ctx.save()
+			ctx.scale(-1, 1)
+		} else if (this.facing == 1) {
+			ctx.save()
+			ctx.scale(1, 1)
+		}
+		var stateMod = 0;
+		if (this.state == 0) stateMod = 60;
+		else if (this.state == 1) stateMod = -10;
+		else if (this.state == 2) stateMod = 70;
+		else if (this.state == 3) stateMod = 60;
+		if (this.dead == false) {
+			if (this.facing == 1) {
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - (this.facing * this.game.camera.x), this.y - this.game.camera.y + stateMod, 6)
+			} else {
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95) - (this.facing * this.game.camera.x), this.y - this.game.camera.y + stateMod, 6)
+			}
+		} else {
+			this.removeFromWorld = true;
+			console.log("slime is ded");
+		}
+		ctx.restore();
+	};
+};
+class YellowSlime {
+	constructor(game, x, y) {
+		Object.assign(this, { game, x, y });
+		this.dead = false;
+		this.speed = 150;
+		this.health = 50;
+		this.facing = 1; // right = 1 left = -1
+		this.state = 1; // damaged/stunned = 0,  jump = 1, idle = 2, death = 3 
+		this.game.YellowSlime = this;
+		this.deathtime = 0;
+		this.idletime = 0;
+		this.spritesheet = [];
+		this.animation = [];
+		this.damage = 5;
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Damage.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Jump.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Idle.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Death.png"));
+
+		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 16, 18, 5, .1, 0, false, true));
+		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 16, 31, 10, 0.1, 0, false, false));
+		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 16, 17, 10, 0.1, 0, false, true));
+		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 16, 18, 5, 0.15, 0, false, false));
+
+		this.updateBB();
+	};
+	updateBB() {
+		this.lastBB = this.BB;
+		this.BB = new BoundingBox(this.x, this.y + 10, 95, 160, "enemy", this);
+	};
+	update() {
+
+		this.x += this.speed * this.game.clockTick;
+		this.idletime += this.game.clockTick;
+		if (this.idletime >= 2) {
+			this.state = 1;
+			this.idletime = 0;
+			if (this.facing == 1) {
+				this.speed = 150;
+			} else {
+				this.speed = -150;
+			}
+		}
+		// collision
+		var that = this;
+		this.game.entities.forEach(entity => {
+			if (entity.BB && that.BB.collide(entity.BB) /*&& this.state !== 3*/) {
+				if (entity instanceof Knight) {
+					//this.state = 3;
+					this.speed = 0;
+					if (this.animation[1].currentFrame() == 2) {
+						if (this.facing == 1) {
+							//this.attackBB = new AttackBox(this.game, this, this.x + 100, this.y, 122, 185, 2, 3, this.damage);
+						}
+						else {
+							//this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
+						}
+					}
+					if (this.state == 1) {
+						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
+					} else if (this.state == 2) {
+						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 70, 95, 90, 2, 3, this.damage);
+					}
+					//this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
+					console.log("slime has collided")
+				}
+				if (entity instanceof Tile) {
+					if ((that.lastBB.right) <= entity.BB.left) {
+						this.facing = -1;
+						this.speed = -150;
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) {
+						this.facing = 1;
+						this.speed = 150;
+
+					}
+				};
+			};
+		});
+		if (this.animation[this.state].isDone()) {
+			var tempState = this.state;
+			this.state = 2;
+			this.animation[tempState].elapsedTime = 0;
+			if (this.facing == 1) {
+				this.speed = 0;
+			} else {
+				this.speed = 0;
+			}
+		};
+		this.updateBB();
+		if (this.health <= 0) {
+			this.speed = 0;
+			this.state = 3;
+			this.deathtime += this.game.clockTick;
+			if (this.deathtime >= .7) {
+				this.dead = true;
+			}
+		}
+	};
+	draw(ctx) {
+		// hitbox
+		ctx.strokeStyle = "red";
+		if (this.state == 1) {
+			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
+		} else {
+			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
 		}
 		if (this.facing == -1) {
 			ctx.save()
