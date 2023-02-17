@@ -20,7 +20,7 @@ class SceneManager {
         //x = 0;
         this.knight.position.x = xp;
         this.knight.position.y = yp;
-        if(!this.title){// no title     
+        if(!this.title && !this.over){// no title     
             this.game.addEntity(this.knight);
             
         }
@@ -106,6 +106,14 @@ class SceneManager {
             this.title = false;
             this.loadLevel(levelOne, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
         }
+        if(!this.title && this.knight.health ==0){
+            this.over = true;
+            this.loadLevel(GameOver, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
+        }
+        // if(this.over && this.game.click){
+        //     this.over = false;
+        //     this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
+        // }
 
         let midpoint = PARAMS.CANVAS_WIDTH/2 - PARAMS.BLOCKWIDTH / 2;
         //console.log("MMMMM " + midpoint);
@@ -117,6 +125,21 @@ class SceneManager {
         if(this.title){
             ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/title_950_164.png") , 0.75 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 950, 164);
             ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/start_455_127.png") , 4.5 * PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH, 455, 127);
+        }
+
+        if(this.over){
+            //ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_883_201.png") , 1.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 883, 201);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_865_183.png") , 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
+        }
+
+        if(!this.title && !this.over){
+            var ratio = this.knight.health / this.knight.maxhealth;
+            ctx.strokeStyle = "Black";
+            ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
+            if(this.knight.health>0){
+                ctx.fillRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH * ratio, 1 *PARAMS.BLOCKWIDTH);
+            }
+            ctx.strokeRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH , 1 *PARAMS.BLOCKWIDTH);
         }
     }
 
