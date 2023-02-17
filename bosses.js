@@ -58,9 +58,9 @@ class Lich {
             return;
         }
         let rng = Math.floor(Math.random() * 100);
-        if (rng < 50 && this.maxSummon <= -1) {
+        if (rng < 50 && this.maxSummon <= 5) {
             this.state = 2;
-        } else if (rng >= 0 && rng <= 70) { // 50
+        } else if (rng >= 50 && rng <= 70) {
             this.state = 3;
         } else if (rng >= 71 && rng <= 80) {
             this.state = 4;
@@ -177,30 +177,149 @@ class Lich {
                 let xRand = Math.floor(Math.random(6) + 1)
                 let yRand = Math.floor(Math.random(3))
                 if (xRand % 2 == 0) xPlacement * -1
-                this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, (this.game.Knight.position.x + (xPlacement * xRand)) - this.game.camera.x, this.game.Knight.position.y - (yPlacement * yRand), 3)
+                this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, (this.x + (xPlacement * xRand)) - this.game.camera.x, this.y - (yPlacement * yRand) - this.game.camera.y, 3)
             } else if (this.attackState == 1) {
-                this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, this.game.Knight.position.x - this.game.camera.x, this.game.Knight.position.y - 150, 3)
+                this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 150 - this.game.camera.y, 3)
             }
         } else if (this.state == 4) {
-            // for (let i = 1; i <= 5; i++) {
             this.attackTime += this.game.clockTick;
-            this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 1) - this.game.camera.x, this.y + 85, 10);
+            this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 1) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
             if (this.attackTime >= 1.5) {
-                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 2) - this.game.camera.x, this.y + 85, 10);
+                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 2) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
             }
 
             if (this.attackTime >= 3) {
-                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 3) - this.game.camera.x, this.y + 85, 10);
+                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 3) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
             }
 
             if (this.attackTime >= 4.5) {
-                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 4) - this.game.camera.x, this.y + 85, 10);
+                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 4) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
             }
 
             if (this.attackTime >= 6) {
-                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 5) - this.game.camera.x, this.y + 85, 10);
+                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 5) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
             }
         }
 
+    };
+}
+
+class Titan {
+    constructor(game, x, y) {
+        Object.assign(this, {game, x, y});
+
+        this.state = 4; // stunned = 0, idle = 1, walking = 2, melee1 = 3, melee2 = 4, melee3 = 5, range1 = 6, range2 = 7, range3 = 8, death = 9
+        this.facing = 1; // right = 1, left = -1
+        this.health = 100;
+        this.attack = 15;
+
+        this.spritesheet = [];
+        this.animation = [];
+
+        this.dead = false;
+        this.deathCounter = 0;
+
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Walking.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Idle.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Walking.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Melee1.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Melee2.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Melee3.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Range1.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Range2.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Range3.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Death.png"));
+
+        //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+        this.animation.push(new Animator(this.spritesheet[0], 4, 6, 47, 104, 7, 0.5, 71, false, true));
+        this.animation.push(new Animator(this.spritesheet[1], 6, 4, 41, 103, 6, 0.5, 71, false, true));
+        this.animation.push(new Animator(this.spritesheet[2], 4, 6, 47, 104, 7, 0.5, 71, false, true));
+        this.animation.push(new Animator(this.spritesheet[3], 11, 4, 73, 108, 5, 0.5, 39, false, true));
+        this.animation.push(new Animator(this.spritesheet[4], 5, 7, 99, 99, 5, 0.5, 13, false, false));
+        this.animation.push(new Animator(this.spritesheet[5], 4, 4, 63, 124, 5, 0.5, 49, false, true));
+        this.animation.push(new Animator(this.spritesheet[6], 5, 6, 80, 101, 5, 0.5, 32, false, true));
+        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.5, 31, false, false));
+        this.animation.push(new Animator(this.spritesheet[8], 8, 5, 78, 102, 6, 0.5, 35, false, true));
+        this.animation.push(new Animator(this.spritesheet[9], 9, 11, 60, 102, 9, 0.5, 52, false, false));
+
+        this.updateBB();
+    };
+
+    updateBB() {
+        this.lastBB = this.BB;
+        this.lastMeleeRange = this.meleeRange;
+
+        this.meleeRange = new BoundingBox(this.x - 226, this.y, 226 + 226 + 160, 410, "enemy", this);
+        this.BB = new BoundingBox(this.x, this.y, 160, 410, "enemy", this);
+    };
+
+    update() {
+        console.log(this.health)
+        if (this.health <= 0) {
+            this.dead = true;
+            this.state = 9;
+            if (this.animation[this.state].isDone()) {
+                this.removeFromWorld = true;
+            }
+        }
+
+        if (this.game.Knight.position.x > this.x) {
+            this.facing = 1;
+        } else if (this.game.Knight.position.x < this.x) {
+            this.facing = -1;
+        }
+
+        this.game.entities.forEach((entity) => {
+            if (entity.BB && this.meleeRange.collide(entity.BB)) {
+                if (this.animation[this.state].isDone()) {
+                    if (entity instanceof Knight) {
+                        this.state = 4;
+                        this.animation[this.state].elapsedTime = 0;
+                    }
+                }
+            } else {
+                if (this.animation[this.state].isDone()) {
+                    if (entity instanceof Knight) {
+                        this.state = 7;
+                        this.animation[this.state].elapsedTime = 0;
+                    }
+                }
+            }
+        });
+
+        if (this.animation[this.state].isDone()) {
+            const tempState = this.state;
+            this.state = 1;
+            this.animation[tempState].elapsedTime = 0;
+
+        };
+        this.updateBB();
+    };
+
+    draw(ctx) {
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 160, 410);
+
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(this.x + 160 - this.game.camera.x, this.y - this.game.camera.y, 226, 410);
+        ctx.strokeRect(this.x - 226 - this.game.camera.x, this.y - this.game.camera.y, 226, 410);
+
+        if (this.facing == -1) {
+            ctx.save();
+            ctx.scale(-1, 1);
+        } else if (this.facing == 1) {
+            ctx.save();
+            ctx.scale(1, 1);
+        }
+
+        let stateModX = 0;
+        let stateModY = 0;
+        
+        if (this.facing == 1) {
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 4);
+        } else if (this.facing == -1) {
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 160) - (this.facing * this.game.camera.x), this.y - this.game.camera.y, 4);
+        }
+        ctx.restore();
     };
 }

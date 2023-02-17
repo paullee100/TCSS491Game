@@ -40,10 +40,23 @@ class SceneManager {
                 this.game.addEntity(new Skeleton(this.game, skeleton.x * PARAMS.BLOCKWIDTH, skeleton.y * PARAMS.BLOCKWIDTH));
             }
         }
-        if (level.Slime) {
-            for (var i = 0; i < level.Slime.length; i++) {
-                let slime = level.Slime[i];
-                this.game.addEntity(new Slime(this.game, slime.x * PARAMS.BLOCKWIDTH, slime.y * PARAMS.BLOCKWIDTH));
+
+        if (level.GreenSlime) {
+            for (var i = 0; i < level.GreenSlime.length; i++) {
+                let greenslime = level.GreenSlime[i];
+                this.game.addEntity(new GreenSlime(this.game, greenslime.x * PARAMS.BLOCKWIDTH, greenslime.y * PARAMS.BLOCKWIDTH));
+            }
+        }
+        if (level.RedSlime) {
+            for (var i = 0; i < level.RedSlime.length; i++) {
+                let redslime = level.RedSlime[i];
+                this.game.addEntity(new RedSlime(this.game, redslime.x * PARAMS.BLOCKWIDTH, redslime.y * PARAMS.BLOCKWIDTH));
+            }
+        }
+        if (level.YellowSlime) {
+            for (var i = 0; i < level.YellowSlime.length; i++) {
+                let yellowslime = level.YellowSlime[i];
+                this.game.addEntity(new YellowSlime(this.game, yellowslime.x * PARAMS.BLOCKWIDTH, yellowslime.y * PARAMS.BLOCKWIDTH));
             }
         }
         if(level.Tree){

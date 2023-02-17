@@ -42,10 +42,10 @@ ASSET_MANAGER.queueDownload("./sprites/Knight_Block.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Parry.png");
 
 // enemy
-ASSET_MANAGER.queueDownload("./sprites/Skeleton.png");
-ASSET_MANAGER.queueDownload("./sprites/Skeletonwalking.png");
-ASSET_MANAGER.queueDownload("./sprites/Skeletonattack.png");
-ASSET_MANAGER.queueDownload("./sprites/Skeletondeath.png");
+ASSET_MANAGER.queueDownload("./sprites/Skeleton/Skeleton.png");
+ASSET_MANAGER.queueDownload("./sprites/Skeleton/Skeletonwalking.png");
+ASSET_MANAGER.queueDownload("./sprites/Skeleton/Skeletonattack.png");
+ASSET_MANAGER.queueDownload("./sprites/Skeleton/Skeletondeath.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Cyclops_Idle.png");
 ASSET_MANAGER.queueDownload("./sprites/Cyclops_Walking.png");
@@ -54,11 +54,22 @@ ASSET_MANAGER.queueDownload("./sprites/Cyclops_Attack2.png");
 ASSET_MANAGER.queueDownload("./sprites/Cyclops_Attack3.png");
 ASSET_MANAGER.queueDownload("./sprites/Cyclops_Death.png");
 
-ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Damage.png");
-ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Death.png");
-ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Idle.png");
-ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Jump.png");
-ASSET_MANAGER.queueDownload("./sprites/Green_Slime_Jump2.png");
+ASSET_MANAGER.queueDownload("./sprites/Green/Green_Slime_Damage.png");
+ASSET_MANAGER.queueDownload("./sprites/Green/Green_Slime_Death.png");
+ASSET_MANAGER.queueDownload("./sprites/Green/Green_Slime_Idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Green/Green_Slime_Jump.png");
+ASSET_MANAGER.queueDownload("./sprites/Green/Green_Slime_Jump2.png");
+
+ASSET_MANAGER.queueDownload("./sprites/Red/Red_Slime_Idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Red/Red_Slime_Jump.png");
+ASSET_MANAGER.queueDownload("./sprites/Red/Red_Slime_Death.png");
+ASSET_MANAGER.queueDownload("./sprites/Red/Red_Slime_Damage.png");
+
+ASSET_MANAGER.queueDownload("./sprites/Yellow/Yellow_Slime_Idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Yellow/Yellow_Slime_Jump.png");
+ASSET_MANAGER.queueDownload("./sprites/Yellow/Yellow_Slime_Death.png");
+ASSET_MANAGER.queueDownload("./sprites/Yellow/Yellow_Slime_Damage.png");
+
 // boss
 ASSET_MANAGER.queueDownload("./sprites/Lich_Idle.png");
 ASSET_MANAGER.queueDownload("./sprites/Lich_Walking.png");
@@ -69,6 +80,16 @@ ASSET_MANAGER.queueDownload("./sprites/Lich_Death.png");
 ASSET_MANAGER.queueDownload("./sprites/Lich_Pellet.png");
 ASSET_MANAGER.queueDownload("./sprites/Lich_Explosion.png");
 ASSET_MANAGER.queueDownload("./sprites/Lich_Fire.png");
+
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Walking.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Melee1.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Melee2.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Melee3.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range1.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range2.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range3.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Death.png");
 
 // sound effects
 ASSET_MANAGER.queueDownload("./sounds/knight_attack1.mp3");
