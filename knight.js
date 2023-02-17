@@ -6,9 +6,10 @@ class Knight {
         //this.position = {x: 550, y:543.75};
         this.position = {x: xp, y: yp};
         this.health = 100;
+        this.maxhealth = 100;
         this.damage = 20;
 
-        this.game.Knight = this;
+        this.game.knight = this;
         this.velocity = {x: 0, y: 0};
         this.facing = 1; // right = 1, left = -1
         this.state = 3; // running = 0, attack1 = 1, attack2 = 2, idle = 3, rolling = 4, jump = 5, death = 6, fall = 7, hit = 8, parry = 9, block = 10, blockStagger = 11
@@ -69,14 +70,14 @@ class Knight {
     };
 
     update() {
-        console.log(this.health);
+        //console.log(this.health);
         const RUN = 750;
         const JUMP = -900;
         const FALL = 1750;
 
         const TICK = this.game.clockTick;
         //lock movement when title is on screen
-        if(!this.game.camera.title){
+        if(!this.game.camera.title && !this.game.camera.over){
              if (this.state == 0 || (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7 && this.state != 8 && this.state != 9 && this.state != 11)) {
             if (this.game.keys["k"] || this.game.keys["K"] || this.game.click) { // attack
                 this.state = 1;
@@ -270,7 +271,8 @@ class Knight {
 
         //reseting character
         if(this.position.y > 10000){
-            this.position ={x:9 * PARAMS.BLOCKWIDTH, y:6 * PARAMS.BLOCKWIDTH}
+            this.position ={x:9 * PARAMS.BLOCKWIDTH, y:8 * PARAMS.BLOCKWIDTH}
+            this.health=0;
         }
         
      }//test  

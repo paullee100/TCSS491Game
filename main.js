@@ -4,6 +4,8 @@ const ASSET_MANAGER = new AssetManager();
 //main screen
 ASSET_MANAGER.queueDownload("./tileset/title/title_950_164.png")
 ASSET_MANAGER.queueDownload("./tileset/title/start_455_127.png")
+//gameover
+ASSET_MANAGER.queueDownload("./tileset/title/gameover_865_183.png")
 //background forest
 ASSET_MANAGER.queueDownload("./tileset/forest/BG1.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/BG2.png")

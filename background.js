@@ -101,7 +101,22 @@ class TitleScreen{
         ctx.drawImage(this.spritesheet , 0.75 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 950, 164);
         // test menu
         ctx.fillStyle = this.game.mouse
+    };
+}
 
+class GameOverScreen{
+    constructor(){
+        // Object.assign(this, {game});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/title/title_950_164.png")
+    };
 
+    update(){
+
+    };
+
+    draw(ctx){
+        ctx.drawImage(this.spritesheet , 0.75 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 950, 164);
+        // test menu
+        ctx.fillStyle = this.game.mouse
     };
 }

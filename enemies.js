@@ -125,6 +125,7 @@ class Skeleton {
 			if (this.deathtime >= 1) {
 				this.dead = true;
 			}
+			this.removeFromWorld;
 		}
 	};
 
