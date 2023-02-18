@@ -27,7 +27,10 @@ class SceneManager {
         }
         
         
-        //ASSET_MANAGER.playAsset("./music/forsaken_forest.mp3");
+        if(level.Music){
+            let music = level.Music[0];
+            ASSET_MANAGER.playAsset(music);
+        }
         if(level.Lich){
             for (var i = 0; i < level.Lich.length; i++) {
                 let lich = level.Lich[i];
