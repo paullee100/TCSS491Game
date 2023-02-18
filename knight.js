@@ -226,6 +226,10 @@ class Knight {
                                     if (that.velocity.x < 0) that.velocity.x = 0;
                                 }
                             };
+                            if (entity instanceof Potion) {
+                                entity.removeFromWorld = true;
+                                console.log('potion picked up')
+                            }
                         };
                         if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
                         && this.state == 9 && this.animation[9].currentFrame() == 0 && (this.facing !== entity.facing)) {
