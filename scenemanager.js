@@ -5,6 +5,7 @@ class SceneManager {
         this.knight = new Knight(game);
         this.x = 0;
         this.title = true;
+        this.over = false;
         this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
 
     };
@@ -102,11 +103,13 @@ class SceneManager {
     };
 
     update() {
+        PARAMS.DEBUG = document.getElementById("debug").checked;
+
         if(this.title && this.game.click){
             this.title = false;
             this.loadLevel(levelOne, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
         }
-        if(!this.title && this.knight.health ==0){
+        if(!this.title && this.knight.dead === true){
             this.over = true;
             this.loadLevel(GameOver, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
         }

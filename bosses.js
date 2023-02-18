@@ -10,7 +10,8 @@ class Lich {
         this.facing = -1; // right = 1, left = -1
         this.dead = false;
         this.deadCounter = 0;
-        this.health = 10000;
+        this.health = 250;
+        this.maxhealth = 250;
         this.damage = 10;
 
         this.maxSummon = 0;
@@ -97,7 +98,9 @@ class Lich {
                 this.y -= this.game.clockTick * this.velocity.y;
             }
         } else if (this.state == 2) {
-            if (this.maxSummon != 5) {
+            if (this.maxSummon < 0) this.maxSummon = 0;
+
+            if (this.maxSummon != 3) {
                 this.summonCounter += this.game.clockTick;
                 if (this.summonCounter >= 2.5) {
                     this.maxSummon++;
@@ -143,9 +146,11 @@ class Lich {
     };
 
     draw(ctx) {
-        ctx.strokeStyle="purple";
-        ctx.strokeRect(this.x- this.game.camera.x, this.y- this.game.camera.y, 200, 330);
-        //ctx.strokeRect(this.position.x, this.position.y, 200, 330);
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle="purple";
+            ctx.strokeRect(this.x- this.game.camera.x, this.y- this.game.camera.y, 200, 330);
+            //ctx.strokeRect(this.position.x, this.position.y, 200, 330);
+        }
 
         if (this.facing == -1) {
             ctx.save();
@@ -297,13 +302,15 @@ class Titan {
     };
 
     draw(ctx) {
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 160, 410);
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 160, 410);
 
-        ctx.strokeStyle = "red";
-        ctx.strokeRect(this.x + 160 - this.game.camera.x, this.y - this.game.camera.y, 226, 410);
-        ctx.strokeRect(this.x - 226 - this.game.camera.x, this.y - this.game.camera.y, 226, 410);
-
+            ctx.strokeStyle = "red";
+            ctx.strokeRect(this.x + 160 - this.game.camera.x, this.y - this.game.camera.y, 226, 410);
+            ctx.strokeRect(this.x - 226 - this.game.camera.x, this.y - this.game.camera.y, 226, 410);
+        }
+        
         if (this.facing == -1) {
             ctx.save();
             ctx.scale(-1, 1);

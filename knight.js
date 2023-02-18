@@ -8,6 +8,7 @@ class Knight {
         this.health = 100;
         this.maxhealth = 100;
         this.damage = 20;
+        this.dead = false;
 
         this.game.knight = this;
         this.velocity = {x: 0, y: 0};
@@ -75,220 +76,229 @@ class Knight {
         const JUMP = -900;
         const FALL = 1750;
 
-        const TICK = this.game.clockTick;
-        //lock movement when title is on screen
-        if(!this.game.camera.title && !this.game.camera.over){
-             if (this.state == 0 || (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7 && this.state != 8 && this.state != 9 && this.state != 11)) {
-            if (this.game.keys["k"] || this.game.keys["K"] || this.game.click) { // attack
-                this.state = 1;
-                if (this.facing == 1) {
-                    this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.gameTime, 2, this.damage);
-                }
-                else {
-                    this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.gameTime, 2, this.damage);
-                }
-                this.velocity.x = 0;
-                ASSET_MANAGER.playAsset("./sounds/knight_attack1.mp3");
-            } else if (this.game.keys["Shift"]) { // roll
-                this.state = 4;
-                this.velocity.x = 500 * (this.facing);
-                ASSET_MANAGER.playAsset("./sounds/knight_roll.mp3");
-            } else if (this.game.keys["w"] || this.game.keys["W"]) { // jump
-                this.velocity.y = JUMP;
-                this.state = 5;
-                this.velocity.x = 0;
-                ASSET_MANAGER.playAsset("./sounds/knight_jump.mp3");
-            }else if (this.game.keys["l"] || this.game.keys["L"]) { // block
-                if (this.state == 10) {
-                    this.state = 10;
-                    this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
-                }
-                
-                else {
-                    this.state = 9;
-                    if (this.facing == 1){
-                        this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
-                    }
-                    else if (this.facing == -1){
-                        this.blockBB = new BoundingBox(this.position.x, this.position.y, 50, 181, "player", this);
-                    }
-                    ASSET_MANAGER.playAsset("./sounds/knight_block.mp3");
-                }
-                this.velocity.x = 0;
-            } else if (this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) { // move left
-                console.log("A is pressed");
-                this.facing = -1;
-                this.state = 0;
-                this.velocity.x = -RUN;
-                //this.velocity.y = 0;
-            } else if (this.game.keys["d"] || this.game.keys["D"] || this.game.keys["ArrowRight"]) { // move right
-                console.log("D is pressed");
-                this.facing = 1;
-                this.state = 0;
-                this.velocity.x = RUN;
-                //this.velocity.y = 0;
-            } else {
-                this.state = 3;
-                this.velocity.x = 0;
-                this.blockBB = new BoundingBox(0, 0, 0, 0, "player", this);
-                //this.velocity.y = 0;
-            }
-            //this.updateBB();
-    }
-    else if (this.state == 1) {
-        if (this.animation[this.state].currentFrame() + 1 >= 3) {
-            if (this.game.keys["k"] || this.game.keys["K"] ||this.game.click) { // attack
-                this.state = 2;
-                this.animation[1].elapsedTime = 0;
-                //this.velocity.y = 0;
-                if (this.facing == 1) {
-                    this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.tick, 3, this.damage);
-                }
-                else {
-                    this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.tick, 3, this.damage);
-                }
-                ASSET_MANAGER.playAsset("./sounds/knight_attack2.mp3");
+        if (!this.game.camera.title && this.health <= 0) {
+            console.log(this.health);
+            this.state = 6;
+            if (this.animation[this.state].isDone()) {
+                this.dead = true;
+
             }
         } else {
-            if (this.game.click != null) {
-                this.game.click = null;
-            }
-        }
-    }
-    else {
-            //mid-air physics
-            //vertical physics
-            if (this.state == 5 && this.velocity.y > 0) this.state = 7;
-            if (this.velocity.y < 0 && this.game.keys["w"]) { // holding A while jumping jumps higher
-                //this.velocity.y -= 25;
-            };
-
-            // horizontal physics
-            if (this.state == 5 || this.state == 7) {
-                if (this.game.keys["d"] || this.game.keys["D"] || this.game.keys["ArrowRight"] && !(this.game.keys["a"] || this.game.keys["ArrowLeft"])) {
-                    this.velocity.x = (RUN*3)/4;
-                } else if ((this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
-                    this.velocity.x = (-RUN*3)/4;
+            const TICK = this.game.clockTick;
+            //lock movement when title is on screen
+            if(!this.game.camera.title && !this.game.camera.over) {
+                if (this.state == 0 || (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7 && this.state != 8 && this.state != 9 && this.state != 11)) {
+                    if (this.game.keys["k"] || this.game.keys["K"] || this.game.click) { // attack
+                        this.state = 1;
+                        if (this.facing == 1) {
+                            this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.gameTime, 2, this.damage);
+                        }
+                        else {
+                            this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.gameTime, 2, this.damage);
+                        }
+                        this.velocity.x = 0;
+                        ASSET_MANAGER.playAsset("./sounds/knight_attack1.mp3");
+                    } else if (this.game.keys["Shift"]) { // roll
+                        this.state = 4;
+                        this.velocity.x = 500 * (this.facing);
+                        ASSET_MANAGER.playAsset("./sounds/knight_roll.mp3");
+                    } else if (this.game.keys["w"] || this.game.keys["W"]) { // jump
+                        this.velocity.y = JUMP;
+                        this.state = 5;
+                        this.velocity.x = 0;
+                        ASSET_MANAGER.playAsset("./sounds/knight_jump.mp3");
+                    } else if (this.game.keys["l"] || this.game.keys["L"]) { // block
+                        if (this.state == 10) {
+                            this.state = 10;
+                            this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
+                        }
+                        
+                        else {
+                            this.state = 9;
+                            if (this.facing == 1){
+                                this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
+                            }
+                            else if (this.facing == -1){
+                                this.blockBB = new BoundingBox(this.position.x, this.position.y, 50, 181, "player", this);
+                            }
+                            ASSET_MANAGER.playAsset("./sounds/knight_block.mp3");
+                        }
+                        this.velocity.x = 0;
+                    } else if (this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) { // move left
+                        console.log("A is pressed");
+                        this.facing = -1;
+                        this.state = 0;
+                        this.velocity.x = -RUN;
+                        //this.velocity.y = 0;
+                    } else if (this.game.keys["d"] || this.game.keys["D"] || this.game.keys["ArrowRight"]) { // move right
+                        console.log("D is pressed");
+                        this.facing = 1;
+                        this.state = 0;
+                        this.velocity.x = RUN;
+                        //this.velocity.y = 0;
+                    } else {
+                        this.state = 3;
+                        this.velocity.x = 0;
+                        this.blockBB = new BoundingBox(0, 0, 0, 0, "player", this);
+                        //this.velocity.y = 0;
+                    }
+                    //this.updateBB();
+                } else if (this.state == 1) {
+                    if (this.animation[this.state].currentFrame() + 1 >= 3) {
+                        if (this.game.keys["k"] || this.game.keys["K"] ||this.game.click) { // attack
+                            this.state = 2;
+                            this.animation[1].elapsedTime = 0;
+                            //this.velocity.y = 0;
+                            if (this.facing == 1) {
+                                this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.tick, 3, this.damage);
+                            }
+                            else {
+                                this.swordBB = new AttackBox(this.game, this, this.position.x - 200, this.position.y, 200, 181, this.game.timer.tick, 3, this.damage);
+                            }
+                            ASSET_MANAGER.playAsset("./sounds/knight_attack2.mp3");
+                        }
+                    } else {
+                        if (this.game.click != null) {
+                            this.game.click = null;
+                        }
+                    }
                 } else {
-                        // does nothing
-                };
-            }
-            /* else if (this.state == 1 || this.state == 2 || this.state == 7) {
-                if (this.game.keys["d"] || this.game.keys["ArrowRight"] && !(this.game.keys["a"] || this.game.keys["ArrowLeft"])) {
-                    this.velocity.x = RUN;
-                } else if ((this.game.keys["a"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
-                    this.velocity.x = -RUN;
-                } else {
-                        // does nothing
-                };
-            } */
-        };
-        //if (this.position.y < 540) { //Just for testing. Replace with floor collision to reset sprite later
-        this.velocity.y += FALL * TICK;
-        //}
+                        //mid-air physics
+                        //vertical physics
+                        if (this.state == 5 && this.velocity.y > 0) this.state = 7;
+                        if (this.velocity.y < 0 && this.game.keys["w"]) { // holding A while jumping jumps higher
+                            //this.velocity.y -= 25;
+                        };
 
-        this.position.x += this.velocity.x * TICK;
-        this.position.y += this.velocity.y * TICK;
-        this.updateBB();
+                        // horizontal physics
+                        if (this.state == 5 || this.state == 7) {
+                            if (this.game.keys["d"] || this.game.keys["D"] || this.game.keys["ArrowRight"] && !(this.game.keys["a"] || this.game.keys["ArrowLeft"])) {
+                                this.velocity.x = (RUN*3)/4;
+                            } else if ((this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
+                                this.velocity.x = (-RUN*3)/4;
+                            } else {
+                                    // does nothing
+                            };
+                        }
+                        /* else if (this.state == 1 || this.state == 2 || this.state == 7) {
+                            if (this.game.keys["d"] || this.game.keys["ArrowRight"] && !(this.game.keys["a"] || this.game.keys["ArrowLeft"])) {
+                                this.velocity.x = RUN;
+                            } else if ((this.game.keys["a"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
+                                this.velocity.x = -RUN;
+                            } else {
+                                    // does nothing
+                            };
+                        } */
+                    };
+                    //if (this.position.y < 540) { //Just for testing. Replace with floor collision to reset sprite later
+                    this.velocity.y += FALL * TICK;
+                    //}
 
-        // collision
-        var that = this;
-        this.game.entities.forEach(entity => {
-            if (that.swordBB) {
-                if (entity.BB && that.swordBB.collide(entity.BB)) {
-                    if (entity.BB.type == "enemy" &&
-                        (this.state == 1 || this.state == 2) && that.swordBB.removeFromWorld !== true) {
-                        this.swordBB.damageDeal(entity);
-                        ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
-                    }
-                }
-            }   
-            if (entity.BB && that.BB.collide(entity.BB)) {
-                if (entity instanceof Tile) {
-                    if ((that.lastBB.bottom) <= entity.BB.top) { //landing
-                        that.position.y = entity.y - 171.25;
-                        that.velocity.y = 0;
-                        if (that.state == 5 || that.state == 7) that.state = 3;
-                    }
-                    else if ((that.lastBB.right) <= entity.BB.left) {
-                        that.position.x = entity.BB.left - 100;
-                        if (that.velocity.x > 0) that.velocity.x = 0;
-                    } 
-                    else if ((that.lastBB.left) >= entity.BB.right) {
-                        that.position.x = entity.BB.right;
-                        if (that.velocity.x < 0) that.velocity.x = 0;
-                    }
-                };
-            };
-            if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
-            && this.state == 9 && this.animation[9].currentFrame() == 0 && (this.facing !== entity.facing)) {
-                //entity.attackBB.removeFromWorld == true;
-                //this.animation[9].isDone() = true;
-                //entity.animation[entity.state].isDone() = true;
-                entity.attackBB = undefined;
-                entity.animation[entity.state].elapsedTime = 0;
-                entity.state = 0;
-                this.state = 0;
-                this.animation[9].elapsedTime = 0;
-                ASSET_MANAGER.playAsset("./sounds/knight_parry.mp3");
-            }
-            else if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
-            && (this.state == 9 || this.state == 10) && this.state !== 11 && (this.facing !== entity.facing)) {
-                //tempAttBB = new AttackBox(entity.attackBB.game, entity.attackBB.attacker, entity.attackBB.x, entity.attackBB.y, entity.attackBB.width, entity.attackBB.height, entity.attackBB.game, )
-                entity.attackBB.damage /= 2;
-                entity.attackBB.damageDeal(this);
-                this.state = 11;
-                this.animation[9].elapsedTime = 0;
-                if (entity.attackBB.attacker.facing == -1) that.velocity.x = Math.max(-600, -40 * entity.attackBB.damage)/2;
-                else if (entity.attackBB.attacker.facing == 1) that.velocity.x = Math.min(600, 40 * entity.attackBB.damage)/2;
-                ASSET_MANAGER.playAsset("./sounds/knight_blocked_attack.mp3");
-                entity.attackBB = undefined;
-            }
-            else if (entity.BB && entity.attackBB && that.BB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true &&
-            !(this.state == 4 && this.animation[4].currentFrame() < 8) && (this.state !== 9 || this.state !== 10) && this.state !== 8 && this.state !== 11) {
-                that.state = 8;
-                entity.attackBB.damageDeal(this);
-                if (entity.attackBB.attacker.facing == -1) that.velocity.x = Math.max(-600, -40 * entity.attackBB.damage);
-                else if (entity.attackBB.attacker.facing == 1) that.velocity.x = Math.min(600, 40 * entity.attackBB.damage);
-                entity.attackBB = undefined;
-            }
-        });
-        that.updateBB();
-        /* if (this.position.y > 700) { //Just for testing. Replace with floor collision to reset sprite later
-            this.position.y = 540;
-            this.state = 3;
-        }; */
-        if (this.animation[this.state].isDone()) {
-            var tempState = this.state;
-            if (this.state == 9) this.state = 10;
-            else this.state = 3;
-            this.animation[tempState].elapsedTime = 0;
-            if (this.game.click != null) {
-                this.game.click = null;
-            }
-            this.velocity.x = 0;
-        };
+                    this.position.x += this.velocity.x * TICK;
+                    this.position.y += this.velocity.y * TICK;
+                    this.updateBB();
 
-        //reseting character
-        if(this.position.y > 10000){
-            this.position ={x:9 * PARAMS.BLOCKWIDTH, y:8 * PARAMS.BLOCKWIDTH}
-            this.health=0;
+                    // collision
+                    var that = this;
+                    this.game.entities.forEach(entity => {
+                        if (that.swordBB) {
+                            if (entity.BB && that.swordBB.collide(entity.BB)) {
+                                if (entity.BB.type == "enemy" &&
+                                    (this.state == 1 || this.state == 2) && that.swordBB.removeFromWorld !== true) {
+                                    this.swordBB.damageDeal(entity);
+                                    ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
+                                }
+                            }
+                        }   
+                        if (entity.BB && that.BB.collide(entity.BB)) {
+                            if (entity instanceof Tile) {
+                                if ((that.lastBB.bottom) <= entity.BB.top) { //landing
+                                    that.position.y = entity.y - 171.25;
+                                    that.velocity.y = 0;
+                                    if (that.state == 5 || that.state == 7) that.state = 3;
+                                }
+                                else if ((that.lastBB.right) <= entity.BB.left) {
+                                    that.position.x = entity.BB.left - 100;
+                                    if (that.velocity.x > 0) that.velocity.x = 0;
+                                } 
+                                else if ((that.lastBB.left) >= entity.BB.right) {
+                                    that.position.x = entity.BB.right;
+                                    if (that.velocity.x < 0) that.velocity.x = 0;
+                                }
+                            };
+                        };
+                        if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
+                        && this.state == 9 && this.animation[9].currentFrame() == 0 && (this.facing !== entity.facing)) {
+                            //entity.attackBB.removeFromWorld == true;
+                            //this.animation[9].isDone() = true;
+                            //entity.animation[entity.state].isDone() = true;
+                            entity.attackBB = undefined;
+                            entity.animation[entity.state].elapsedTime = 0;
+                            entity.state = 0;
+                            this.state = 0;
+                            this.animation[9].elapsedTime = 0;
+                            ASSET_MANAGER.playAsset("./sounds/knight_parry.mp3");
+                        }
+                        else if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
+                        && (this.state == 9 || this.state == 10) && this.state !== 11 && (this.facing !== entity.facing)) {
+                            //tempAttBB = new AttackBox(entity.attackBB.game, entity.attackBB.attacker, entity.attackBB.x, entity.attackBB.y, entity.attackBB.width, entity.attackBB.height, entity.attackBB.game, )
+                            entity.attackBB.damage /= 2;
+                            entity.attackBB.damageDeal(this);
+                            this.state = 11;
+                            this.animation[9].elapsedTime = 0;
+                            if (entity.attackBB.attacker.facing == -1) that.velocity.x = Math.max(-600, -40 * entity.attackBB.damage)/2;
+                            else if (entity.attackBB.attacker.facing == 1) that.velocity.x = Math.min(600, 40 * entity.attackBB.damage)/2;
+                            ASSET_MANAGER.playAsset("./sounds/knight_blocked_attack.mp3");
+                            entity.attackBB = undefined;
+                        }
+                        else if (entity.BB && entity.attackBB && that.BB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true &&
+                        !(this.state == 4 && this.animation[4].currentFrame() < 8) && (this.state !== 9 || this.state !== 10) && this.state !== 8 && this.state !== 11) {
+                            that.state = 8;
+                            entity.attackBB.damageDeal(this);
+                            if (entity.attackBB.attacker.facing == -1) that.velocity.x = Math.max(-600, -40 * entity.attackBB.damage);
+                            else if (entity.attackBB.attacker.facing == 1) that.velocity.x = Math.min(600, 40 * entity.attackBB.damage);
+                            entity.attackBB = undefined;
+                        }
+                    });
+                    that.updateBB();
+                    /* if (this.position.y > 700) { //Just for testing. Replace with floor collision to reset sprite later
+                        this.position.y = 540;
+                        this.state = 3;
+                    }; */
+                    if (this.animation[this.state].isDone()) {
+                        var tempState = this.state;
+                        if (this.state == 9) this.state = 10;
+                        else this.state = 3;
+                        this.animation[tempState].elapsedTime = 0;
+                        if (this.game.click != null) {
+                            this.game.click = null;
+                        }
+                        this.velocity.x = 0;
+                    };
+
+                    //reseting character
+                    if(this.position.y > 10000){
+                        this.position ={x:9 * PARAMS.BLOCKWIDTH, y:8 * PARAMS.BLOCKWIDTH}
+                        this.health=0;
+                    }
+                    
+            }//test  
         }
-        
-     }//test  
     }
 
     draw(ctx) {
-        // let canvas = document.getElementById("gameWorld");
-        // canvas.style.backgroundColor = "black
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(this.position.x - this.game.camera.x, this.position.y - this.game.camera.y, 100, 181);
+        if (PARAMS.DEBUG) {
+            // let canvas = document.getElementById("gameWorld");
+            // canvas.style.backgroundColor = "black
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(this.position.x - this.game.camera.x, this.position.y - this.game.camera.y, 100, 181);
 
-        ctx.strokeStyle = "purple";
-        ctx.strokeRect(this.position.x + 100 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
+            ctx.strokeStyle = "purple";
+            ctx.strokeRect(this.position.x + 100 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
 
-        ctx.strokeStyle = "purple";
-        ctx.strokeRect(this.position.x - 200 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
+            ctx.strokeStyle = "purple";
+            ctx.strokeRect(this.position.x - 200 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
+        }
 
         if (this.state == 9 || this.state == 10) {
             ctx.strokeStyle = "green";

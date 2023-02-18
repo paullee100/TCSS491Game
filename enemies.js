@@ -130,20 +130,21 @@ class Skeleton {
 	};
 
 	draw(ctx) {
-		//hit box
-		ctx.strokeStyle = "purple";
-		if (this.facing == 1) {
-			ctx.strokeRect((this.x + 100) - this.game.camera.x, this.y- this.game.camera.y, 122, 185);
-		} else {
-			ctx.strokeRect((this.x - 123) - this.game.camera.x, this.y- this.game.camera.y, 122, 185);
+		if (PARAMS.DEBUG) {
+			//hit box
+			ctx.strokeStyle = "purple";
+			if (this.facing == 1) {
+				ctx.strokeRect((this.x + 100) - this.game.camera.x, this.y- this.game.camera.y, 122, 185);
+			} else {
+				ctx.strokeRect((this.x - 123) - this.game.camera.x, this.y- this.game.camera.y, 122, 185);
+			}
+			// hurt box
+			ctx.strokeStyle = "green";
+			ctx.strokeRect(this.x - this.game.camera.x, this.y- this.game.camera.y, 100, 185);
+			// vision box
+			ctx.strokeStyle = "red";
+			ctx.strokeRect((this.leftbound) - this.game.camera.x, this.y- this.game.camera.y, 695, 185);
 		}
-		// hurt box
-		ctx.strokeStyle = "green";
-		ctx.strokeRect(this.x - this.game.camera.x, this.y- this.game.camera.y, 100, 185);
-		// vision box
-		ctx.strokeStyle = "red";
-		ctx.strokeRect((this.leftbound) - this.game.camera.x, this.y- this.game.camera.y, 695, 185);
-		
 		if (this.facing == -1) {
 			ctx.save()
 			ctx.scale(-1, 1)
@@ -164,6 +165,8 @@ class Skeleton {
 			}
 
 		} else {
+			this.game.Lich.maxSummon--;
+			console.log(this.game.Lich.maxSummon);
 			this.removeFromWorld = true;
 			console.log("is ded");
 		}
@@ -252,8 +255,10 @@ class Cyclops {
 	};
 
 	draw(ctx) {
-		ctx.strokeStyle = "purple";
-		ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 120, 240);
+		if (PARAMS.DEBUG) {
+			ctx.strokeStyle = "purple";
+			ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 120, 240);
+		}
 
 		if (this.facing == -1) {
 			ctx.save();
@@ -379,13 +384,16 @@ class GreenSlime {
 		}
 	}
 	draw(ctx) {
-		// hitbox
-		ctx.strokeStyle = "red";
-		if (this.state == 1) {
-			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 90, 160);
-		} else {
-			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 90, 90);
+		if (PARAMS.DEBUG) {
+			// hitbox
+			ctx.strokeStyle = "red";
+			if (this.state == 1) {
+				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 90, 160);
+			} else {
+				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 90, 90);
+			}
 		}
+
 		/*
 		if (this.state == 3) {
 			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
@@ -524,13 +532,16 @@ class RedSlime {
 		}
 	};
 	draw(ctx) {
-		// hitbox
-		ctx.strokeStyle = "red";
-		if (this.state == 1) {
-			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
-		} else {
-			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
+		if (PARAMS.DEBUG) {
+			// hitbox
+			ctx.strokeStyle = "red";
+			if (this.state == 1) {
+				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
+			} else {
+				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
+			}
 		}
+
 		if (this.facing == -1) {
 			ctx.save()
 			ctx.scale(-1, 1)
@@ -657,13 +668,16 @@ class YellowSlime {
 		}
 	};
 	draw(ctx) {
-		// hitbox
-		ctx.strokeStyle = "red";
-		if (this.state == 1) {
-			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
-		} else {
-			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
+		if (PARAMS.DEBUG) {
+			// hitbox
+			ctx.strokeStyle = "red";
+			if (this.state == 1) {
+				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
+			} else {
+				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
+			}	
 		}
+		
 		if (this.facing == -1) {
 			ctx.save()
 			ctx.scale(-1, 1)
