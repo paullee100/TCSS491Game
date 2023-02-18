@@ -298,16 +298,16 @@ class Knight {
 
             ctx.strokeStyle = "purple";
             ctx.strokeRect(this.position.x - 200 - this.game.camera.x, this.position.y - this.game.camera.y, 200, 181);
-        }
 
-        if (this.state == 9 || this.state == 10) {
-            ctx.strokeStyle = "green";
-            ctx.strokeRect(this.position.x + 50 - this.game.camera.x, this.position.y - this.game.camera.y, 50, 181);
-            ctx.strokeRect(this.position.x - this.game.camera.x, this.position.y - this.game.camera.y, 50, 181);
-        }
-
-        if (this.swordBB && (this.state == 1 || this.state == 2) && this.swordBB.removeFromWorld !== true) {
-            this.swordBB.draw(ctx);
+            if (this.state == 9 || this.state == 10) {
+                ctx.strokeStyle = "green";
+                ctx.strokeRect(this.position.x + 50 - this.game.camera.x, this.position.y - this.game.camera.y, 50, 181);
+                ctx.strokeRect(this.position.x - this.game.camera.x, this.position.y - this.game.camera.y, 50, 181);
+            }
+    
+            if (this.swordBB && (this.state == 1 || this.state == 2) && this.swordBB.removeFromWorld !== true) {
+                this.swordBB.draw(ctx);
+            }
         }
         
         if (this.facing == -1) {
