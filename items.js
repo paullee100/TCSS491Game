@@ -1,5 +1,6 @@
 class Potion {
     constructor(game, x, y) {
+        console.log('potion being made')
         Object.assign(this, { game, x, y });
         this.velocity = 300;
         this.spritesheet = [];

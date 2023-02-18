@@ -165,6 +165,7 @@ class Skeleton {
 			}
 
 		} else {
+			this.game.addEntity(new Potion(this.game, this.x * PARAMS.BLOCKWIDTH, this.y * PARAMS.BLOCKWIDTH));
 			this.game.Lich.maxSummon--;
 			console.log(this.game.Lich.maxSummon);
 			this.removeFromWorld = true;
@@ -425,6 +426,7 @@ class GreenSlime {
 			}
 
 		} else {
+			this.game.addEntity()
 			this.removeFromWorld = true;
 			console.log("slime is ded");
 		}
