@@ -6,7 +6,7 @@ class Skeleton {
 		this.speed = 100;
 		this.health = 50;
 		this.facing = 1; // right = 1 left = -1
-		this.state = 0; // stunned = 0, walking = 1, attack = 2, dead = 3
+		this.state = 1; // stunned = 0, walking = 1, attack = 2, dead = 3
 		this.game.Skeleton = this;
 		this.deathtime = 0;
 		this.attacktime = 0;
@@ -14,12 +14,12 @@ class Skeleton {
 		this.animation = [];
 		this.damage = 5;
 		
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonwalking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonhurt.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonwalking.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonattack.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletondeath.png"));
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-		this.animation.push(new Animator(this.spritesheet[0], 71, 0, 71, 75, 3, 0.25, 1, false, false));
+		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 70, 70, 3, 0.25, 1, false, false));
 		this.animation.push(new Animator(this.spritesheet[1], 71, 0, 71, 75, 8, 0.1, 1, false, true));
 		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 95, 90, 4, 0.2, 1, false, false));
 		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 68, 75, 6, 0.2, 1, false, false));

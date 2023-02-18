@@ -56,7 +56,7 @@ var GameOver={
 
 var levelOne = {
     Lich: [{x:37+(25*4),y:(390/64)}],
-    Skeleton: [{ x: 23.5, y: (540 / 64) }, { x: 8 + (25 * 2), y: (540 / 64) }],
+    Skeleton: [{ x: 10, y: (540 / 64) }, { x: 23.5, y: (540 / 64) }, { x: 8 + (25 * 2), y: (540 / 64) }],
     GreenSlime: [{ x: 10, y: 17.5 }],
     //RedSlime: [{ x: 10, y: (540 / 64) }],
     //YellowSlime: [{ x: 10, y: (540 / 64) }],
