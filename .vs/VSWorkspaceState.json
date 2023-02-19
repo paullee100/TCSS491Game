@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\sprites",
-    "\\sprites\\Red"
+    "\\sprites"
   ],
-  "SelectedNode": "\\sprites\\Red\\Red_Slime_Idle.png",
+  "SelectedNode": "\\bosses.js",
   "PreviewInSolutionExplorer": false
 }

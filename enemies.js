@@ -15,12 +15,13 @@ class Skeleton {
 		this.animation = [];
 		this.damage = 5;
 		
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonwalking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonhurt.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonwalking.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonattack.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletondeath.png"));
+
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-		this.animation.push(new Animator(this.spritesheet[0], 71, 0, 71, 75, 3, 0.25, 1, false, false));
+		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 70, 70, 3, 0.25, 1, false, false));
 		this.animation.push(new Animator(this.spritesheet[1], 71, 0, 71, 75, 8, 0.1, 1, false, true));
 		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 95, 90, 4, 0.2, 1, false, false));
 		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 68, 75, 6, 0.2, 1, false, false));
@@ -102,7 +103,7 @@ class Skeleton {
 							this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
 						}
 					}
-					/* else if (this.attackBB) {
+					/* else if (this.attackBB) { 
 						this.attackBB.removeFromWorld = true;
 					}; */
 					console.log("skeleton has collided")
@@ -176,6 +177,10 @@ class Skeleton {
 			}
 
 		} else {
+			let rng = Math.floor(Math.random() * 100);
+			if (rng <= 10) {
+				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
+			}
 			this.game.Lich.maxSummon--;
 			this.removeFromWorld = true;
 			console.log("is ded");
@@ -183,7 +188,7 @@ class Skeleton {
 
 		ctx.restore();
 
-		//ctx.drawImage(ASSET_MANAGER.getAsset("./Skeletonwalking.png"), 0, 0);
+		//ctx.drawImage(ASSET_MANAGER.getAsset("./Skeletonwalking.png"), 0, 0);  23.5, y: (540 / 64
 	};
 }
 

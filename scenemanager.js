@@ -3,6 +3,8 @@ class SceneManager {
         this.game = game;
         this.game.camera = this;
         this.knight = new Knight(game);
+        this.potion = 0;
+        this.bomb = 0;
         this.x = 0;
         this.title = true;
         this.over = false;
@@ -185,7 +187,11 @@ class SceneManager {
             if(this.knight.health>0){
                 ctx.fillRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH * ratio, 0.5 *PARAMS.BLOCKWIDTH);
             }
-            ctx.strokeRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH , 0.5 *PARAMS.BLOCKWIDTH);
+            ctx.strokeRect(0.5 * PARAMS.BLOCKWIDTH, 0.5 * PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH, 0.5 * PARAMS.BLOCKWIDTH);
+            ctx.fillStyle = "White";
+            ctx.font = PARAMS.BLOCKWIDTH / 2 + 'px "Press Start 2P"';
+            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_potion.png"), 12 * PARAMS.BLOCKWIDTH, - 20)
+            ctx.fillText("x" + this.potion, 13 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
         }
     }
 
