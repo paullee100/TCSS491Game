@@ -10,8 +10,7 @@ class Lich {
         this.facing = -1; // right = 1, left = -1
         this.dead = false;
         this.deadCounter = 0;
-        //this.health = 250; test end screen
-        this.health = 1; //test end screen
+        this.health = 250
         this.maxhealth = 250;
         this.damage = 12.5;
 
