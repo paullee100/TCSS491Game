@@ -6,6 +6,9 @@ ASSET_MANAGER.queueDownload("./tileset/title/title_950_164.png")
 ASSET_MANAGER.queueDownload("./tileset/title/start_455_127.png")
 //gameover
 ASSET_MANAGER.queueDownload("./tileset/title/gameover_865_183.png")
+//tbc
+ASSET_MANAGER.queueDownload("./tileset/title/tbc_856_109.png")
+ASSET_MANAGER.queueDownload("./tileset/title/tbc_1024_127.png")
 //background forest
 ASSET_MANAGER.queueDownload("./tileset/forest/BG1.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/BG2.png")

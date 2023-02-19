@@ -10,7 +10,8 @@ class Lich {
         this.facing = -1; // right = 1, left = -1
         this.dead = false;
         this.deadCounter = 0;
-        this.health = 250;
+        //this.health = 250; test end screen
+        this.health = 1; //test end screen
         this.maxhealth = 250;
         this.damage = 12.5;
 
@@ -88,6 +89,8 @@ class Lich {
             this.state = 5;
             this.deadCounter += this.game.clockTick;
             if (this.deadCounter >= 1) {
+                //level complete
+                this.game.camera.levelclear = true;
                 this.dead = true;
                 this.removeFromWorld = true;
             }
