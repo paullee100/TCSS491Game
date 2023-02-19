@@ -5,6 +5,7 @@ class SceneManager {
         this.knight = new Knight(game);
         this.x = 0;
         this.title = true;
+        this.over = false;
         this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
 
     };
@@ -26,7 +27,10 @@ class SceneManager {
         }
         
         
-        //ASSET_MANAGER.playAsset("./music/forsaken_forest.mp3");
+        if(level.Music && !this.title) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            ASSET_MANAGER.playAsset(level.Music);
+        }
         if(level.Lich){
             for (var i = 0; i < level.Lich.length; i++) {
                 let lich = level.Lich[i];
@@ -101,12 +105,23 @@ class SceneManager {
 
     };
 
+    updateAudio() {
+        let mute = document.getElementById("mute").checked;
+        let volume = document.getElementById("volume").value;
+
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+    }
+
     update() {
+        PARAMS.DEBUG = document.getElementById("debug").checked;
+
         if(this.title && this.game.click){
             this.title = false;
             this.loadLevel(levelOne, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
+            if (this.game.click != null) this.game.click = null; 
         }
-        if(!this.title && this.knight.health ==0){
+        if(!this.title && this.knight.dead === true){
             this.over = true;
             this.loadLevel(GameOver, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
         }
@@ -114,6 +129,7 @@ class SceneManager {
         //     this.over = false;
         //     this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
         // }
+        this.updateAudio();
 
         let midpoint = PARAMS.CANVAS_WIDTH/2 - PARAMS.BLOCKWIDTH / 2;
         //console.log("MMMMM " + midpoint);
