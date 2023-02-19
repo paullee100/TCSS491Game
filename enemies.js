@@ -177,7 +177,10 @@ class Skeleton {
 			}
 
 		} else {
-			this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
+			let rng = Math.floor(Math.random() * 100);
+			if (rng <= 10) {
+				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
+			}
 			this.game.Lich.maxSummon--;
 			this.removeFromWorld = true;
 			console.log("is ded");
