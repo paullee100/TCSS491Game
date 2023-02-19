@@ -137,9 +137,9 @@ class SceneManager {
             ctx.strokeStyle = "Black";
             ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
             if(this.knight.health>0){
-                ctx.fillRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH * ratio, 1 *PARAMS.BLOCKWIDTH);
+                ctx.fillRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH * ratio, 0.5 *PARAMS.BLOCKWIDTH);
             }
-            ctx.strokeRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH , 1 *PARAMS.BLOCKWIDTH);
+            ctx.strokeRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH , 0.5 *PARAMS.BLOCKWIDTH);
         }
     }
 
