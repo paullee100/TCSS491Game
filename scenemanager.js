@@ -27,9 +27,9 @@ class SceneManager {
         }
         
         
-        if(level.Music){
-            let music = level.Music[0];
-            ASSET_MANAGER.playAsset(music);
+        if(level.Music && !this.title) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            ASSET_MANAGER.playAsset(level.Music);
         }
         if(level.Lich){
             for (var i = 0; i < level.Lich.length; i++) {
@@ -105,12 +105,21 @@ class SceneManager {
 
     };
 
+    updateAudio() {
+        let mute = document.getElementById("mute").checked;
+        let volume = document.getElementById("volume").value;
+
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+    }
+
     update() {
         PARAMS.DEBUG = document.getElementById("debug").checked;
 
         if(this.title && this.game.click){
             this.title = false;
             this.loadLevel(levelOne, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
+            if (this.game.click != null) this.game.click = null; 
         }
         if(!this.title && this.knight.dead === true){
             this.over = true;
@@ -120,6 +129,7 @@ class SceneManager {
         //     this.over = false;
         //     this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
         // }
+        this.updateAudio();
 
         let midpoint = PARAMS.CANVAS_WIDTH/2 - PARAMS.BLOCKWIDTH / 2;
         //console.log("MMMMM " + midpoint);
@@ -146,6 +156,8 @@ class SceneManager {
                 ctx.fillRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH * ratio, 1 *PARAMS.BLOCKWIDTH);
             }
             ctx.strokeRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH , 1 *PARAMS.BLOCKWIDTH);
+        
+            
         }
     }
 

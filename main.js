@@ -110,6 +110,8 @@ ASSET_MANAGER.queueDownload("./music/forsaken_forest.mp3"); //greenpath from hol
 ASSET_MANAGER.downloadAll(() => {
 	const gameEngine = new GameEngine();
 
+	ASSET_MANAGER.autoRepeat("./music/forsaken_forest.mp3");
+
 	PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH * PARAMS.SCALE;
 
 	const canvas = document.getElementById("gameWorld");

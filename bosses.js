@@ -12,10 +12,12 @@ class Lich {
         this.deadCounter = 0;
         this.health = 250;
         this.maxhealth = 250;
-        this.damage = 10;
+        this.damage = 12.5;
 
         this.maxSummon = 0;
         this.summonCounter = 0;
+        this.numOfFire = 1;
+
         this.waitTime = 0;
         this.attackTime = 0;
 
@@ -55,11 +57,13 @@ class Lich {
         this.attackTime = 0;
         this.waitTime = 0;
         this.attackState = 0;
+        this.numOfFire = 1;
+
         if (this.health <= 0) {
             return;
         }
         let rng = Math.floor(Math.random() * 100);
-        if (rng < 50 && this.maxSummon <= 5) {
+        if (rng < 50 && this.maxSummon <= 3) {
             this.state = 2;
         } else if (rng >= 50 && rng <= 70) {
             this.state = 3;
@@ -72,7 +76,11 @@ class Lich {
 
     updateBB() {
         this.lastBB = this.BB;
+        this.lastFireBB = this.FireBB;
+
         this.BB = new BoundingBox(this.x, this.y, 200, 330, "enemy", this);
+        this.FireBB = new BoundingBox(this.x - 150 * this.numOfFire, this.y + 175, 150 * this.numOfFire, 155, "enemy", this);
+
     };
 
     update() {
@@ -142,6 +150,13 @@ class Lich {
                     console.log("Lich and Knight collision");
                 }
             }
+
+            if (entity.BB && this.FireBB.collide(entity.BB)) {
+                if (entity instanceof Knight && this.state === 4) {
+                    this.attackBB = new AttackBox(this.game, this, this.x - 150 * this.numOfFire, this.y + 175, 150 * this.numOfFire, 155, 0, 0, this.damage);
+                    this.state = 0;
+                }
+            }
         })
     };
 
@@ -149,60 +164,73 @@ class Lich {
         if (PARAMS.DEBUG) {
             ctx.strokeStyle="purple";
             ctx.strokeRect(this.x- this.game.camera.x, this.y- this.game.camera.y, 200, 330);
-            //ctx.strokeRect(this.position.x, this.position.y, 200, 330);
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(this.x - this.game.camera.x - 150 * this.numOfFire, this.y - this.game.camera.y + 175, 150 * this.numOfFire, 155);
         }
 
-        if (this.facing == -1) {
-            ctx.save();
-            ctx.scale(-1, 1);
-        } else if (this.facing == 1) {
-            ctx.save();
-            ctx.scale(1, 1);
-        }
+        if (this.dead === false) {
+            let ratio = this.health / this.maxhealth;
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
 
-        let stateModX = 0;
-        let stateModY = 0;
-        if (this.state == 2 || this.state == 3) stateModY = 25;
-        else if (this.state == 4) stateModY = 15;
-
-        
-        if (this.dead == true) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY- this.game.camera.y, 4);
-        } else if (this.facing == 1) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY- this.game.camera.y, 4);
-        } else if (this.facing == -1) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 200 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), this.y - stateModY- this.game.camera.y, 4);
-        }
-        ctx.restore();
-
-        if (this.state == 3) {
-            if (this.attackState == 0) {
-                let xPlacement = 100
-                let yPlacement = 100
-                let xRand = Math.floor(Math.random(6) + 1)
-                let yRand = Math.floor(Math.random(3))
-                if (xRand % 2 == 0) xPlacement * -1
-                this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, (this.x + (xPlacement * xRand)) - this.game.camera.x, this.y - (yPlacement * yRand) - this.game.camera.y, 3)
-            } else if (this.attackState == 1) {
-                this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 150 - this.game.camera.y, 3)
+            if (this.health > 0) {
+                ctx.fillRect(this.x - 120 - this.game.camera.x, this.y - this.game.camera.y - 100, 5.5 * PARAMS.BLOCKWIDTH * ratio, 1 * PARAMS.BLOCKWIDTH);
             }
-        } else if (this.state == 4) {
-            this.attackTime += this.game.clockTick;
-            this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 1) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
-            if (this.attackTime >= 1.5) {
-                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 2) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
-            }
+            ctx.strokeRect(this.x - 120 - this.game.camera.x, this.y - this.game.camera.y - 100, 5.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
 
-            if (this.attackTime >= 3) {
-                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 3) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+            if (this.facing == -1) {
+                ctx.save();
+                ctx.scale(-1, 1);
+            } else if (this.facing == 1) {
+                ctx.save();
+                ctx.scale(1, 1);
             }
-
-            if (this.attackTime >= 4.5) {
-                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 4) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+    
+            let stateModX = 0;
+            let stateModY = 0;
+            if (this.state == 2 || this.state == 3) stateModY = 25;
+            else if (this.state == 4) stateModY = 15;
+            
+            if (this.facing == 1) {
+                this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY- this.game.camera.y, 4);
+            } else if (this.facing == -1) {
+                this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 200 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), this.y - stateModY- this.game.camera.y, 4);
             }
+            ctx.restore();
 
-            if (this.attackTime >= 6) {
-                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 5) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+            if (this.state == 3) {
+                if (this.attackState == 0) {
+                    let xPlacement = 100
+                    let yPlacement = 100
+                    let xRand = Math.floor(Math.random(6) + 1)
+                    let yRand = Math.floor(Math.random(3))
+                    if (xRand % 2 == 0) xPlacement * -1
+                    this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, (this.x + (xPlacement * xRand)) - this.game.camera.x, this.y - (yPlacement * yRand) - this.game.camera.y, 3)
+                } else if (this.attackState == 1) {
+                    this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 150 - this.game.camera.y, 3)
+                }
+            } else if (this.state == 4) {
+                this.attackTime += this.game.clockTick;
+                this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 1) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+                if (this.attackTime >= 1.5) {
+                    this.numOfFire = 2;
+                    this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 2) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+                }
+
+                if (this.attackTime >= 3) {
+                    this.numOfFire = 3;
+                    this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 3) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+                }
+
+                if (this.attackTime >= 4.5) {
+                    this.numOfFire = 4;
+                    this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 4) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+                }
+
+                if (this.attackTime >= 6) {
+                    this.numOfFire = 5;
+                    this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 5) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+                }
             }
         }
 
@@ -310,7 +338,7 @@ class Titan {
             ctx.strokeRect(this.x + 160 - this.game.camera.x, this.y - this.game.camera.y, 226, 410);
             ctx.strokeRect(this.x - 226 - this.game.camera.x, this.y - this.game.camera.y, 226, 410);
         }
-        
+
         if (this.facing == -1) {
             ctx.save();
             ctx.scale(-1, 1);
