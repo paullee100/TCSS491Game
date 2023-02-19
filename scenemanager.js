@@ -8,10 +8,23 @@ class SceneManager {
         this.over = false;
         this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
 
+        //level is completed successfully: this.levelclear == true
+        this.levelclear = false;
+
     };
     clearEntities() {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
+        });
+    };
+    clearEnemyEntities() {
+        this.game.entities.forEach(function (entity) {
+            if(entity instanceof Skeleton){
+                entity.removeFromWorld = true;
+            }
+            if(entity instanceof GreenSlime){
+                entity.removeFromWorld = true;
+            }
         });
     };
     loadLevel(level, xp, yp, transition, title) {
@@ -125,6 +138,18 @@ class SceneManager {
             this.over = true;
             this.loadLevel(GameOver, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
         }
+        if(!this.title && this.levelclear === true){
+            this.clearEnemyEntities();
+        }
+
+        if (this.levelclear && this.game.click) {
+            this.loadnextlevel = false;
+            this.levelclear = false;
+            this.knight = new Knight(this.game);
+            if (this.game.click != null) this.game.click = null;
+            this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
+        }
+
         if(this.over && this.game.click) {
             this.over = false;
             this.knight = new Knight(this.game);
@@ -149,17 +174,18 @@ class SceneManager {
             //ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_883_201.png") , 1.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 883, 201);
             ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_865_183.png") , 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
         }
-
+        if(this.levelclear){
+            //ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/tbc_1024_127.png") , 1.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 883, 201);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/tbc_856_109.png") , 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
+        }
         if(!this.title && !this.over){
             var ratio = this.knight.health / this.knight.maxhealth;
             ctx.strokeStyle = "Black";
             ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
             if(this.knight.health>0){
-                ctx.fillRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH * ratio, 1 *PARAMS.BLOCKWIDTH);
+                ctx.fillRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH * ratio, 0.5 *PARAMS.BLOCKWIDTH);
             }
-            ctx.strokeRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH , 1 *PARAMS.BLOCKWIDTH);
-        
-            
+            ctx.strokeRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH , 0.5 *PARAMS.BLOCKWIDTH);
         }
     }
 

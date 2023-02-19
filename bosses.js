@@ -10,7 +10,8 @@ class Lich {
         this.facing = -1; // right = 1, left = -1
         this.dead = false;
         this.deadCounter = 0;
-        this.health = 250;
+        //this.health = 250; test end screen
+        this.health = 1; //test end screen
         this.maxhealth = 250;
         this.damage = 12.5;
 
@@ -88,6 +89,8 @@ class Lich {
             this.state = 5;
             this.deadCounter += this.game.clockTick;
             if (this.deadCounter >= 1) {
+                //level complete
+                this.game.camera.levelclear = true;
                 this.dead = true;
                 this.removeFromWorld = true;
             }
@@ -174,9 +177,9 @@ class Lich {
             ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
 
             if (this.health > 0) {
-                ctx.fillRect(this.x - 120 - this.game.camera.x, this.y - this.game.camera.y - 100, 5.5 * PARAMS.BLOCKWIDTH * ratio, 1 * PARAMS.BLOCKWIDTH);
+                ctx.fillRect(this.x - 120 - this.game.camera.x, this.y - this.game.camera.y - 100, 5.5 * PARAMS.BLOCKWIDTH * ratio, 0.5 * PARAMS.BLOCKWIDTH);
             }
-            ctx.strokeRect(this.x - 120 - this.game.camera.x, this.y - this.game.camera.y - 100, 5.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
+            ctx.strokeRect(this.x - 120 - this.game.camera.x, this.y - this.game.camera.y - 100, 5.5 * PARAMS.BLOCKWIDTH, 0.5 * PARAMS.BLOCKWIDTH);
 
             if (this.facing == -1) {
                 ctx.save();

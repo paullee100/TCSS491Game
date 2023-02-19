@@ -5,6 +5,7 @@ class Skeleton {
 		this.rightbound = this.x + 300;
 		this.speed = 100;
 		this.health = 50;
+		this.maxhealth = 50;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 0; // stunned = 0, walking = 1, attack = 2, dead = 3
 		this.game.Skeleton = this;
@@ -145,6 +146,16 @@ class Skeleton {
 			ctx.strokeStyle = "red";
 			ctx.strokeRect((this.leftbound) - this.game.camera.x, this.y- this.game.camera.y, 695, 185);
 		}
+		let ratio = this.health / this.maxhealth;
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
+
+		if (this.health > 0) {
+			ctx.fillRect(this.x - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH * ratio, 0.25 * PARAMS.BLOCKWIDTH);
+		}
+		ctx.strokeRect(this.x  - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH, 0.25  * PARAMS.BLOCKWIDTH);
+
+
 		if (this.facing == -1) {
 			ctx.save()
 			ctx.scale(-1, 1)
@@ -183,6 +194,7 @@ class Cyclops {
 		this.state = 1; // stunned = 0, idle = 1, walking = 2, attack1 = 3, attack2 = 4, attack3 = 5, death = 6
 		this.facing = 1; // right = 1, left = -1
 		this.health = 100;
+		this.maxhealth = 100;
 		this.attack = -10;
 		this.speed = 100;
 		this.spritesheet = [];
@@ -258,6 +270,15 @@ class Cyclops {
 			ctx.strokeStyle = "purple";
 			ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 120, 240);
 		}
+		// not adjusted yet
+		let ratio = this.health / this.maxhealth;
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
+
+		if (this.health > 0) {
+			ctx.fillRect(this.x - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH * ratio, 0.25 * PARAMS.BLOCKWIDTH);
+		}
+		ctx.strokeRect(this.x  - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH, 0.25  * PARAMS.BLOCKWIDTH);
 
 		if (this.facing == -1) {
 			ctx.save();
@@ -287,6 +308,7 @@ class GreenSlime {
 		this.dead = false;
 		this.speed = 150;
 		this.health = 50;
+		this.maxhealth = 50;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 1; // damage/stunned = 0,  jump = 1, jump2 = 2, idle = 3, death = 4 
 		this.game.GreenSlime = this;
@@ -392,6 +414,14 @@ class GreenSlime {
 				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 90, 90);
 			}
 		}
+		let ratio = this.health / this.maxhealth;
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
+
+		if (this.health > 0) {
+			ctx.fillRect(this.x - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH * ratio, 0.25 * PARAMS.BLOCKWIDTH);
+		}
+		ctx.strokeRect(this.x  - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH, 0.25  * PARAMS.BLOCKWIDTH);
 
 		/*
 		if (this.state == 3) {
@@ -436,6 +466,7 @@ class RedSlime {
 		this.dead = false;
 		this.speed = 150;
 		this.health = 50;
+		this.maxhealth = 50;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 1; // damaged/stunned = 0,  jump = 1, idle = 2, death = 3 
 		this.game.RedSlime = this;
@@ -540,6 +571,14 @@ class RedSlime {
 				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
 			}
 		}
+		let ratio = this.health / this.maxhealth;
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
+
+		if (this.health > 0) {
+			ctx.fillRect(this.x - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH * ratio, 0.25 * PARAMS.BLOCKWIDTH);
+		}
+		ctx.strokeRect(this.x  - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH, 0.25  * PARAMS.BLOCKWIDTH);
 
 		if (this.facing == -1) {
 			ctx.save()
@@ -572,6 +611,7 @@ class YellowSlime {
 		this.dead = false;
 		this.speed = 150;
 		this.health = 50;
+		this.maxhealth = 50;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 1; // damaged/stunned = 0,  jump = 1, idle = 2, death = 3 
 		this.game.YellowSlime = this;
@@ -676,7 +716,15 @@ class YellowSlime {
 				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
 			}	
 		}
-		
+		let ratio = this.health / this.maxhealth;
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
+
+		if (this.health > 0) {
+			ctx.fillRect(this.x - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH * ratio, 0.25 * PARAMS.BLOCKWIDTH);
+		}
+		ctx.strokeRect(this.x  - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH, 0.25  * PARAMS.BLOCKWIDTH);
+
 		if (this.facing == -1) {
 			ctx.save()
 			ctx.scale(-1, 1)

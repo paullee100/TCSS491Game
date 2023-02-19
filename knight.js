@@ -86,7 +86,7 @@ class Knight {
         } else {
             const TICK = this.game.clockTick;
             //lock movement when title is on screen
-            if(!this.game.camera.title && !this.game.camera.over) {
+            if(!this.game.camera.title && !this.game.camera.over && !this.game.camera.levelclear) {
                 if (this.state == 0 || (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7 && this.state != 8 && this.state != 9 && this.state != 11)) {
                     if (this.game.keys["k"] || this.game.keys["K"] || this.game.click) { // attack
                         this.state = 1;
