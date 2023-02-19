@@ -125,10 +125,12 @@ class SceneManager {
             this.over = true;
             this.loadLevel(GameOver, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
         }
-        // if(this.over && this.game.click){
-        //     this.over = false;
-        //     this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
-        // }
+        if(this.over && this.game.click) {
+            this.over = false;
+            this.knight = new Knight(this.game);
+            if (this.game.click != null) this.game.click = null;
+            this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
+        }
         this.updateAudio();
 
         let midpoint = PARAMS.CANVAS_WIDTH/2 - PARAMS.BLOCKWIDTH / 2;

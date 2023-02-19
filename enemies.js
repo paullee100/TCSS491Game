@@ -166,7 +166,6 @@ class Skeleton {
 
 		} else {
 			this.game.Lich.maxSummon--;
-			console.log(this.game.Lich.maxSummon);
 			this.removeFromWorld = true;
 			console.log("is ded");
 		}
