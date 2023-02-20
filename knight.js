@@ -107,7 +107,7 @@ class Knight {
                         this.state = 5;
                         this.velocity.x = 0;
                         ASSET_MANAGER.playAsset("./sounds/knight_jump.mp3");
-                    } else if (this.game.keys["l"] || this.game.keys["L"]) { // block
+                    } else if (this.game.keys["l"] || this.game.keys["L"] || this.game.rightclick) { // block
                         if (this.state == 10) {
                             this.state = 10;
                             this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
@@ -123,6 +123,9 @@ class Knight {
                             }
                             ASSET_MANAGER.playAsset("./sounds/knight_block.mp3");
                         }
+                        if (this.game.rightclick != null) {
+                            this.game.rightclick = null;
+                        }
                         this.velocity.x = 0;
                     } else if (this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) { // move left
                         console.log("A is pressed");
@@ -135,6 +138,10 @@ class Knight {
                         this.facing = 1;
                         this.state = 0;
                         this.velocity.x = RUN;
+                        //this.velocity.y = 0;
+                    } else if (this.game.keys["2"]) { // throwing knife
+                        //this.knife = new ThrowingKnife(this.game, this.position.x, this.position.y, this.facing);
+                        this.game.addEntitySpecific(new ThrowingKnife(this.game, this.position.x, this.position.y, this.facing), 1);
                         //this.velocity.y = 0;
                     } else {
                         this.state = 3;
@@ -285,6 +292,14 @@ class Knight {
                         this.position ={x:9 * PARAMS.BLOCKWIDTH, y:8 * PARAMS.BLOCKWIDTH}
                         this.health=0;
                     }
+                    if (this.game.keys["1"]) {
+                        if (this.game.camera.potion > 0) {
+                            this.health = Math.min(this.health + 20, this.maxhealth);
+                            this.game.camera.potion -= 1;
+                            this.game.keys["1"] = false;
+                            ASSET_MANAGER.playAsset("./sounds/heal.mp3");
+                        };
+                    };
                     
             }//test  
         }

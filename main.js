@@ -47,6 +47,13 @@ ASSET_MANAGER.queueDownload("./sprites/Knight_Block.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Parry.png");
 // items
 ASSET_MANAGER.queueDownload("./sprites/Items/medium_potion.png");
+ASSET_MANAGER.queueDownload("./sprites/Items/throwing_knife.png");
+
+//chest
+ASSET_MANAGER.queueDownload("./sprites/Chest/chest_closed.png");
+ASSET_MANAGER.queueDownload("./sprites/Items/chest_opened.png");
+ASSET_MANAGER.queueDownload("./sprites/Items/mimic_idle.png");
+ASSET_MANAGER.queueDownload("./sprites/Items/mimic_attack.png");
 
 // enemy
 ASSET_MANAGER.queueDownload("./sprites/Skeleton/Skeletonhurt.png");
@@ -109,6 +116,7 @@ ASSET_MANAGER.queueDownload("./sounds/knight_roll.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_step.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_jump.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_block.mp3");
+ASSET_MANAGER.queueDownload("./sounds/heal.mp3");
 
 // music
 ASSET_MANAGER.queueDownload("./music/forsaken_forest.mp3"); //greenpath from hollow knight

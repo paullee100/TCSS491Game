@@ -312,8 +312,8 @@ class GreenSlime {
 		Object.assign(this, { game, x, y });
 		this.dead = false;
 		this.speed = 150;
-		this.health = 50;
-		this.maxhealth = 50;
+		this.health = 30;
+		this.maxhealth = 30;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 1; // damage/stunned = 0,  jump = 1, jump2 = 2, idle = 3, death = 4 
 		this.game.GreenSlime = this;
@@ -517,18 +517,10 @@ class RedSlime {
 				if (entity instanceof Knight) {
 					//this.state = 3;
 					this.speed = 0;
-					if (this.animation[1].currentFrame() == 2) {
-						if (this.facing == 1) {
-							//this.attackBB = new AttackBox(this.game, this, this.x + 100, this.y, 122, 185, 2, 3, this.damage);
-						}
-						else {
-							//this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
-						}
-					}
 					if (this.state == 1) {
-						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
+						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 0, 9, this.damage);
 					} else if (this.state == 2) {
-						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 70, 95, 90, 2, 3, this.damage);
+						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 70, 95, 90, 0, 8, this.damage);
 					}
 					//this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
 					console.log("slime has collided")
