@@ -230,6 +230,10 @@ class Knight {
                                 that.game.camera.potion += 1;
                                 entity.removeFromWorld = true;
                             }
+                            if (entity instanceof Bomb) {
+                                that.game.camera.bomb += 1;
+                                entity.removeFromWorld = true;
+                            }
                         };
                         if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
                         && this.state == 9 && this.animation[9].currentFrame() == 0 && (this.facing !== entity.facing)) {

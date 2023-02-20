@@ -178,8 +178,10 @@ class Skeleton {
 
 		} else {
 			let rng = Math.floor(Math.random() * 100);
-			if (rng <= 10) {
+			if (rng < 10) {
 				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
+			} else if (rng >= 10 && rng <= 20) {
+				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y), 1);
 			}
 			this.game.Lich.maxSummon--;
 			this.removeFromWorld = true;
@@ -307,33 +309,54 @@ class Cyclops {
 	};
 }
 
-class GreenSlime {
-	constructor(game, x, y) {
-		Object.assign(this, { game, x, y });
+class Slime {
+	constructor(game, x, y, color) {
+		Object.assign(this, { game, x, y, color});
 		this.dead = false;
 		this.speed = 150;
 		this.health = 50;
-		this.maxhealth = 50;
 		this.facing = 1; // right = 1 left = -1
-		this.state = 1; // damage/stunned = 0,  jump = 1, jump2 = 2, idle = 3, death = 4 
-		this.game.GreenSlime = this;
+		this.state = 1; // damage/stunned = 0,  jump = 1, idle = 2, death = 3
+		this.game.Slime = this;
 		this.deathtime = 0;
 		this.idletime = 0;
 		this.spritesheet = [];
 		this.animation = [];
 		this.damage = 5;
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Damage.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Jump.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Jump2.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Idle.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Death.png"));
-
-		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 16, 18, 5, 0.1, 0.1, false, false));
-		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 15.15, 30, 10, 0.1, 1, false, false));
-		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 15.16, 47, 10, 0.1, 1, false, true));
-		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 15.9, 18, 9, 0.1, 1, false, true));
-		this.animation.push(new Animator(this.spritesheet[4], 0, 0, 15.5, 18, 5, .15, 1, false, true));
+		if (color == "red") {
+			this.health += 40;
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Damage.png"));
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Jump.png"));
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Idle.png"));
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Death.png"));
+			//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+			this.animation.push(new Animator(this.spritesheet[0], 0, 0, 16, 18, 5, .1, 0, false, true));
+			this.animation.push(new Animator(this.spritesheet[1], 0, 0, 16, 31, 10, 0.1, 0, false, false));
+			this.animation.push(new Animator(this.spritesheet[2], 1, 0, 16, 17, 10, 0.1, 0, false, true));
+			this.animation.push(new Animator(this.spritesheet[3], 0, 0, 16, 18, 5, 0.15, 0, false, false));
+		} else if (color == "yellow") {
+			this.health += 20;
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Damage.png"));
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Jump.png"));
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Idle.png"));
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Death.png"));
+			//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+			this.animation.push(new Animator(this.spritesheet[0], 0, 0, 16, 18, 5, .1, 0, false, true));
+			this.animation.push(new Animator(this.spritesheet[1], 0, 0, 16, 31, 10, 0.1, 0, false, false));
+			this.animation.push(new Animator(this.spritesheet[2], 0, 0, 16, 17, 10, 0.1, 0, false, true));
+			this.animation.push(new Animator(this.spritesheet[3], 0, 0, 16, 18, 5, 0.15, 0, false, false));
+		} else {
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Damage.png"));
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Jump.png"));
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Idle.png"));
+			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Green/Green_Slime_Death.png"));
+			//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+			this.animation.push(new Animator(this.spritesheet[0], 0, 0, 16, 18, 5, 0.1, 0.1, false, false));
+			this.animation.push(new Animator(this.spritesheet[1], 0, 0, 15.15, 30, 10, 0.1, 1, false, false));
+			this.animation.push(new Animator(this.spritesheet[2], 0, 0, 15.9, 18, 9, 0.1, 1, false, true));
+			this.animation.push(new Animator(this.spritesheet[3], 0, 0, 15.5, 18, 5, .15, 1, false, true));
+		}
+		this.maxhealth = this.health;
 		this.updateBB();
 	}
 	updateBB() {
@@ -370,7 +393,7 @@ class GreenSlime {
 					}
 					if (this.state == 1) {
 						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 90, 160, 2, 3, this.damage);
-					} else if (this.state == 3) {
+					} else if (this.state == 2) {
 						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 70, 90, 90, 2, 3, this.damage);
 					}
 					//this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
@@ -391,7 +414,7 @@ class GreenSlime {
 		});
 		if (this.animation[this.state].isDone()) {
 			var tempState = this.state;
-			this.state = 3;
+			this.state = 2;
 			this.animation[tempState].elapsedTime = 0;
 			if (this.facing == 1) {
 				this.speed = 0;
@@ -402,7 +425,7 @@ class GreenSlime {
 		this.updateBB();
 		if (this.health <= 0) {
 			this.speed = 0;
-			this.state = 4;
+			this.state = 3;
 			this.deathtime += this.game.clockTick;
 			if (this.deathtime >= .7) {
 				this.dead = true;
@@ -428,14 +451,6 @@ class GreenSlime {
 		}
 		ctx.strokeRect(this.x  - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH, 0.25  * PARAMS.BLOCKWIDTH);
 
-		/*
-		if (this.state == 3) {
-			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
-		} else {
-			ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
-		}
-		*/
-		//ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
 		
 		if (this.facing == -1) {
 			ctx.save()
@@ -447,10 +462,9 @@ class GreenSlime {
 		//ctx.save();
 		var stateMod = 0;
 		if (this.state == 0) stateMod = 65;
-		else if (this.state == 1) stateMod = 0;
-		else if (this.state == 2) stateMod = 0;
-		else if (this.state == 3) stateMod = 70;
-		else if (this.state == 4) stateMod = 65;
+		else if (this.state == 1) stateMod = -20;
+		else if (this.state == 2) stateMod = 70;
+		else if (this.state == 3) stateMod = 65;
 		if (this.dead == false) {
 			if (this.facing == 1) {
 				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - this.game.camera.x, this.y - this.game.camera.y + stateMod, 6)
@@ -459,299 +473,15 @@ class GreenSlime {
 			}
 
 		} else {
+			let rng = Math.floor(Math.random() * 100);
+			if (rng < 10) {
+				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
+			} else if (rng >= 10 && rng <= 20) {
+				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y), 1);
+			}
 			this.removeFromWorld = true;
-			console.log("slime is ded");
+			console.log(this.color + " slime is ded");
 		}
 		ctx.restore();
 	}
 }
-class RedSlime {
-	constructor(game, x, y) {
-		Object.assign(this, { game, x, y });
-		this.dead = false;
-		this.speed = 150;
-		this.health = 50;
-		this.maxhealth = 50;
-		this.facing = 1; // right = 1 left = -1
-		this.state = 1; // damaged/stunned = 0,  jump = 1, idle = 2, death = 3 
-		this.game.RedSlime = this;
-		this.deathtime = 0;
-		this.idletime = 0;
-		this.spritesheet = [];
-		this.animation = [];
-		this.damage = 5;
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Damage.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Jump.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Idle.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Death.png"));
-
-		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 16, 18, 5, .1, 0, false, true));
-		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 16, 31, 10, 0.1, 0, false, false));
-		this.animation.push(new Animator(this.spritesheet[2], 1, 0, 16, 17, 10, 0.1, 0, false, true));
-		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 16, 18, 5, 0.15, 0, false, false));
-	
-		this.updateBB();
-	};
-	updateBB() {
-		this.lastBB = this.BB;
-		this.BB = new BoundingBox(this.x, this.y + 10, 95, 160, "enemy", this);
-	};
-	update() {
-
-		this.x += this.speed * this.game.clockTick;
-		this.idletime += this.game.clockTick;
-		if (this.idletime >= 2) {
-			this.state = 1;
-			this.idletime = 0;
-			if (this.facing == 1) {
-				this.speed = 150;
-			} else {
-				this.speed = -150;
-			}
-		}
-		// collision
-		var that = this;
-		this.game.entities.forEach(entity => {
-			if (entity.BB && that.BB.collide(entity.BB) /*&& this.state !== 3*/) {
-				if (entity instanceof Knight) {
-					//this.state = 3;
-					this.speed = 0;
-					if (this.animation[1].currentFrame() == 2) {
-						if (this.facing == 1) {
-							//this.attackBB = new AttackBox(this.game, this, this.x + 100, this.y, 122, 185, 2, 3, this.damage);
-						}
-						else {
-							//this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
-						}
-					}
-					if (this.state == 1) {
-						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
-					} else if (this.state == 2) {
-						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 70, 95, 90, 2, 3, this.damage);
-					}
-					//this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
-					console.log("slime has collided")
-				}
-				if (entity instanceof Tile) {
-					if ((that.lastBB.right) <= entity.BB.left) {
-						this.facing = -1;
-						this.speed = -150;
-					}
-					else if ((that.lastBB.left) >= entity.BB.right) {
-						this.facing = 1;
-						this.speed = 150;
-
-					}
-				};
-			};
-		});
-		if (this.animation[this.state].isDone()) {
-			var tempState = this.state;
-			this.state = 2;
-			this.animation[tempState].elapsedTime = 0;
-			if (this.facing == 1) {
-				this.speed = 0;
-			} else {
-				this.speed = 0;
-			}
-		};
-		this.updateBB();
-		if (this.health <= 0) {
-			this.speed = 0;
-			this.state = 3;
-			this.deathtime += this.game.clockTick;
-			if (this.deathtime >= .7) {
-				this.dead = true;
-			}
-		}
-	};
-	draw(ctx) {
-		if (PARAMS.DEBUG) {
-			// hitbox
-			ctx.strokeStyle = "red";
-			if (this.state == 1) {
-				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
-			} else {
-				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
-			}
-		}
-		let ratio = this.health / this.maxhealth;
-		ctx.strokeStyle = "black";
-		ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
-
-		if (this.health > 0) {
-			ctx.fillRect(this.x - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH * ratio, 0.25 * PARAMS.BLOCKWIDTH);
-		}
-		ctx.strokeRect(this.x  - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH, 0.25  * PARAMS.BLOCKWIDTH);
-
-		if (this.facing == -1) {
-			ctx.save()
-			ctx.scale(-1, 1)
-		} else if (this.facing == 1) {
-			ctx.save()
-			ctx.scale(1, 1)
-		}
-		var stateMod = 0;
-		if (this.state == 0) stateMod = 60;
-		else if (this.state == 1) stateMod = -10;
-		else if (this.state == 2) stateMod = 70;
-		else if (this.state == 3) stateMod = 60;
-		if (this.dead == false) {
-			if (this.facing == 1) {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - (this.facing * this.game.camera.x), this.y - this.game.camera.y + stateMod, 6)
-			} else {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95) - (this.facing * this.game.camera.x), this.y - this.game.camera.y + stateMod, 6)
-			}
-		} else {
-			this.removeFromWorld = true;
-			console.log("slime is ded");
-		}
-		ctx.restore();
-	};
-};
-class YellowSlime {
-	constructor(game, x, y) {
-		Object.assign(this, { game, x, y });
-		this.dead = false;
-		this.speed = 150;
-		this.health = 50;
-		this.maxhealth = 50;
-		this.facing = 1; // right = 1 left = -1
-		this.state = 1; // damaged/stunned = 0,  jump = 1, idle = 2, death = 3 
-		this.game.YellowSlime = this;
-		this.deathtime = 0;
-		this.idletime = 0;
-		this.spritesheet = [];
-		this.animation = [];
-		this.damage = 5;
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Damage.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Jump.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Idle.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Death.png"));
-
-		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 16, 18, 5, .1, 0, false, true));
-		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 16, 31, 10, 0.1, 0, false, false));
-		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 16, 17, 10, 0.1, 0, false, true));
-		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 16, 18, 5, 0.15, 0, false, false));
-
-		this.updateBB();
-	};
-	updateBB() {
-		this.lastBB = this.BB;
-		this.BB = new BoundingBox(this.x, this.y + 10, 95, 160, "enemy", this);
-	};
-	update() {
-
-		this.x += this.speed * this.game.clockTick;
-		this.idletime += this.game.clockTick;
-		if (this.idletime >= 2) {
-			this.state = 1;
-			this.idletime = 0;
-			if (this.facing == 1) {
-				this.speed = 150;
-			} else {
-				this.speed = -150;
-			}
-		}
-		// collision
-		var that = this;
-		this.game.entities.forEach(entity => {
-			if (entity.BB && that.BB.collide(entity.BB) /*&& this.state !== 3*/) {
-				if (entity instanceof Knight) {
-					//this.state = 3;
-					this.speed = 0;
-					if (this.animation[1].currentFrame() == 2) {
-						if (this.facing == 1) {
-							//this.attackBB = new AttackBox(this.game, this, this.x + 100, this.y, 122, 185, 2, 3, this.damage);
-						}
-						else {
-							//this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
-						}
-					}
-					if (this.state == 1) {
-						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
-					} else if (this.state == 2) {
-						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 70, 95, 90, 2, 3, this.damage);
-					}
-					//this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 95, 160, 2, 3, this.damage);
-					console.log("slime has collided")
-				}
-				if (entity instanceof Tile) {
-					if ((that.lastBB.right) <= entity.BB.left) {
-						this.facing = -1;
-						this.speed = -150;
-					}
-					else if ((that.lastBB.left) >= entity.BB.right) {
-						this.facing = 1;
-						this.speed = 150;
-
-					}
-				};
-			};
-		});
-		if (this.animation[this.state].isDone()) {
-			var tempState = this.state;
-			this.state = 2;
-			this.animation[tempState].elapsedTime = 0;
-			if (this.facing == 1) {
-				this.speed = 0;
-			} else {
-				this.speed = 0;
-			}
-		};
-		this.updateBB();
-		if (this.health <= 0) {
-			this.speed = 0;
-			this.state = 3;
-			this.deathtime += this.game.clockTick;
-			if (this.deathtime >= .7) {
-				this.dead = true;
-			}
-		}
-	};
-	draw(ctx) {
-		if (PARAMS.DEBUG) {
-			// hitbox
-			ctx.strokeStyle = "red";
-			if (this.state == 1) {
-				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 10) - this.game.camera.y, 95, 160);
-			} else {
-				ctx.strokeRect(this.x - this.game.camera.x, (this.y + 70) - this.game.camera.y, 95, 90);
-			}	
-		}
-		let ratio = this.health / this.maxhealth;
-		ctx.strokeStyle = "black";
-		ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
-
-		if (this.health > 0) {
-			ctx.fillRect(this.x - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH * ratio, 0.25 * PARAMS.BLOCKWIDTH);
-		}
-		ctx.strokeRect(this.x  - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2.5 * PARAMS.BLOCKWIDTH, 0.25  * PARAMS.BLOCKWIDTH);
-
-		if (this.facing == -1) {
-			ctx.save()
-			ctx.scale(-1, 1)
-		} else if (this.facing == 1) {
-			ctx.save()
-			ctx.scale(1, 1)
-		}
-		var stateMod = 0;
-		if (this.state == 0) stateMod = 60;
-		else if (this.state == 1) stateMod = -10;
-		else if (this.state == 2) stateMod = 70;
-		else if (this.state == 3) stateMod = 60;
-		if (this.dead == false) {
-			if (this.facing == 1) {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - (this.facing * this.game.camera.x), this.y - this.game.camera.y + stateMod, 6)
-			} else {
-				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 95) - (this.facing * this.game.camera.x), this.y - this.game.camera.y + stateMod, 6)
-			}
-		} else {
-			this.removeFromWorld = true;
-			console.log("slime is ded");
-		}
-		ctx.restore();
-	};
-};
