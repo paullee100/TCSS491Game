@@ -178,8 +178,10 @@ class Skeleton {
 
 		} else {
 			let rng = Math.floor(Math.random() * 100);
-			if (rng <= 10) {
+			if (rng < 10) {
 				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
+			} else if (rng >= 10 && rng <= 20) {
+				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y), 1);
 			}
 			this.game.Lich.maxSummon--;
 			this.removeFromWorld = true;
@@ -313,7 +315,6 @@ class Slime {
 		this.dead = false;
 		this.speed = 150;
 		this.health = 50;
-		this.maxhealth = 50;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 1; // damage/stunned = 0,  jump = 1, idle = 2, death = 3
 		this.game.Slime = this;
@@ -323,6 +324,7 @@ class Slime {
 		this.animation = [];
 		this.damage = 5;
 		if (color == "red") {
+			this.health += 40;
 			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Damage.png"));
 			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Jump.png"));
 			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Red/Red_Slime_Idle.png"));
@@ -333,6 +335,7 @@ class Slime {
 			this.animation.push(new Animator(this.spritesheet[2], 1, 0, 16, 17, 10, 0.1, 0, false, true));
 			this.animation.push(new Animator(this.spritesheet[3], 0, 0, 16, 18, 5, 0.15, 0, false, false));
 		} else if (color == "yellow") {
+			this.health += 20;
 			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Damage.png"));
 			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Jump.png"));
 			this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Yellow/Yellow_Slime_Idle.png"));
@@ -353,6 +356,7 @@ class Slime {
 			this.animation.push(new Animator(this.spritesheet[2], 0, 0, 15.9, 18, 9, 0.1, 1, false, true));
 			this.animation.push(new Animator(this.spritesheet[3], 0, 0, 15.5, 18, 5, .15, 1, false, true));
 		}
+		this.maxhealth = this.health;
 		this.updateBB();
 	}
 	updateBB() {
@@ -458,7 +462,7 @@ class Slime {
 		//ctx.save();
 		var stateMod = 0;
 		if (this.state == 0) stateMod = 65;
-		else if (this.state == 1) stateMod = 0;
+		else if (this.state == 1) stateMod = -20;
 		else if (this.state == 2) stateMod = 70;
 		else if (this.state == 3) stateMod = 65;
 		if (this.dead == false) {
@@ -469,11 +473,9 @@ class Slime {
 			}
 
 		} else {
+			this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y), 1);
 			this.removeFromWorld = true;
-			if (this.color == 'green') {
-				console.log(this.color + " slime is ded");
-			}
-			//console.log(this.color + " slime is ded");
+			console.log(this.color + " slime is ded");
 		}
 		ctx.restore();
 	}

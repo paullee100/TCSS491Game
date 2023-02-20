@@ -58,7 +58,7 @@ var levelOne = {
     Music:["./music/forsaken_forest.mp3"],
     Lich: [{x:37+(25*4),y:(390/64)}],
     Skeleton: [{ x: 23.5, y: (540 / 64) }, { x: 8 + (25 * 2), y: (540 / 64) }],
-    Slime: [{ x: 10, y: 17.5 , color: "yellow"}],
+    Slime: [{ x: 10, y: 17.5 , color: "green"}],
     //RedSlime: [{ x: 10, y: (540 / 64) }],
     //YellowSlime: [{ x: 10, y: (540 / 64) }],
     Tree: [{x:(55/64),y:4},{x:15+(25*2),y:3},{x:14+(25*1),y:4},{x:20,y:4}],

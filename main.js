@@ -47,7 +47,7 @@ ASSET_MANAGER.queueDownload("./sprites/Knight_Block.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Parry.png");
 // items
 ASSET_MANAGER.queueDownload("./sprites/Items/medium_potion.png");
-
+ASSET_MANAGER.queueDownload("./sprites/Items/medium_bomb.png");
 // enemy
 ASSET_MANAGER.queueDownload("./sprites/Skeleton/Skeletonhurt.png");
 ASSET_MANAGER.queueDownload("./sprites/Skeleton/Skeleton.png");

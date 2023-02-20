@@ -174,7 +174,9 @@ class SceneManager {
 
         if(this.over){
             //ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_883_201.png") , 1.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 883, 201);
-            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_865_183.png") , 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_865_183.png"), 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
+            this.bomb = 0;
+            this.potion = 0;
         }
         if(this.levelclear){
             //ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/tbc_1024_127.png") , 1.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 883, 201);
@@ -188,10 +190,13 @@ class SceneManager {
                 ctx.fillRect(0.5*PARAMS.BLOCKWIDTH, 0.5*PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH * ratio, 0.5 *PARAMS.BLOCKWIDTH);
             }
             ctx.strokeRect(0.5 * PARAMS.BLOCKWIDTH, 0.5 * PARAMS.BLOCKWIDTH, 5.5 * PARAMS.BLOCKWIDTH, 0.5 * PARAMS.BLOCKWIDTH);
+
             ctx.fillStyle = "White";
             ctx.font = PARAMS.BLOCKWIDTH / 2 + 'px "Press Start 2P"';
-            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_potion.png"), 12 * PARAMS.BLOCKWIDTH, - 20)
+            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_potion.png"), 12 * PARAMS.BLOCKWIDTH, - 22)
+            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_bomb.png"), 14 * PARAMS.BLOCKWIDTH, .15 * PARAMS.BLOCKWIDTH)
             ctx.fillText("x" + this.potion, 13 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
+            ctx.fillText("x" + this.bomb, 15 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
         }
     }
 
