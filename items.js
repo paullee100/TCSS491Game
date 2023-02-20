@@ -34,7 +34,35 @@ class Potion {
         }
         ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y)
     };
-}
+};
+
+class ThrowingKnife {
+    constructor(game, x, y, facing) {
+
+        Object.assign(this, { game, x, y, facing});
+        this.start = x;
+        this.damage = 5;
+        this.dead = false;
+        this.speed = 1000;
+        this.BB = new BoundingBox(this.x, this.y, 10, 10, "player", this);
+        this.spritesheet = [];
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Items/throwing_knife.png"));
+
+    }
+    updateBB() {
+        this.BB = new BoundingBox(this.x, this.y, 10, 10, "player", this);
+    };
+
+    update() {
+        this.x += this.speed * this.facing;
+        if (this.x = this.x + (this.speed*3)) this.removeFromWorld = true;
+    };
+
+    draw(ctx) {
+        if (this.removeFromWorld !== true) ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y, 1, 1);
+    };
+};
+
 class Bomb {
     constructor(game, x, y) {
         console.log('bomb being made')

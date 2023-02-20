@@ -314,7 +314,8 @@ class Slime {
 		Object.assign(this, { game, x, y, color});
 		this.dead = false;
 		this.speed = 150;
-		this.health = 50;
+		this.health = 30;
+		this.maxhealth = 30;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 1; // damage/stunned = 0,  jump = 1, idle = 2, death = 3
 		this.game.Slime = this;
