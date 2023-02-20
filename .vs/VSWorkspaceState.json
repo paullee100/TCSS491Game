@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\sprites"
+    "\\sprites",
+    "\\sprites\\Items"
   ],
-  "SelectedNode": "\\bosses.js",
+  "SelectedNode": "\\knight.js",
   "PreviewInSolutionExplorer": false
 }
