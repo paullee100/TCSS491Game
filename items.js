@@ -4,7 +4,7 @@ class Potion {
         Object.assign(this, { game, x, y });
         this.velocity = 300;
         this.spritesheet = [];
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Items/potion.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Items/medium_potion.png"));
         this.updateBB();
     }
     updateBB() {
@@ -41,7 +41,7 @@ class Bomb {
         Object.assign(this, { game, x, y });
         this.velocity = 300;
         this.spritesheet = [];
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Items/bomb.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Items/medium_bomb.png"));
         this.updateBB();
     }
     updateBB() {
