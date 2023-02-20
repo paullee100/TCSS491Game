@@ -24,7 +24,7 @@ class SceneManager {
             if(entity instanceof Skeleton){
                 entity.removeFromWorld = true;
             }
-            if(entity instanceof GreenSlime){
+            if(entity instanceof Slime){
                 entity.removeFromWorld = true;
             }
         });
