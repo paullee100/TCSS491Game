@@ -5,6 +5,7 @@ class SceneManager {
         this.knight = new Knight(game);
         this.potion = 0;
         this.bomb = 0;
+        this.knife = 0;
         this.x = 0;
         this.title = true;
         this.over = false;

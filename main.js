@@ -122,6 +122,7 @@ ASSET_MANAGER.queueDownload("./sounds/knight_block.mp3");
 ASSET_MANAGER.queueDownload("./sounds/knight_takehit.mp3");
 ASSET_MANAGER.queueDownload("./sounds/heal.mp3");
 ASSET_MANAGER.queueDownload("./sounds/bomb_explosion.mp3");
+ASSET_MANAGER.queueDownload("./sounds/throwing_knife.mp3");
 
 // music
 ASSET_MANAGER.queueDownload("./music/forsaken_forest.mp3"); //greenpath from hollow knight

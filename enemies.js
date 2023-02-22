@@ -182,6 +182,8 @@ class Skeleton {
 				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
 			} else if (rng >= 10 && rng <= 20) {
 				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
+			} else if (rng >= 20 && rng <= 100) {
+				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0));
 			}
 			this.game.Lich.maxSummon--;
 			this.removeFromWorld = true;
