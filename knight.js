@@ -237,6 +237,10 @@ class Knight {
                                 that.game.camera.bomb += 1;
                                 entity.removeFromWorld = true;
                             }
+                            if (entity instanceof ThrowingKnife && entity.state == 0) {
+                                that.game.camera.knife += 5;
+                                entity.removeFromWorld = true;
+                            }
                         };
                         if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
                         && this.state == 9 && this.animation[9].currentFrame() == 0 && (this.facing !== entity.facing)) {
@@ -302,11 +306,21 @@ class Knight {
                         };
                     };
                     if (this.game.keys["2"]) { // bomb
-                        //this.knife = new ThrowingKnife(this.game, this.position.x, this.position.y, this.facing);
-                        this.game.addEntitySpecific(new Bomb(this.game, this.position.x, this.position.y, 1), 1);
-                        this.game.camera.bomb -= 1;
-                        this.game.keys["2"] = false;
+                        if (this.game.camera.bomb > 0) {
+                            this.game.addEntitySpecific(new Bomb(this.game, this.position.x, this.position.y, 1), 1);
+                            this.game.camera.bomb -= 1;
+                            this.game.keys["2"] = false;
+                        };
                     };
+                    if (this.game.keys["3"]) { // bomb
+                        if (this.game.camera.knife > 0) {
+                            if (this.facing == 1) this.game.addEntitySpecific(new ThrowingKnife(this.game, this.position.x + 80, this.position.y + 50, this.facing, 1));
+                            if (this.facing == -1) this.game.addEntitySpecific(new ThrowingKnife(this.game, this.position.x + 20, this.position.y + 50, this.facing, 1));
+                            ASSET_MANAGER.playAsset("./sounds/throwing_knife.mp3");
+                            this.game.camera.knife -= 1;
+                            this.game.keys["3"] = false;
+                        };
+                };
                     
             }//test  
         }

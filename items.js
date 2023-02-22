@@ -37,29 +37,78 @@ class Potion {
 };
 
 class ThrowingKnife {
-    constructor(game, x, y, facing) {
-
-        Object.assign(this, { game, x, y, facing});
+    constructor(game, x, y, facing, state) {
+        console.log('throwing knife being made')
+        Object.assign(this, { game, x, y, facing, state}); // state: 0 = pickup, 1 = thrown
         this.start = x;
         this.damage = 5;
         this.dead = false;
-        this.speed = 1000;
-        this.BB = new BoundingBox(this.x, this.y, 10, 10, "player", this);
+        this.speed = 1500;
         this.spritesheet = [];
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Items/throwing_knife.png"));
+        this.updateBB();
 
     }
     updateBB() {
-        this.BB = new BoundingBox(this.x, this.y, 10, 10, "player", this);
+        this.BB = new BoundingBox(this.x, this.y, 40, 40, "player", this);
     };
 
     update() {
-        this.x += this.speed * this.facing;
-        if (this.x = this.x + (this.speed*3)) this.removeFromWorld = true;
+        if (this.state == 0) {
+            this.y += this.velocity * this.game.clockTick;
+            var that = this;
+            this.game.entities.forEach(entity => {
+                if (entity.BB && that.BB.collide(entity.BB)) {
+                    if (entity instanceof Tile) {
+                        if ((that.lastBB.bottom) <= entity.BB.top) { //landing
+                            console.log('knife landed')
+                            that.velocity = -0;
+                            that.y = entity.y;
+                        }
+                    };
+                };
+            });
+        }
+        if (this.state == 1) {
+            this.updateBB();
+            this.x += (this.speed * this.facing) * this.game.clockTick;
+            if (this.facing == 1) {
+                if (this.x >= this.start + this.speed) this.removeFromWorld = true;
+            } else {
+                if (this.x <= this.start - this.speed) this.removeFromWorld = true;
+            }
+            var that = this;
+            this.game.entities.forEach(entity => {
+                if (entity.BB && that.BB.collide(entity.BB)) {
+                    if (entity instanceof Tile) {
+                        that.removeFromWorld = true;
+                    };
+                };
+            });
+        };
+        this.game.entities.forEach(entity => {
+            if (entity.BB && this.BB.collide(entity.BB) && entity.BB.type == "enemy" && this.state == 1) {
+                entity.health -= (this.damage);
+                this.removeFromWorld = true;
+            }
+        });
     };
 
     draw(ctx) {
-        if (this.removeFromWorld !== true) ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y, 1, 1);
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = "red";
+            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 40, 40);
+        }
+        if (this.facing == -1) {
+            ctx.save();
+            ctx.scale(-1, 1);
+        } else if (this.facing == 1) {
+            ctx.save();
+            ctx.scale(1, 1);
+        }
+        if (this.state == 0) ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y, 60, 60);
+        if (this.state == 1) ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y, 40, 40);
+        ctx.restore();
     };
 };
 
