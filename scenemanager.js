@@ -55,7 +55,7 @@ class SceneManager {
         if(level.Bomb){
             for (var i = 0; i < level.Bomb.length; i++) {
                 let bomb = level.Bomb[i];
-                this.game.addEntity(new Bomb(this.game, bomb.x * PARAMS.BLOCKWIDTH, bomb.y * PARAMS.BLOCKWIDTH));
+                this.game.addEntity(new Bomb(this.game, bomb.x * PARAMS.BLOCKWIDTH, bomb.y * PARAMS.BLOCKWIDTH, 0));
             }
         }
         if(level.Lich){
