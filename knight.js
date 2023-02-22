@@ -139,10 +139,6 @@ class Knight {
                         this.state = 0;
                         this.velocity.x = RUN;
                         //this.velocity.y = 0;
-                    } else if (this.game.keys["2"]) { // throwing knife
-                        //this.knife = new ThrowingKnife(this.game, this.position.x, this.position.y, this.facing);
-                        this.game.addEntitySpecific(new ThrowingKnife(this.game, this.position.x, this.position.y, this.facing), 1);
-                        //this.velocity.y = 0;
                     } else {
                         this.state = 3;
                         this.velocity.x = 0;
@@ -237,7 +233,7 @@ class Knight {
                                 that.game.camera.potion += 1;
                                 entity.removeFromWorld = true;
                             }
-                            if (entity instanceof Bomb) {
+                            if (entity instanceof Bomb && entity.state == 0) {
                                 that.game.camera.bomb += 1;
                                 entity.removeFromWorld = true;
                             }
@@ -273,6 +269,7 @@ class Knight {
                             if (entity.attackBB.attacker.facing == -1) that.velocity.x = Math.max(-600, -40 * entity.attackBB.damage);
                             else if (entity.attackBB.attacker.facing == 1) that.velocity.x = Math.min(600, 40 * entity.attackBB.damage);
                             entity.attackBB = undefined;
+                            ASSET_MANAGER.playAsset("./sounds/knight_takehit.mp3");
                         }
                     });
                     that.updateBB();
@@ -303,6 +300,12 @@ class Knight {
                             this.game.keys["1"] = false;
                             ASSET_MANAGER.playAsset("./sounds/heal.mp3");
                         };
+                    };
+                    if (this.game.keys["2"]) { // bomb
+                        //this.knife = new ThrowingKnife(this.game, this.position.x, this.position.y, this.facing);
+                        this.game.addEntitySpecific(new Bomb(this.game, this.position.x, this.position.y, 1), 1);
+                        this.game.camera.bomb -= 1;
+                        this.game.keys["2"] = false;
                     };
                     
             }//test  
