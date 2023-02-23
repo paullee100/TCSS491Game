@@ -107,7 +107,7 @@ class Knight {
                         this.state = 5;
                         this.velocity.x = 0;
                         ASSET_MANAGER.playAsset("./sounds/knight_jump.mp3");
-                    } else if (this.game.keys["l"] || this.game.keys["L"]) { // block
+                    } else if (this.game.keys["l"] || this.game.keys["L"] || this.game.rightclick) { // block
                         if (this.state == 10) {
                             this.state = 10;
                             this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
@@ -122,6 +122,9 @@ class Knight {
                                 this.blockBB = new BoundingBox(this.position.x, this.position.y, 50, 181, "player", this);
                             }
                             ASSET_MANAGER.playAsset("./sounds/knight_block.mp3");
+                        }
+                        if (this.game.rightclick != null) {
+                            this.game.rightclick = null;
                         }
                         this.velocity.x = 0;
                     } else if (this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) { // move left
@@ -230,8 +233,12 @@ class Knight {
                                 that.game.camera.potion += 1;
                                 entity.removeFromWorld = true;
                             }
-                            if (entity instanceof Bomb) {
+                            if (entity instanceof Bomb && entity.state == 0) {
                                 that.game.camera.bomb += 1;
+                                entity.removeFromWorld = true;
+                            }
+                            if (entity instanceof ThrowingKnife && entity.state == 0) {
+                                that.game.camera.knife += 5;
                                 entity.removeFromWorld = true;
                             }
                         };
@@ -266,6 +273,7 @@ class Knight {
                             if (entity.attackBB.attacker.facing == -1) that.velocity.x = Math.max(-600, -40 * entity.attackBB.damage);
                             else if (entity.attackBB.attacker.facing == 1) that.velocity.x = Math.min(600, 40 * entity.attackBB.damage);
                             entity.attackBB = undefined;
+                            ASSET_MANAGER.playAsset("./sounds/knight_takehit.mp3");
                         }
                     });
                     that.updateBB();
@@ -289,6 +297,30 @@ class Knight {
                         this.position ={x:9 * PARAMS.BLOCKWIDTH, y:8 * PARAMS.BLOCKWIDTH}
                         this.health=0;
                     }
+                    if (this.game.keys["1"]) {
+                        if (this.game.camera.potion > 0) {
+                            this.health = Math.min(this.health + 20, this.maxhealth);
+                            this.game.camera.potion -= 1;
+                            this.game.keys["1"] = false;
+                            ASSET_MANAGER.playAsset("./sounds/heal.mp3");
+                        };
+                    };
+                    if (this.game.keys["2"]) { // bomb
+                        if (this.game.camera.bomb > 0) {
+                            this.game.addEntitySpecific(new Bomb(this.game, this.position.x, this.position.y, 1), 1);
+                            this.game.camera.bomb -= 1;
+                            this.game.keys["2"] = false;
+                        };
+                    };
+                    if (this.game.keys["3"]) { // bomb
+                        if (this.game.camera.knife > 0) {
+                            if (this.facing == 1) this.game.addEntitySpecific(new ThrowingKnife(this.game, this.position.x + 80, this.position.y + 50, this.facing, 1));
+                            if (this.facing == -1) this.game.addEntitySpecific(new ThrowingKnife(this.game, this.position.x + 20, this.position.y + 50, this.facing, 1));
+                            ASSET_MANAGER.playAsset("./sounds/throwing_knife.mp3");
+                            this.game.camera.knife -= 1;
+                            this.game.keys["3"] = false;
+                        };
+                };
                     
             }//test  
         }

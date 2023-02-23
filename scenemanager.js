@@ -5,6 +5,7 @@ class SceneManager {
         this.knight = new Knight(game);
         this.potion = 0;
         this.bomb = 0;
+        this.knife = 0;
         this.x = 0;
         this.title = true;
         this.over = false;
@@ -45,6 +46,18 @@ class SceneManager {
         if(level.Music && !this.title) {
             ASSET_MANAGER.pauseBackgroundMusic();
             ASSET_MANAGER.playAsset(level.Music);
+        }
+        if(level.Potion){
+            for (var i = 0; i < level.Potion.length; i++) {
+                let potion = level.Potion[i];
+                this.game.addEntity(new Potion(this.game, potion.x * PARAMS.BLOCKWIDTH, potion.y * PARAMS.BLOCKWIDTH));
+            }
+        }
+        if(level.Bomb){
+            for (var i = 0; i < level.Bomb.length; i++) {
+                let bomb = level.Bomb[i];
+                this.game.addEntity(new Bomb(this.game, bomb.x * PARAMS.BLOCKWIDTH, bomb.y * PARAMS.BLOCKWIDTH, 0));
+            }
         }
         if(level.Lich){
             for (var i = 0; i < level.Lich.length; i++) {

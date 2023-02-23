@@ -181,7 +181,9 @@ class Skeleton {
 			if (rng < 10) {
 				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
 			} else if (rng >= 10 && rng <= 20) {
-				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y), 1);
+				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
+			} else if (rng >= 20 && rng <= 100) {
+				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0));
 			}
 			this.game.Lich.maxSummon--;
 			this.removeFromWorld = true;
@@ -314,7 +316,8 @@ class Slime {
 		Object.assign(this, { game, x, y, color});
 		this.dead = false;
 		this.speed = 150;
-		this.health = 50;
+		this.health = 30;
+		this.maxhealth = 30;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 1; // damage/stunned = 0,  jump = 1, idle = 2, death = 3
 		this.game.Slime = this;
@@ -477,7 +480,7 @@ class Slime {
 			if (rng < 10) {
 				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
 			} else if (rng >= 10 && rng <= 20) {
-				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y), 1);
+				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
 			}
 			this.removeFromWorld = true;
 			console.log(this.color + " slime is ded");
