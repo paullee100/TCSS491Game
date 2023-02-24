@@ -17,7 +17,7 @@ class Chest {
 			this.state = 1;
 			if (this.item) {
 				if (this.item == "potion") this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
-				if (this.item == "bomb") console.log("YESSSSSSSSSSSSSS"), this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
+				if (this.item == "bomb") /*console.log("YESSSSSSSSSSSSSS"),*/ this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
 				if (this.item == "throwingknife") this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
 				this.item = null;
 			};
@@ -152,7 +152,7 @@ class Skeleton {
 					/* else if (this.attackBB) { 
 						this.attackBB.removeFromWorld = true;
 					}; */
-					console.log("skeleton has collided")
+					//console.log("skeleton has collided")
 				}
 			};
 		});
@@ -233,7 +233,7 @@ class Skeleton {
 			}
 			this.game.Lich.maxSummon--;
 			this.removeFromWorld = true;
-			console.log("is ded");
+			//console.log("is ded");
 		}
 
 		ctx.restore();
@@ -255,13 +255,13 @@ class Cyclops {
 		this.spritesheet = [];
 		this.animation = [];
 
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Walking.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Idle.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Walking.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack1.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack2.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack3.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Death.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Walking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Idle.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Walking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Attack1.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Attack2.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Attack3.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Death.png"));
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
 		this.animation.push(new Animator(this.spritesheet[0], 19, 13, 139, 81, 5, 0.2, 6, false, true));
 		this.animation.push(new Animator(this.spritesheet[1], 13, 9, 46, 80, 10, 0.5, 99, false, true));
@@ -451,7 +451,7 @@ class Slime {
 					} else if (this.state == 2) {
 						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 70, 90, 90, 2, 3, this.damage);
 					}
-					console.log("slime has collided")
+					//console.log("slime has collided")
 				}
 				if (entity instanceof Tile) {
 					if ((that.lastBB.right) <= entity.BB.left) {
@@ -535,7 +535,7 @@ class Slime {
 				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
 			}
 			this.removeFromWorld = true;
-			console.log(this.color + " slime is ded");
+			//console.log(this.color + " slime is ded");
 		}
 		ctx.restore();
 	}

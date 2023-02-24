@@ -88,7 +88,7 @@ class Knight {
             //lock movement when title is on screen
             if(!this.game.camera.title && !this.game.camera.over && !this.game.camera.levelclear) {
                 if (this.state == 0 || (this.state != 5 && this.state != 4 && this.state != 1 && this.state != 2 && this.state != 7 && this.state != 8 && this.state != 9 && this.state != 11)) {
-                    if (this.game.keys["k"] || this.game.keys["K"] || this.game.click) { // attack
+                    if (this.game.keys["K"] || this.game.click) { // attack
                         this.state = 1;
                         if (this.facing == 1) {
                             this.swordBB = new AttackBox(this.game, this, this.position.x + 100, this.position.y, 200, 181, this.game.timer.gameTime, 2, this.damage);
@@ -102,12 +102,12 @@ class Knight {
                         this.state = 4;
                         this.velocity.x = 500 * (this.facing);
                         ASSET_MANAGER.playAsset("./sounds/knight_roll.mp3");
-                    } else if (this.game.keys["w"] || this.game.keys["W"]) { // jump
+                    } else if (this.game.keys["W"]) { // jump
                         this.velocity.y = JUMP;
                         this.state = 5;
                         this.velocity.x = 0;
                         ASSET_MANAGER.playAsset("./sounds/knight_jump.mp3");
-                    } else if (this.game.keys["l"] || this.game.keys["L"] || this.game.rightclick) { // block
+                    } else if (this.game.keys["L"] || this.game.rightclick) { // block
                         if (this.state == 10) {
                             this.state = 10;
                             this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
@@ -127,14 +127,12 @@ class Knight {
                             this.game.rightclick = null;
                         }
                         this.velocity.x = 0;
-                    } else if (this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) { // move left
-                        console.log("A is pressed");
+                    } else if (this.game.keys["A"] || this.game.keys["ArrowLeft"]) { // move left
                         this.facing = -1;
                         this.state = 0;
                         this.velocity.x = -RUN;
                         //this.velocity.y = 0;
-                    } else if (this.game.keys["d"] || this.game.keys["D"] || this.game.keys["ArrowRight"]) { // move right
-                        console.log("D is pressed");
+                    } else if (this.game.keys["D"] || this.game.keys["ArrowRight"]) { // move right
                         this.facing = 1;
                         this.state = 0;
                         this.velocity.x = RUN;
@@ -148,7 +146,7 @@ class Knight {
                     //this.updateBB();
                 } else if (this.state == 1) {
                     if (this.animation[this.state].currentFrame() + 1 >= 3) {
-                        if (this.game.keys["k"] || this.game.keys["K"] ||this.game.click) { // attack
+                        if (this.game.keys["K"] ||this.game.click) { // attack
                             this.state = 2;
                             this.animation[1].elapsedTime = 0;
                             //this.velocity.y = 0;
@@ -169,15 +167,15 @@ class Knight {
                         //mid-air physics
                         //vertical physics
                         if (this.state == 5 && this.velocity.y > 0) this.state = 7;
-                        if (this.velocity.y < 0 && this.game.keys["w"]) { // holding A while jumping jumps higher
+                        if (this.velocity.y < 0 && this.game.keys["W"]) { // holding A while jumping jumps higher
                             //this.velocity.y -= 25;
                         };
 
                         // horizontal physics
                         if (this.state == 5 || this.state == 7) {
-                            if (this.game.keys["d"] || this.game.keys["D"] || this.game.keys["ArrowRight"] && !(this.game.keys["a"] || this.game.keys["ArrowLeft"])) {
+                            if (this.game.keys["D"] || this.game.keys["ArrowRight"] && !(this.game.keys["A"] || this.game.keys["ArrowLeft"])) {
                                 this.velocity.x = (RUN*3)/4;
-                            } else if ((this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
+                            } else if ((this.game.keys["A"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["D"] || this.game.keys["ArrowRight"])) {
                                 this.velocity.x = (-RUN*3)/4;
                             } else {
                                 this.velocity.x = 0;

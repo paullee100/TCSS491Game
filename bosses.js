@@ -6,7 +6,7 @@ class Lich {
 
         this.game.Lich = this;
         this.state = 0; // idle = 0, walking = 1, attack1 = 2, attack2 = 3, attack3 = 4, death = 5
-        this.attackState = 0; // initiate attack = 0, explosion = 1, fire = 2
+        this.attackState = 0; // initiate smoke = 0, smoke = 1, fire = 2
         this.facing = -1; // right = 1, left = -1
         this.dead = false;
         this.deadCounter = 0;
@@ -16,7 +16,11 @@ class Lich {
 
         this.maxSummon = 0;
         this.summonCounter = 0;
-        this.numOfFire = 1;
+        this.numOfFire = 0;
+
+        this.placedSmokeBomb = false;
+        this.smokePlacementX = 0;
+        this.smokePlacementY = 0;
 
         this.waitTime = 0;
         this.attackTime = 0;
@@ -27,16 +31,16 @@ class Lich {
         this.attackSpritesheet = [];
         this.attackAnimation = [];
 
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Idle.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Walking.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Attack1.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Attack2.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Attack3.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Death.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich/Lich_Idle.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich/Lich_Walking.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich/Lich_Attack1.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich/Lich_Attack2.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich/Lich_Attack3.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich/Lich_Death.png"));
 
-        this.attackSpritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Pellet.png"));
-        this.attackSpritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Explosion.png"));
-        this.attackSpritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich_Fire.png"));
+        this.attackSpritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich/Lich_Pellet.png"));
+        this.attackSpritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich/Lich_Explosion.png"));
+        this.attackSpritesheet.push(ASSET_MANAGER.getAsset("./sprites/Lich/Lich_Fire.png"));
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
         this.animation.push(new Animator(this.spritesheet[0], 0, 5, 52, 83, 4, 0.25, 40, false, true));
@@ -46,7 +50,7 @@ class Lich {
         this.animation.push(new Animator(this.spritesheet[4], 10, 4, 62, 90, 5, 0.1, 30, false, true));
         this.animation.push(new Animator(this.spritesheet[5], 0, 1, 70, 90, 10, 0.1, 21, false, true));
 
-        this.attackAnimation.push(new Animator(this.attackSpritesheet[0], 42, 26, 15, 136, 1, 0.5, 0, false, true));
+        this.attackAnimation.push(new Animator(this.attackSpritesheet[0], 42, 26, 15, 136, 1, 0.5, 0, false, false));
         this.attackAnimation.push(new Animator(this.attackSpritesheet[1], 0, 8, 130, 136, 10, 0.1, 100, false, true));
         this.attackAnimation.push(new Animator(this.attackSpritesheet[2], 5, 8, 15, 24, 8, 0.5, 9, false, true));
 
@@ -57,21 +61,28 @@ class Lich {
         this.attackTime = 0;
         this.waitTime = 0;
         this.attackState = 0;
-        this.numOfFire = 1;
+        this.numOfFire = 0;
 
         if (this.health <= 0) {
             return;
         }
         let rng = Math.floor(Math.random() * 100);
-        if (rng < 50 && this.maxSummon <= 3) {
+        if (rng <= 55 && this.maxSummon <= 3) {
             this.state = 2;
-        } else if (rng >= 50 && rng <= 70) {
-            this.state = 3;
-        } else if (rng >= 71 && rng <= 80) {
+        } else if (rng >= 25 && rng <= 85) {
             this.state = 4;
+
+        } else if (rng >= 86 && rng <= 95) {
+            this.state = 3;
         } else {
             this.state = 0;
         }
+    };
+
+    getKnightCoordinate() {
+        this.placedSmokeBomb = true;
+        this.smokePlacementX = this.game.camera.knight.position.x;
+        this.smokePlacementY = this.game.camera.knight.position.y;
     };
 
     updateBB() {
@@ -79,8 +90,12 @@ class Lich {
         this.lastFireBB = this.FireBB;
 
         this.BB = new BoundingBox(this.x, this.y, 200, 330, "enemy", this);
-        this.FireBB = new BoundingBox(this.x - 150 * this.numOfFire, this.y + 175, 150 * this.numOfFire, 155, "enemy", this);
-
+        if (this.state === 4) {
+            console.log("fire bounding box working");
+            this.FireBB = new BoundingBox(this.x - 150 * this.numOfFire, this.y + 175, 150 * this.numOfFire, 155, "enemy", this);
+        } else {
+            this.FireBB = new BoundingBox(0, 0, 0, 0, "enemy", this);
+        }
     };
 
     update() {
@@ -123,10 +138,16 @@ class Lich {
             }
         } else if (this.state == 3) {
             this.waitTime += this.game.clockTick;
-            if (this.waitTime >= 1 && this.waitTime < 1.5) {
+            if (this.waitTime >= 1.5 && this.waitTime < 2) {
                 this.attackState = 1;
             }
+
+            if (this.attackState === 1 && !this.placedSmokeBomb) {
+                this.getKnightCoordinate();
+            }
+
             if (this.waitTime >= 3) {
+                this.placedSmokeBomb = false;
                 this.determineState();
                 
             }
@@ -140,26 +161,30 @@ class Lich {
             }
         } else if (this.state == 0) {
             this.waitTime += this.game.clockTick;
-            if (this.waitTime >= 5) {
+            if (this.waitTime >= 2.5) {
                 this.determineState();
             }
         }
+
+        this.updateBB();
 
         // collision
         this.game.entities.forEach((entity) => {
             if (entity.BB && this.BB.collide(entity.BB)) {
                 if (entity instanceof Knight) {
-                    console.log("Lich and Knight collision");
+                    // console.log("Lich and Knight collision");
                 }
             }
 
             if (entity.BB && this.FireBB.collide(entity.BB)) {
                 if (entity instanceof Knight && this.state === 4) {
+                    console.log("damaged by fire");
                     this.attackBB = new AttackBox(this.game, this, this.x - 150 * this.numOfFire, this.y + 175, 150 * this.numOfFire, 155, 0, 0, this.damage);
                     this.state = 0;
+                    this.updateBB();
                 }
             }
-        })
+        });
     };
 
     draw(ctx) {
@@ -202,36 +227,37 @@ class Lich {
 
             if (this.state == 3) {
                 if (this.attackState == 0) {
-                    let xPlacement = 100
-                    let yPlacement = 100
-                    let xRand = Math.floor(Math.random(6) + 1)
-                    let yRand = Math.floor(Math.random(3))
-                    if (xRand % 2 == 0) xPlacement * -1
-                    this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, (this.x + (xPlacement * xRand)) - this.game.camera.x, this.y - (yPlacement * yRand) - this.game.camera.y, 3)
+                    this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, this.smokePlacementX - this.game.camera.x, this.smokePlacementY - this.game.camera.y, 3)
                 } else if (this.attackState == 1) {
-                    this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 150 - this.game.camera.y, 3)
+                    this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, this.smokePlacementX - 75 - this.game.camera.x, this.smokePlacementY - 150 - this.game.camera.y, 3)
                 }
             } else if (this.state == 4) {
                 this.attackTime += this.game.clockTick;
+                this.numOfFire = 1;
                 this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 1) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+                this.updateBB();
                 if (this.attackTime >= 1.5) {
                     this.numOfFire = 2;
                     this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 2) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+                    this.updateBB();
                 }
 
                 if (this.attackTime >= 3) {
                     this.numOfFire = 3;
                     this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 3) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+                    this.updateBB();
                 }
 
                 if (this.attackTime >= 4.5) {
                     this.numOfFire = 4;
                     this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 4) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+                    this.updateBB();
                 }
 
                 if (this.attackTime >= 6) {
                     this.numOfFire = 5;
                     this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 5) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
+                    this.updateBB();
                 }
             }
         }
@@ -357,6 +383,63 @@ class Titan {
         } else if (this.facing == -1) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 160) - (this.facing * this.game.camera.x), this.y - this.game.camera.y, 4);
         }
+        ctx.restore();
+    };
+}
+
+class Dragon {
+    constructor(game, x, y) {
+        Object.assign(this, {game, x, y});
+
+        this.game.Dragon = this;
+        this.state = 1;
+        this.facing = 1; // right = 1, left = -1
+
+        this.health = 500;
+        this.maxhealth = 500;
+        this.damage = 15;
+
+        this.dead = false;
+
+        this.spritesheet = [];
+        this.animation = [];
+
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Idle.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Flight.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_PreAttack.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Attack.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Death.png"));
+
+        //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+        this.animation.push(new Animator(this.spritesheet[0], 10, 0, 80, 113, 14, 0.5, 38, false, true));
+        this.animation.push(new Animator(this.spritesheet[1], 4, 4, 175, 135, 11, 0.5, 10, false, true));
+        this.animation.push(new Animator(this.spritesheet[2]));
+        this.animation.push(new Animator(this.spritesheet[3]));
+        this.animation.push(new Animator(this.spritesheet[4]));
+    };
+
+    update() {
+
+    };
+
+    draw(ctx) {
+        if (this.facing == -1) {
+            ctx.save();
+            ctx.scale(-1, 1);
+        } else if (this.facing == 1) {
+            ctx.save();
+            ctx.scale(1, 1);
+        }
+
+        let stateModX = 0;
+        let stateModY = 0;
+
+        if (this.facing == 1) {
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, (this.y - stateModY) - this.game.camera.y, 4);
+        } else if (this.facing == -1) {
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 999 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), (this.y - stateModY) - this.game.camera.y, 4);
+        }
+
         ctx.restore();
     };
 }
