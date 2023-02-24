@@ -180,7 +180,7 @@ class Knight {
                             } else if ((this.game.keys["a"] || this.game.keys["A"] || this.game.keys["ArrowLeft"]) && !(this.game.keys["d"] || this.game.keys["ArrowRight"])) {
                                 this.velocity.x = (-RUN*3)/4;
                             } else {
-                                    // does nothing
+                                this.velocity.x = 0;
                             };
                         }
                         /* else if (this.state == 1 || this.state == 2 || this.state == 7) {
@@ -209,7 +209,10 @@ class Knight {
                                 if (entity.BB.type == "enemy" &&
                                     (this.state == 1 || this.state == 2) && that.swordBB.removeFromWorld !== true) {
                                     this.swordBB.damageDeal(entity);
-                                    ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
+                                    if (entity instanceof Chest) {
+                                        ASSET_MANAGER.playAsset("./sounds/chest_open.mp3");
+                                    }
+                                    else ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
                                 }
                             }
                         }   

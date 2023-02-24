@@ -57,8 +57,11 @@ var GameOver={
 var levelOne = {
     Music:["./music/forsaken_forest.mp3"],
     //replace with chest later
-    Potion:[{x:65,y:15},{x:86.5,y:-1}],
-    Bomb:[{x:106.5,y:-0.75}],
+    //Potion:[{x:65,y:15},{x:86.5,y:-1}],
+    //Bomb:[{x:106.5,y:-0.75}],
+    Chest:[{x:106.5,y:-1,facing:1,item: "bomb"},
+    {x:65,y:18,facing:1,item: "potion"},
+    {x:86.5,y:-1,facing:1,item: "potion"}],
 
     Lich: [{x:37+(25*4),y:(390/64)}],
     Skeleton: [

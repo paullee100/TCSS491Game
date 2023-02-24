@@ -1,3 +1,49 @@
+class Chest {
+	constructor(game,x,y,facing,item) {
+		Object.assign(this, { game,x,y,facing,item });
+		this.health = 1;
+		this.state = 0; // closed = 0, open = 1
+		this.spritesheet = [];
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/chest_closed.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/chest_opened.png"));
+
+		this.BB = new BoundingBox(this.x, this.y, 10, 10, "enemy", this);
+
+
+	};
+
+	update() {
+		if (this.health <= 0) {
+			this.state = 1;
+			if (this.item) {
+				if (this.item == "potion") this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
+				if (this.item == "bomb") console.log("YESSSSSSSSSSSSSS"), this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
+				if (this.item == "throwingknife") this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
+				this.item = null;
+			};
+		};
+	};
+
+	draw(ctx) {
+		if (PARAMS.DEBUG) {
+            ctx.strokeStyle = "red";
+            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 50, 50);
+        }
+
+		if (this.facing == -1) {
+			ctx.save()
+			ctx.scale(-1, 1)
+		} else if (this.facing == 1) {
+			ctx.save()
+			ctx.scale(1, 1)
+		}
+		if (this.state == 0) ctx.drawImage(this.spritesheet[this.state], this.x - this.game.camera.x, this.y - this.game.camera.y, 50, 50);
+		if (this.state == 1) {
+			ctx.drawImage(this.spritesheet[this.state], this.x - 70 - this.game.camera.x, this.y + 25 - this.game.camera.y, 120, 25);
+		};
+		ctx.restore();
+	};
+};
 class Skeleton {
 	constructor(game,x,y) {
 		Object.assign(this, { game,x,y });
@@ -183,7 +229,7 @@ class Skeleton {
 			} else if (rng >= 10 && rng <= 20) {
 				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
 			} else if (rng >= 20 && rng <= 100) {
-				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0));
+				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
 			}
 			this.game.Lich.maxSummon--;
 			this.removeFromWorld = true;
