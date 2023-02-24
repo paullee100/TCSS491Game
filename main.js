@@ -51,6 +51,8 @@ ASSET_MANAGER.queueDownload("./sprites/Items/medium_bomb.png");
 ASSET_MANAGER.queueDownload("./sprites/Items/medium_bomb_detonation.png");
 ASSET_MANAGER.queueDownload("./sprites/Items/medium_bomb_explosion.png");
 ASSET_MANAGER.queueDownload("./sprites/Items/throwing_knife.png");
+ASSET_MANAGER.queueDownload("./sprites/Chest/chest_closed.png");
+ASSET_MANAGER.queueDownload("./sprites/Chest/chest_opened.png");
 
 //chest
 ASSET_MANAGER.queueDownload("./sprites/Chest/chest_closed.png");
@@ -123,6 +125,7 @@ ASSET_MANAGER.queueDownload("./sounds/knight_takehit.mp3");
 ASSET_MANAGER.queueDownload("./sounds/heal.mp3");
 ASSET_MANAGER.queueDownload("./sounds/bomb_explosion.mp3");
 ASSET_MANAGER.queueDownload("./sounds/throwing_knife.mp3");
+ASSET_MANAGER.queueDownload("./sounds/chest_open.mp3");
 
 // music
 ASSET_MANAGER.queueDownload("./music/forsaken_forest.mp3"); //greenpath from hollow knight

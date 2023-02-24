@@ -59,6 +59,12 @@ class SceneManager {
                 this.game.addEntity(new Bomb(this.game, bomb.x * PARAMS.BLOCKWIDTH, bomb.y * PARAMS.BLOCKWIDTH, 0));
             }
         }
+        if(level.Chest){
+            for (var i = 0; i < level.Chest.length; i++) {
+                let chest = level.Chest[i];
+                this.game.addEntity(new Chest(this.game, chest.x * PARAMS.BLOCKWIDTH, chest.y * PARAMS.BLOCKWIDTH, chest.facing, chest.item));
+            }
+        }
         if(level.Lich){
             for (var i = 0; i < level.Lich.length; i++) {
                 let lich = level.Lich[i];
