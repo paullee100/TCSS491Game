@@ -207,10 +207,10 @@ class Knight {
                                 if (entity.BB.type == "enemy" &&
                                     (this.state == 1 || this.state == 2) && that.swordBB.removeFromWorld !== true) {
                                     this.swordBB.damageDeal(entity);
-                                    if (entity instanceof Chest) {
+                                    if (entity instanceof Chest && entity.state == 0) {
                                         ASSET_MANAGER.playAsset("./sounds/chest_open.mp3");
                                     }
-                                    else ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
+                                    else if (!(entity instanceof Chest)) ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
                                 }
                             }
                         }   
