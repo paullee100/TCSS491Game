@@ -72,6 +72,7 @@ class ThrowingKnife {
         if (this.state == 1) {
             this.updateBB();
             this.x += (this.speed * this.facing) * this.game.clockTick;
+
             if (this.facing == 1) {
                 if (this.x >= this.start + this.speed) this.removeFromWorld = true;
             } else {
@@ -106,8 +107,14 @@ class ThrowingKnife {
             ctx.save();
             ctx.scale(1, 1);
         }
-        if (this.state == 0) ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y, 60, 60);
-        if (this.state == 1) ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y, 40, 40);
+        if (this.facing == 1) {
+            if (this.state == 0) ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y, 60, 60);
+            if (this.state == 1) ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y, 40, 40);
+        } else {
+            if (this.state == 0) ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y, 60, 60);
+            if (this.state == 1) ctx.drawImage(this.spritesheet[0], (this.x * this.facing) - (this.game.camera.x * this.facing), this.y - this.game.camera.y, 40, 40);
+
+        }
         ctx.restore();
     };
 };
@@ -124,7 +131,7 @@ class Bomb {
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Items/medium_bomb_explosion.png"));
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
         this.animation.push(new Animator(this.spritesheet[1], 11, 13, 52, 60, 3, 0.75, 20, false, false));
-        this.animation.push(new Animator(this.spritesheet[2], 11, 13, 100, 100, 12, 0.1, 20, false, false));
+        this.animation.push(new Animator(this.spritesheet[2], 0, 0, 88, 95, 12, 0.1, 8, false, false));
         this.updateBB();
     }
     updateBB() {
@@ -171,6 +178,6 @@ class Bomb {
         }
         if (this.state == 0) ctx.drawImage(this.spritesheet[this.state], this.x - this.game.camera.x, this.y - this.game.camera.y);
         else if (this.state == 1) this.animation[this.state - 1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1);
-        else this.animation[this.state - 1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 2);
+        else this.animation[this.state - 1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 75, this.y - this.game.camera.y - 75, 2);
     };
 }

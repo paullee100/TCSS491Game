@@ -1,3 +1,49 @@
+class Chest {
+	constructor(game,x,y,facing,item) {
+		Object.assign(this, { game,x,y,facing,item });
+		this.health = 1;
+		this.state = 0; // closed = 0, open = 1
+		this.spritesheet = [];
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/chest_closed.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/chest_opened.png"));
+
+		this.BB = new BoundingBox(this.x, this.y, 10, 10, "enemy", this);
+
+
+	};
+
+	update() {
+		if (this.health <= 0) {
+			this.state = 1;
+			if (this.item) {
+				if (this.item == "potion") this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
+				if (this.item == "bomb") /*console.log("YESSSSSSSSSSSSSS"),*/ this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
+				if (this.item == "throwingknife") this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
+				this.item = null;
+			};
+		};
+	};
+
+	draw(ctx) {
+		if (PARAMS.DEBUG) {
+            ctx.strokeStyle = "red";
+            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 50, 50);
+        }
+
+		if (this.facing == -1) {
+			ctx.save()
+			ctx.scale(-1, 1)
+		} else if (this.facing == 1) {
+			ctx.save()
+			ctx.scale(1, 1)
+		}
+		if (this.state == 0) ctx.drawImage(this.spritesheet[this.state], this.x - this.game.camera.x, this.y - this.game.camera.y, 50, 50);
+		if (this.state == 1) {
+			ctx.drawImage(this.spritesheet[this.state], this.x - 70 - this.game.camera.x, this.y + 25 - this.game.camera.y, 120, 25);
+		};
+		ctx.restore();
+	};
+};
 class Skeleton {
 	constructor(game,x,y) {
 		Object.assign(this, { game,x,y });
@@ -106,7 +152,7 @@ class Skeleton {
 					/* else if (this.attackBB) { 
 						this.attackBB.removeFromWorld = true;
 					}; */
-					console.log("skeleton has collided")
+					//console.log("skeleton has collided")
 				}
 			};
 		});
@@ -183,11 +229,11 @@ class Skeleton {
 			} else if (rng >= 10 && rng <= 20) {
 				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
 			} else if (rng >= 20 && rng <= 100) {
-				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0));
+				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
 			}
 			this.game.Lich.maxSummon--;
 			this.removeFromWorld = true;
-			console.log("is ded");
+			//console.log("is ded");
 		}
 
 		ctx.restore();
@@ -209,13 +255,13 @@ class Cyclops {
 		this.spritesheet = [];
 		this.animation = [];
 
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Walking.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Idle.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Walking.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack1.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack2.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Attack3.png"));
-		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops_Death.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Walking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Idle.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Walking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Attack1.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Attack2.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Attack3.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Cyclops/Cyclops_Death.png"));
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
 		this.animation.push(new Animator(this.spritesheet[0], 19, 13, 139, 81, 5, 0.2, 6, false, true));
 		this.animation.push(new Animator(this.spritesheet[1], 13, 9, 46, 80, 10, 0.5, 99, false, true));
@@ -405,7 +451,7 @@ class Slime {
 					} else if (this.state == 2) {
 						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 70, 90, 90, 2, 3, this.damage);
 					}
-					console.log("slime has collided")
+					//console.log("slime has collided")
 				}
 				if (entity instanceof Tile) {
 					if ((that.lastBB.right) <= entity.BB.left) {
@@ -489,7 +535,7 @@ class Slime {
 				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
 			}
 			this.removeFromWorld = true;
-			console.log(this.color + " slime is ded");
+			//console.log(this.color + " slime is ded");
 		}
 		ctx.restore();
 	}
