@@ -59,10 +59,10 @@ var levelOne = {
     //replace with chest later
     //Potion:[{x:65,y:15},{x:86.5,y:-1}],
     //Bomb:[{x:106.5,y:-0.75}],
-    Chest:[{x:106.5,y:-1,facing:1,item: "bomb"},
-    {x:65,y:18,facing:1,item: "potion"},
+    Chest:[{x:106.5,y:-1,facing:-1,item: "bomb"},
+    {x:65,y:18,facing:-1,item: "potion"},
     {x:86.5,y:-1,facing:1,item: "potion"}],
-
+    Mimic:[{x:67,y:18,facing:-1}],
     Lich: [{x:37+(25*4),y:(390/64)}],
     Skeleton: [
     { x: 23.5, y: (540 / 64) },

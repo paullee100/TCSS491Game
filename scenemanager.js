@@ -59,6 +59,12 @@ class SceneManager {
                 this.game.addEntity(new Bomb(this.game, bomb.x * PARAMS.BLOCKWIDTH, bomb.y * PARAMS.BLOCKWIDTH, 0));
             }
         }
+        if(level.Mimic){
+            for (var i = 0; i < level.Mimic.length; i++) {
+                let mimic = level.Mimic[i];
+                this.game.addEntity(new Mimic(this.game, mimic.x * PARAMS.BLOCKWIDTH, mimic.y * PARAMS.BLOCKWIDTH, mimic.facing));
+            }
+        }
         if(level.Chest){
             for (var i = 0; i < level.Chest.length; i++) {
                 let chest = level.Chest[i];
