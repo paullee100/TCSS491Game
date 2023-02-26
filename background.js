@@ -1,5 +1,5 @@
 class Background1{
-    constructor(){
+    constructor(spritesheet){
         // Object.assign(this, {game});
         this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/BG1.png")
     };
