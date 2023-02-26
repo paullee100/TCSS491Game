@@ -137,7 +137,7 @@ class Bomb {
     updateBB() {
         this.lastBB = this.BB;
         if (this.state !== 2) this.BB = new BoundingBox(this.x+ 10, this.y + 20, 50, 50);
-        else this.BB = new BoundingBox(this.x - 15, this.y - 30, 100, 100);
+        else this.BB = new BoundingBox(this.x - 50, this.y - 50, 150, 150);
 
     }
     update() {
@@ -174,7 +174,7 @@ class Bomb {
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = "red";
             if (this.state !== 2) ctx.strokeRect(this.x+ 10 - this.game.camera.x, this.y + 20- this.game.camera.y, 50, 50);
-            else ctx.strokeRect(this.x - 15 - this.game.camera.x, this.y -30- this.game.camera.y, 100, 100);
+            else ctx.strokeRect(this.x - 50 - this.game.camera.x, this.y -50- this.game.camera.y, 150, 150);
         }
         if (this.state == 0) ctx.drawImage(this.spritesheet[this.state], this.x - this.game.camera.x, this.y - this.game.camera.y);
         else if (this.state == 1) this.animation[this.state - 1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1);

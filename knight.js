@@ -275,6 +275,9 @@ class Knight {
                             else if (entity.attackBB.attacker.facing == 1) that.velocity.x = Math.min(600, 40 * entity.attackBB.damage);
                             entity.attackBB = undefined;
                             ASSET_MANAGER.playAsset("./sounds/knight_takehit.mp3");
+                            for (var i = 0; i < 12; i++) {
+                                this.animation[i].elapsedTime = 0;
+                            };
                         }
                     });
                     that.updateBB();
@@ -307,11 +310,11 @@ class Knight {
                         };
                     };
                     if (this.game.keys["2"]) { // bomb
-                        if (this.game.camera.bomb > 0) {
+                        //if (this.game.camera.bomb > 0) {
                             this.game.addEntitySpecific(new Bomb(this.game, this.position.x, this.position.y, 1), 1);
                             this.game.camera.bomb -= 1;
                             this.game.keys["2"] = false;
-                        };
+                        //};
                     };
                     if (this.game.keys["3"]) { // bomb
                         if (this.game.camera.knife > 0) {

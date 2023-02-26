@@ -59,18 +59,6 @@ class SceneManager {
                 this.game.addEntity(new Bomb(this.game, bomb.x * PARAMS.BLOCKWIDTH, bomb.y * PARAMS.BLOCKWIDTH, 0));
             }
         }
-        if(level.Mimic){
-            for (var i = 0; i < level.Mimic.length; i++) {
-                let mimic = level.Mimic[i];
-                this.game.addEntity(new Mimic(this.game, mimic.x * PARAMS.BLOCKWIDTH, mimic.y * PARAMS.BLOCKWIDTH, mimic.facing));
-            }
-        }
-        if(level.Chest){
-            for (var i = 0; i < level.Chest.length; i++) {
-                let chest = level.Chest[i];
-                this.game.addEntity(new Chest(this.game, chest.x * PARAMS.BLOCKWIDTH, chest.y * PARAMS.BLOCKWIDTH, chest.facing, chest.item));
-            }
-        }
         if(level.Lich){
             for (var i = 0; i < level.Lich.length; i++) {
                 let lich = level.Lich[i];
@@ -101,6 +89,18 @@ class SceneManager {
             for (var i = 0; i < level.YellowSlime.length; i++) {
                 let yellowslime = level.YellowSlime[i];
                 this.game.addEntity(new YellowSlime(this.game, yellowslime.x * PARAMS.BLOCKWIDTH, yellowslime.y * PARAMS.BLOCKWIDTH));
+            }
+        }
+        if(level.Chest){
+            for (var i = 0; i < level.Chest.length; i++) {
+                let chest = level.Chest[i];
+                this.game.addEntity(new Chest(this.game, chest.x * PARAMS.BLOCKWIDTH, chest.y * PARAMS.BLOCKWIDTH, chest.facing, chest.item));
+            }
+        }
+        if(level.Mimic){
+            for (var i = 0; i < level.Mimic.length; i++) {
+                let mimic = level.Mimic[i];
+                this.game.addEntity(new Mimic(this.game, mimic.x * PARAMS.BLOCKWIDTH, mimic.y * PARAMS.BLOCKWIDTH, mimic.facing));
             }
         }
         if(level.Tree){
