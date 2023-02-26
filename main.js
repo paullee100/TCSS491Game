@@ -9,7 +9,7 @@ ASSET_MANAGER.queueDownload("./tileset/title/gameover_865_183.png")
 //tbc
 ASSET_MANAGER.queueDownload("./tileset/title/tbc_856_109.png")
 ASSET_MANAGER.queueDownload("./tileset/title/tbc_1024_127.png")
-//background forest
+//tiles forest
 ASSET_MANAGER.queueDownload("./tileset/forest/BG1.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/BG2.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/BG3.png")
@@ -33,6 +33,14 @@ ASSET_MANAGER.queueDownload("./tileset/forest/forest_tiles41.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/foreground0.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/sprite_0.png")
 ASSET_MANAGER.queueDownload("./tileset/forest/sprite_1.png")
+//tiles swamp
+ASSET_MANAGER.queueDownload("./tileset/swamp/Background.png")
+ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_00.png")
+ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_01.png")
+ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_02.png")
+ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_10.png")
+ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_11.png")
+ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_12.png")
 // knight spritesheet
 ASSET_MANAGER.queueDownload("./sprites/Knight_Attack1.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Attack2.png");
