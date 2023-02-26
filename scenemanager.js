@@ -137,12 +137,19 @@ class SceneManager {
                 }
             }
         }
-
-        //background
-        this.game.addEntity(new Background3());
-        this.game.addEntity(new Background2());
-        this.game.addEntity(new Background1());
-
+        if(level.Background){
+            if(level.Background[0] === 3){
+                this.game.addEntity(new Background3());
+                this.game.addEntity(new Background2());
+                this.game.addEntity(new Background1());
+            }
+            if(level.Background[0] === 1){
+                this.game.addEntity(new Background1());
+            }
+            if(level.Background[0] === 4){
+                this.game.addEntity(new Background4());
+            }
+        }
     };
 
     updateAudio() {
@@ -167,14 +174,16 @@ class SceneManager {
         }
         if(!this.title && this.levelclear === true){
             this.clearEnemyEntities();
+            this.tbc = true;
         }
 
         if (this.levelclear && this.game.click) {
-            this.loadnextlevel = false;
+            this.tbc = false;
             this.levelclear = false;
             this.knight = new Knight(this.game);
             if (this.game.click != null) this.game.click = null;
-            this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
+            //replace with menu select later
+            this.loadLevel(levelTwo, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
         }
 
         if(this.over && this.game.click) {
@@ -203,7 +212,7 @@ class SceneManager {
             this.bomb = 0;
             this.potion = 0;
         }
-        if(this.levelclear){
+        if(this.tbc){
             //ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/tbc_1024_127.png") , 1.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 883, 201);
             ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/tbc_856_109.png") , 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
         }

@@ -1,5 +1,5 @@
 class Background1{
-    constructor(){
+    constructor(spritesheet){
         // Object.assign(this, {game});
         this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/BG1.png")
     };
@@ -32,6 +32,21 @@ class Background3{
     constructor(){
         // Object.assign(this, {game});
         this.spritesheet = ASSET_MANAGER.getAsset("./tileset/forest/BG3.png")
+    };
+
+    update(){
+
+    };
+
+    draw(ctx){
+        ctx.drawImage(this.spritesheet, 0, 0 ,1024, 768,);
+    };
+}
+
+class Background4{
+    constructor(){
+        // Object.assign(this, {game});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/swamp/Background.png")
     };
 
     update(){
