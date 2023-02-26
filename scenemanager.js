@@ -146,6 +146,9 @@ class SceneManager {
             if(level.Background[0] === 1){
                 this.game.addEntity(new Background1());
             }
+            if(level.Background[0] === 4){
+                this.game.addEntity(new Background4());
+            }
         }
     };
 
@@ -171,10 +174,11 @@ class SceneManager {
         }
         if(!this.title && this.levelclear === true){
             this.clearEnemyEntities();
+            this.tbc = true;
         }
 
         if (this.levelclear && this.game.click) {
-            this.loadnextlevel = false;
+            this.tbc = false;
             this.levelclear = false;
             this.knight = new Knight(this.game);
             if (this.game.click != null) this.game.click = null;

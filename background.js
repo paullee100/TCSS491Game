@@ -43,6 +43,21 @@ class Background3{
     };
 }
 
+class Background4{
+    constructor(){
+        // Object.assign(this, {game});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/swamp/Background.png")
+    };
+
+    update(){
+
+    };
+
+    draw(ctx){
+        ctx.drawImage(this.spritesheet, 0, 0 ,1024, 768,);
+    };
+}
+
 class Tree{
     constructor(game, x,y){
         Object.assign(this, {game,x,y});

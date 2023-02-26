@@ -313,26 +313,38 @@ var levelTwo = {
     // Rock:[{x:14.25+(25*1),y:4}],
     Ground:[
     
-    //test side collision sprites    
-    {sprite:"./tileset/forest/forest_tiles01.png",x:1,y:10,size:4},
+    // //test side collision sprites    
+    // {sprite:"./tileset/swamp/sprite_01.png",x:1,y:10,size:4},
     
-    // standard 0-20 block grass 0
-    {sprite:"./tileset/forest/forest_tiles00.png",x:14,y:10,size:1},
-    {sprite:"./tileset/forest/forest_tiles01.png",x:15,y:10,size:3},
-    {sprite:"./tileset/forest/forest_tiles02.png",x:18,y:10,size:1},
-    {sprite:"./tileset/forest/forest_tiles03.png",x:14,y:11,size:1},
-    {sprite:"./tileset/forest/forest_tiles05.png",x:15,y:11,size:1},
-    {sprite:"./tileset/forest/forest_tiles06.png",x:16,y:11,size:2},
-    {sprite:"./tileset/forest/forest_tiles04.png",x:18,y:11,size:1},
-    {sprite:"./tileset/forest/forest_tiles00.png",x:0,y:11,size:1},
-    {sprite:"./tileset/forest/forest_tiles01.png",x:1,y:11,size:14},
-    {sprite:"./tileset/forest/forest_tiles01.png",x:19,y:11,size:7},
-    {sprite:"./tileset/forest/forest_tiles08.png",x:0,y:12,size:1},
-    {sprite:"./tileset/forest/forest_tiles06.png",x:1,y:12,size:3,c:true},
-    {sprite:"./tileset/forest/forest_tiles07.png",x:4,y:12,size:18,c:true},
-    {sprite:"./tileset/forest/forest_tiles06.png",x:22,y:12,size:4,c:true},
-    {sprite:"./tileset/forest/forest_tiles08.png",x:0,y:13,size:1},
-    {sprite:"./tileset/forest/forest_tiles07.png",x:1,y:13,size:25,c:true},
+    // standard  block grass 0
+    {sprite:"./tileset/swamp/sprite_00.png",x:-3,y:11,size:1},
+    {sprite:"./tileset/swamp/sprite_01.png",x:-2,y:11,size:20},
+    {sprite:"./tileset/swamp/sprite_02.png",x:18,y:11,size:1},
+
+    {sprite:"./tileset/swamp/sprite_10.png",x:-3,y:12,size:1},
+    {sprite:"./tileset/swamp/sprite_11.png",x:-2,y:12,size:20,c:true},
+    {sprite:"./tileset/swamp/sprite_12.png",x:18,y:12,size:1},
+
+    {sprite:"./tileset/swamp/sprite_10.png",x:-3,y:13,size:1},
+    {sprite:"./tileset/swamp/sprite_11.png",x:-2,y:13,size:20,c:true},
+    {sprite:"./tileset/swamp/sprite_12.png",x:18,y:13,size:1},
+
+    {sprite:"./tileset/swamp/sprite_10.png",x:-3,y:14,size:1},
+    {sprite:"./tileset/swamp/sprite_11.png",x:-2,y:14,size:20,c:true},
+    {sprite:"./tileset/swamp/sprite_12.png",x:18,y:14,size:1},
+    // {sprite:"./tileset/forest/forest_tiles03.png",x:14,y:11,size:1},
+    // {sprite:"./tileset/forest/forest_tiles05.png",x:15,y:11,size:1},
+    // {sprite:"./tileset/forest/forest_tiles06.png",x:16,y:11,size:2},
+    // {sprite:"./tileset/forest/forest_tiles04.png",x:18,y:11,size:1},
+    // {sprite:"./tileset/forest/forest_tiles00.png",x:0,y:11,size:1},
+    // {sprite:"./tileset/forest/forest_tiles01.png",x:1,y:11,size:14},
+    // {sprite:"./tileset/forest/forest_tiles01.png",x:19,y:11,size:7},
+    // {sprite:"./tileset/forest/forest_tiles08.png",x:0,y:12,size:1},
+    // {sprite:"./tileset/forest/forest_tiles06.png",x:1,y:12,size:3,c:true},
+    // {sprite:"./tileset/forest/forest_tiles07.png",x:4,y:12,size:18,c:true},
+    // {sprite:"./tileset/forest/forest_tiles06.png",x:22,y:12,size:4,c:true},
+    // {sprite:"./tileset/forest/forest_tiles08.png",x:0,y:13,size:1},
+    // {sprite:"./tileset/forest/forest_tiles07.png",x:1,y:13,size:25,c:true},
     ],
-    Background:[1]
+    Background:[4]
 };
