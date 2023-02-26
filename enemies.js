@@ -98,7 +98,7 @@ class Mimic {
 		if (this.health <= 0) this.BB = new BoundingBox(0, 0, 0, 0, "enemy", this);
     };
 	update() {
-		console.log(this.state);
+		//console.log(this.state);
 		this.updateBB();
         this.y += this.velocity * this.game.clockTick;
 		var that = this;

@@ -91,7 +91,7 @@ class Lich {
 
         this.BB = new BoundingBox(this.x, this.y, 200, 330, "enemy", this);
         if (this.state === 4) {
-            console.log("fire bounding box working");
+            //console.log("fire bounding box working");
             this.FireBB = new BoundingBox(this.x - 150 * this.numOfFire, this.y + 175, 150 * this.numOfFire, 155, "enemy", this);
         } else {
             this.FireBB = new BoundingBox(0, 0, 0, 0, "enemy", this);
