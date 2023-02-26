@@ -3,22 +3,39 @@ class Chest {
 		Object.assign(this, { game,x,y,facing,item });
 		this.health = 1;
 		this.state = 0; // closed = 0, open = 1
+		this.velocity = 300;
 		this.spritesheet = [];
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/chest_closed.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/chest_opened.png"));
 
-		this.BB = new BoundingBox(this.x, this.y, 10, 10, "enemy", this);
-
-
 	};
 
+	updateBB() {
+        this.lastBB = this.BB;
+		if (this.health > 0) this.BB = new BoundingBox(this.x, this.y, 75, 75, "enemy", this);
+		if (this.health <= 0) this.BB = new BoundingBox(0, 0, 0, 0, "enemy", this);
+    }
+
 	update() {
+		this.updateBB();
+        this.y += this.velocity * this.game.clockTick;
+		var that = this;
+		this.game.entities.forEach(entity => {
+			if (entity.BB && that.BB.collide(entity.BB)) {
+                if (entity instanceof Tile) {
+                    if ((that.lastBB.bottom) <= entity.BB.top) { //landing
+                        that.velocity = 0;
+                        that.y = entity.y - 75;
+                    }
+				};
+			};
+		});
 		if (this.health <= 0) {
 			this.state = 1;
 			if (this.item) {
-				if (this.item == "potion") this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
-				if (this.item == "bomb") /*console.log("YESSSSSSSSSSSSSS"),*/ this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
-				if (this.item == "throwingknife") this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
+				if (this.item == "potion") this.game.addEntitySpecific(new Potion(this.game, this.x, this.y - 30), 1);
+				if (this.item == "bomb") /*console.log("YESSSSSSSSSSSSSS"),*/ this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y - 10, 0), 1);
+				if (this.item == "throwingknife") this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y - 10, 1, 0), 1);
 				this.item = null;
 			};
 		};
@@ -37,13 +54,175 @@ class Chest {
 			ctx.save()
 			ctx.scale(1, 1)
 		}
-		if (this.state == 0) ctx.drawImage(this.spritesheet[this.state], this.x - this.game.camera.x, this.y - this.game.camera.y, 50, 50);
-		if (this.state == 1) {
-			ctx.drawImage(this.spritesheet[this.state], this.x - 70 - this.game.camera.x, this.y + 25 - this.game.camera.y, 120, 25);
+		if (this.facing == 1) {
+			if (this.state == 0) ctx.drawImage(this.spritesheet[this.state], this.x - this.game.camera.x, this.y - this.game.camera.y, 75, 75);
+			if (this.state == 1) {
+				ctx.drawImage(this.spritesheet[this.state], this.x - 100 - this.game.camera.x, this.y + 35 - this.game.camera.y, 175, 37.5);
+			};
+		} else {
+			if (this.state == 0) ctx.drawImage(this.spritesheet[this.state], (this.x * this.facing) - (this.game.camera.x * this.facing) - 75, this.y - this.game.camera.y, 75, 75);
+			if (this.state == 1) {
+				ctx.drawImage(this.spritesheet[this.state], (this.x * this.facing) - 175 - (this.game.camera.x * this.facing), this.y + 35 - this.game.camera.y, 175, 37.5);
+			};
 		};
 		ctx.restore();
 	};
 };
+
+class Mimic {
+	constructor(game,x,y,facing) {
+		Object.assign(this, { game,x,y,facing });
+		this.health = 75;
+		this.maxhealth = 75;
+		this.state = 0; // stunned = 0, idle(chest) = 1, attack = 2, walk = 3, dead = 4
+		this.velocity = 300;
+		this.damage = 25;
+		this.state = 1;
+		this.items = false;
+		this.spritesheet = [];
+		this.animation = [];
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/mimic_attack.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/mimic_idle.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/mimic_attack.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/mimic_attack.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/chest_opened.png"));
+		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+		this.animation.push(new Animator(this.spritesheet[0], 142, 42, 25, 27, 1, 0.5, 0, false, true));
+		this.animation.push(new Animator(this.spritesheet[1], 28, 45, 22, 22, 3, 1, 92, false, true));
+		this.animation.push(new Animator(this.spritesheet[2], 26, 40, 26, 27, 2, 0.5, 90, false, false));
+		this.animation.push(new Animator(this.spritesheet[3], 142, 42, 25, 27, 1, 0.5, 0, false, true));
+	};
+	updateBB() {
+        this.lastBB = this.BB;
+        if (this.health > 0) this.BB = new BoundingBox(this.x, this.y, 75, 75, "enemy", this);
+		if (this.health <= 0) this.BB = new BoundingBox(0, 0, 0, 0, "enemy", this);
+    };
+	update() {
+		console.log(this.state);
+		this.updateBB();
+        this.y += this.velocity * this.game.clockTick;
+		var that = this;
+		this.game.entities.forEach(entity => {
+			if (entity.BB && that.BB.collide(entity.BB)) {
+                if (entity instanceof Tile) {
+                    if ((that.lastBB.bottom) <= entity.BB.top) { //landing
+                        that.velocity = 0;
+                        that.y = entity.y-82;
+                    }
+				};
+			};
+		});
+		this.game.entities.forEach(entity => {
+			/* if (entity.BB && that.VisionBB.collide(entity.BB)) {
+				if (entity instanceof Knight) {
+					if ((that.lastBB.right) <= entity.BB.left) { // skeleton sees knight from right
+						this.facing = 1;
+						this.speed = 150;
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) { // skeleton sees knight from left
+						this.facing = -1;
+						this.speed = -150;
+					}
+				}
+			} */
+			if (entity.BB && that.BB.collide(entity.BB) && this.state !== 0 && this.state !== 1) {
+				if (entity instanceof Knight) {
+					this.state = 2;
+					this.speed = 0;
+					if (this.animation[2].currentFrame() == 1) {
+						if (this.facing == 1) {
+							this.attackBB = new AttackBox(this.game, this, this.x, this.y, 122, 185, 2, 1, this.damage);
+						}
+						else {
+							this.attackBB = new AttackBox(this.game, this, this.x, this.y, 122, 185, 2, 1, this.damage);
+						}
+					}
+					/* else if (this.attackBB) { 
+						this.attackBB.removeFromWorld = true;
+					}; */
+					//console.log("skeleton has collided")
+				}
+			};
+		});
+
+		if (this.state == 1) {
+			if (this.health < 75) {
+				this.state = 2;
+				this.x += 50 * this.facing;
+				ASSET_MANAGER.playAsset("./sounds/mimic_attack.mp3");
+			}
+		};
+		if (this.health <= 0) {
+			this.state = 4;
+			if (this.items == false) {
+				for (var i = 0; i < 3; i++) {
+					let rng = Math.floor(Math.random() * 100);
+					if (rng < 100/3) {
+						this.game.addEntitySpecific(new Potion(this.game, this.x + (i*50), this.y - 30), 1);
+					} else if (rng < 2*100/3 && rng >= 100/3) {
+						this.game.addEntitySpecific(new Bomb(this.game, this.x + (i*50), this.y - 10, 0), 1);
+					} else if (rng <= 100 && rng >= 2*100/3) {
+						this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x + (i*50), this.y - 10, 1, 0), 1);
+					}
+				};
+				this.items = true;
+			};
+		};
+		if (this.state !== 4 && this.animation[this.state].isDone()) {
+			var tempState = this.state;
+			this.state = 3;
+			this.animation[tempState].elapsedTime = 0;
+			if (this.facing == 1) {
+				this.speed = 100;
+			} else {
+				this.speed = -100;
+			}
+		};
+	};
+	draw(ctx) {
+		if (PARAMS.DEBUG) {
+            ctx.strokeStyle = "red";
+            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 75, 75);
+        }
+
+		let ratio = this.health / this.maxhealth;
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
+
+		if (this.state !== 1 && this.state !== 4) {
+			if (this.health > 0) {
+				ctx.fillRect(this.x - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2 * PARAMS.BLOCKWIDTH * ratio, 0.25 * PARAMS.BLOCKWIDTH);
+			}
+			ctx.strokeRect(this.x  - this.game.camera.x - 25, this.y - this.game.camera.y - 25 , 2 * PARAMS.BLOCKWIDTH, 0.25  * PARAMS.BLOCKWIDTH);
+		};
+		if (this.facing == -1) {
+			ctx.save()
+			ctx.scale(-1, 1)
+		} else if (this.facing == 1) {
+			ctx.save()
+			ctx.scale(1, 1)
+		}
+		if (this.state !== 4) {
+			if (this.facing == 1) {
+				if (this.state == 0) this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 10 - this.game.camera.y, 3.75);
+				if (this.state == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 3.75);
+				if (this.state == 3) this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 10 - this.game.camera.y, 3.75);
+				if (this.state == 2) this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 15 - this.game.camera.y, 3.75);
+			} else {
+				if (this.state == 0) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - (this.game.camera.x * this.facing) - 75, this.y - this.game.camera.y, 3.75);
+				if (this.state == 1) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - (this.game.camera.x * this.facing) - 75, this.y - this.game.camera.y, 3.75);
+				if (this.state == 3) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - (this.game.camera.x * this.facing) - 75, this.y - 10 - this.game.camera.y, 3.75);
+				if (this.state == 2) this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - (this.game.camera.x * this.facing) - 75, this.y - 15 - this.game.camera.y, 3.75);
+			};
+		} else {
+			if (this.facing == 1) ctx.drawImage(this.spritesheet[this.state], this.x - 100 - this.game.camera.x, this.y + 45 - this.game.camera.y, 175, 37.5);
+			else ctx.drawImage(this.spritesheet[this.state], (this.x * this.facing) - 175 - (this.game.camera.x * this.facing), this.y + 45 - this.game.camera.y, 175, 37.5);
+
+		}
+		ctx.restore();
+	};
+};
+
 class Skeleton {
 	constructor(game,x,y) {
 		Object.assign(this, { game,x,y });
