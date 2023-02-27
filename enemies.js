@@ -223,6 +223,40 @@ class Mimic {
 	};
 };
 
+class Elf {
+	constructor(game, x, y) {
+		Object.assign(this, { game, x, y });
+		this.speed = 100;
+		this.health = 50;
+		this.maxhealth = 50;
+		this.facing = 1; // right = 1 left = -1
+		this.state = 1; // stunned = 0, walking = 1, attack = 2, dead = 3, shooting = 4
+		this.game.Skeleton = this;
+		this.deathtime = 0;
+		this.spritesheet = [];
+		this.animation = [];
+		this.damage = 5;
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Damage.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Walking.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Attack.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Death.png"));
+		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Shoot.png"));
+		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 75, 82, 3, 0.25, 1, false, true));
+		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 80, 78, 10, .1, 1, false, true));
+		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 80, 81, 4, .2, 1, false, true));
+		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 80, 81, 6, .17, 1, false, true));
+		this.animation.push(new Animator(this.spritesheet[4], 0, 0, 82, 78, 10, .2, 1, false, true));
+	}
+	updateBB() {
+	}
+	update() {
+	}
+	draw(ctx) {
+		this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x  - this.game.camera.x, this.y - this.game.camera.y, 2.5);
+		ctx.restore();
+	}
+}
 class Skeleton {
 	constructor(game,x,y) {
 		Object.assign(this, { game,x,y });
@@ -232,7 +266,7 @@ class Skeleton {
 		this.health = 50;
 		this.maxhealth = 50;
 		this.facing = 1; // right = 1 left = -1
-		this.state = 0; // stunned = 0, walking = 1, attack = 2, dead = 3
+		this.state = 1; // stunned = 0, walking = 1, attack = 2, dead = 3
 		this.game.Skeleton = this;
 		this.deathtime = 0;
 		this.attacktime = 0;

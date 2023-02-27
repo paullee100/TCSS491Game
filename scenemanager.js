@@ -77,7 +77,12 @@ class SceneManager {
                 this.game.addEntity(new Lich(this.game, lich.x * PARAMS.BLOCKWIDTH, lich.y * PARAMS.BLOCKWIDTH));
             }
         }
-
+        if (level.Elf) {
+            for (var i = 0; i < level.Elf.length; i++) {
+                let elf = level.Elf[i];
+                this.game.addEntity(new Elf(this.game, elf.x * PARAMS.BLOCKWIDTH, elf.y * PARAMS.BLOCKWIDTH));
+            }
+        }
         if(level.Skeleton){
             for (var i = 0; i < level.Skeleton.length; i++) {
                 let skeleton = level.Skeleton[i];
