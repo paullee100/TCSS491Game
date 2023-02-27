@@ -47,14 +47,18 @@ class ThrowingKnife {
         this.spritesheet = [];
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Items/throwing_knife.png"));
         this.updateBB();
+        this.velocity = 300;
 
     }
     updateBB() {
+        this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, 40, 40, "player", this);
     };
 
     update() {
+        console.log(this.state);
         if (this.state == 0) {
+            
             this.y += this.velocity * this.game.clockTick;
             var that = this;
             this.game.entities.forEach(entity => {
@@ -62,8 +66,8 @@ class ThrowingKnife {
                     if (entity instanceof Tile) {
                         if ((that.lastBB.bottom) <= entity.BB.top) { //landing
                             console.log('knife landed')
-                            that.velocity = -0;
-                            that.y = entity.y;
+                            that.velocity = 0;
+                            that.y = entity.y - 50;
                         }
                     };
                 };
@@ -93,6 +97,7 @@ class ThrowingKnife {
                 this.removeFromWorld = true;
             }
         });
+        this.updateBB();
     };
 
     draw(ctx) {

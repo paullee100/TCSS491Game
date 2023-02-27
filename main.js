@@ -96,6 +96,12 @@ ASSET_MANAGER.queueDownload("./sprites/Yellow/Yellow_Slime_Jump.png");
 ASSET_MANAGER.queueDownload("./sprites/Yellow/Yellow_Slime_Death.png");
 ASSET_MANAGER.queueDownload("./sprites/Yellow/Yellow_Slime_Damage.png");
 
+ASSET_MANAGER.queueDownload("./sprites/Elf/Elf_Damage.png");
+ASSET_MANAGER.queueDownload("./sprites/Elf/Elf_Walking.png");
+ASSET_MANAGER.queueDownload("./sprites/Elf/Elf_Death.png");
+ASSET_MANAGER.queueDownload("./sprites/Elf/Elf_Shoot.png");
+ASSET_MANAGER.queueDownload("./sprites/Elf/Elf_Attack.png");
+ASSET_MANAGER.queueDownload("./sprites/Elf/Elf_Arrow.png");
 // boss
 ASSET_MANAGER.queueDownload("./sprites/Lich/Lich_Idle.png");
 ASSET_MANAGER.queueDownload("./sprites/Lich/Lich_Walking.png");

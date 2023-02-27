@@ -77,7 +77,12 @@ class SceneManager {
                 this.game.addEntity(new Lich(this.game, lich.x * PARAMS.BLOCKWIDTH, lich.y * PARAMS.BLOCKWIDTH));
             }
         }
-
+        if (level.Elf) {
+            for (var i = 0; i < level.Elf.length; i++) {
+                let elf = level.Elf[i];
+                this.game.addEntity(new Elf(this.game, elf.x * PARAMS.BLOCKWIDTH, elf.y * PARAMS.BLOCKWIDTH));
+            }
+        }
         if(level.Skeleton){
             for (var i = 0; i < level.Skeleton.length; i++) {
                 let skeleton = level.Skeleton[i];
@@ -227,9 +232,11 @@ class SceneManager {
 
             ctx.fillStyle = "White";
             ctx.font = PARAMS.BLOCKWIDTH / 2 + 'px "Press Start 2P"';
-            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_potion.png"), 12 * PARAMS.BLOCKWIDTH, - 22)
-            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_bomb.png"), 14 * PARAMS.BLOCKWIDTH, .15 * PARAMS.BLOCKWIDTH)
+            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/throwing_knife.png"), 10 * PARAMS.BLOCKWIDTH, 35, 60, 40);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_potion.png"), 12 * PARAMS.BLOCKWIDTH, - 22);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_bomb.png"), 14 * PARAMS.BLOCKWIDTH, .15 * PARAMS.BLOCKWIDTH);
             ctx.fillText("x" + this.potion, 13 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
+            ctx.fillText("x" + this.knife, 11 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
             ctx.fillText("x" + this.bomb, 15 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
         }
     }
