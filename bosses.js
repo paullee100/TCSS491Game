@@ -52,7 +52,7 @@ class Lich {
         this.animation.push(new Animator(this.spritesheet[4], 10, 4, 62, 90, 5, 0.1, 30, false, true));
         this.animation.push(new Animator(this.spritesheet[5], 0, 1, 70, 90, 10, 0.1, 21, false, true));
 
-        this.attackAnimation.push(new Animator(this.attackSpritesheet[0], 42, 26, 15, 136, 1, 0.5, 0, false, false));
+        this.attackAnimation.push(new Animator(this.attackSpritesheet[0], 42, 26, 15, 136, 1, 0.5, 0, false, true));
         this.attackAnimation.push(new Animator(this.attackSpritesheet[1], 0, 8, 130, 136, 10, 0.1, 100, false, true));
         this.attackAnimation.push(new Animator(this.attackSpritesheet[2], 5, 8, 15, 24, 8, 0.5, 9, false, true));
 
@@ -69,12 +69,12 @@ class Lich {
             return;
         }
         let rng = Math.floor(Math.random() * 100);
-        if (rng <= 55 && this.maxSummon <= 3) {
+        if (rng <= 55 && this.maxSummon < 3) {
             this.state = 2;
-        } else if (rng >= 25 && rng <= 85) {
+        } else if (rng >= 25 && rng <= 80) {
             this.state = 4;
 
-        } else if (rng >= 86 && rng <= 95) {
+        } else if (rng >= 81 && rng <= 95) {
             this.state = 3;
         } else {
             this.state = 0;
@@ -85,6 +85,7 @@ class Lich {
         this.placedSmokeBomb = true;
         this.smokePlacementX = this.game.camera.knight.position.x;
         this.smokePlacementY = this.game.camera.knight.position.y;
+        this.game.addEntitySpecific(new LichSmoke(this.game, this.smokePlacementX, this.smokePlacementY), 0);
     };
 
     updateBB() {
@@ -227,13 +228,7 @@ class Lich {
             }
             ctx.restore();
 
-            if (this.state == 3) {
-                if (this.attackState == 0) {
-                    this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, this.smokePlacementX - this.game.camera.x, this.smokePlacementY - this.game.camera.y, 3)
-                } else if (this.attackState == 1) {
-                    this.attackAnimation[this.attackState].drawFrame(this.game.clockTick, ctx, this.smokePlacementX - 75 - this.game.camera.x, this.smokePlacementY - 150 - this.game.camera.y, 3)
-                }
-            } else if (this.state == 4) {
+            if (this.state == 4) {
                 this.attackTime += this.game.clockTick;
                 this.numOfFire = 1;
                 this.attackAnimation[2].drawFrame(this.game.clockTick, ctx, (this.x - 150 * 1) - this.game.camera.x, this.y + 88 - this.game.camera.y, 10);
@@ -273,8 +268,9 @@ class Titan {
 
         this.state = 4; // stunned = 0, idle = 1, walking = 2, melee1 = 3, melee2 = 4, melee3 = 5, range1 = 6, range2 = 7, range3 = 8, death = 9
         this.facing = 1; // right = 1, left = -1
-        this.health = 100;
-        this.attack = 15;
+        this.health = 500;
+        this.maxhealth = 500;
+        this.damage = 15;
 
         this.spritesheet = [];
         this.animation = [];
@@ -298,12 +294,12 @@ class Titan {
         this.animation.push(new Animator(this.spritesheet[1], 6, 4, 41, 103, 6, 0.5, 71, false, true));
         this.animation.push(new Animator(this.spritesheet[2], 4, 6, 47, 104, 7, 0.5, 71, false, true));
         this.animation.push(new Animator(this.spritesheet[3], 11, 4, 73, 108, 5, 0.5, 39, false, true));
-        this.animation.push(new Animator(this.spritesheet[4], 5, 7, 99, 99, 5, 0.5, 13, false, false));
+        this.animation.push(new Animator(this.spritesheet[4], 5, 7, 99, 99, 5, 0.2, 13, false, false));
         this.animation.push(new Animator(this.spritesheet[5], 4, 4, 63, 124, 5, 0.5, 49, false, true));
         this.animation.push(new Animator(this.spritesheet[6], 5, 6, 80, 101, 5, 0.5, 32, false, true));
-        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.5, 31, false, false));
+        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.2, 31, false, false));
         this.animation.push(new Animator(this.spritesheet[8], 8, 5, 78, 102, 6, 0.5, 35, false, true));
-        this.animation.push(new Animator(this.spritesheet[9], 9, 11, 60, 102, 9, 0.5, 52, false, false));
+        this.animation.push(new Animator(this.spritesheet[9], 9, 11, 60, 102, 9, 0.15, 52, false, false));
 
         this.updateBB();
     };
@@ -317,7 +313,6 @@ class Titan {
     };
 
     update() {
-        console.log(this.health)
         if (this.health <= 0) {
             this.dead = true;
             this.state = 9;
@@ -326,32 +321,39 @@ class Titan {
             }
         }
 
-        if (this.game.Knight.position.x > this.x) {
+        if (this.game.camera.knight.position.x > this.x) {
             this.facing = 1;
-        } else if (this.game.Knight.position.x < this.x) {
+        } else if (this.game.camera.knight.position.x < this.x) {
             this.facing = -1;
         }
 
         this.game.entities.forEach((entity) => {
-            if (entity.BB && this.meleeRange.collide(entity.BB)) {
-                if (this.animation[this.state].isDone()) {
+            if (this.state !== 9) {
+                if (entity.BB && this.meleeRange.collide(entity.BB)) {
                     if (entity instanceof Knight) {
                         this.state = 4;
-                        this.animation[this.state].elapsedTime = 0;
+                        // if (this.animation[4].currentFrame() == 4) {
+                            if (this.facing == 1) {
+                                this.meleeBB = new AttackBox(this.game, this, this.x + 160, this.y, 226, 410, 3, 5, this.damage);
+                            } else {
+                                this.meleeBB = new AttackBox(this.game, this, this.x - 226, this.y, 226, 410, 3, 5, this.damage);
+                            }
+                        // }
                     }
-                }
-            } else {
-                if (this.animation[this.state].isDone()) {
-                    if (entity instanceof Knight) {
-                        this.state = 7;
-                        this.animation[this.state].elapsedTime = 0;
+                } else {
+                    if (this.animation[this.state].isDone()) {
+                        if (entity instanceof Knight) {
+                            this.state = 7;
+                            this.game.addEntitySpecific(new TitanLightning(this.game, this.x, this.y, this.facing, 0), 1);
+                            this.animation[this.state].elapsedTime = 0;
+                        }
                     }
                 }
             }
         });
 
         if (this.animation[this.state].isDone()) {
-            const tempState = this.state;
+            let tempState = this.state;
             this.state = 1;
             this.animation[tempState].elapsedTime = 0;
 
@@ -369,6 +371,16 @@ class Titan {
             ctx.strokeRect(this.x - 226 - this.game.camera.x, this.y - this.game.camera.y, 226, 410);
         }
 
+        if (this.dead === false) {
+            let ratio = this.health / this.maxhealth;
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = ratio < 0.2 ? "red" : ratio < 0.5 ? "yellow" : "green";
+            if (this.health > 0) {
+                ctx.fillRect(this.x - this.game.camera.x - 120, this.y - this.game.camera.y - 100, 5.5 * PARAMS.BLOCKWIDTH * ratio, 0.5 * PARAMS.BLOCKWIDTH);
+            }
+            ctx.strokeRect(this.x - this.game.camera.x - 120, this.y - this.game.camera.y - 100, 5.5 * PARAMS.BLOCKWIDTH, 0.5 * PARAMS.BLOCKWIDTH);
+        }
+
         if (this.facing == -1) {
             ctx.save();
             ctx.scale(-1, 1);
@@ -379,11 +391,14 @@ class Titan {
 
         let stateModX = 0;
         let stateModY = 0;
-        
+
+        if (this.state == 1) stateModY = -15;
+        else if (this.state == 7) stateModX = 30, stateModY = -10;
+            
         if (this.facing == 1) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 4);
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y + stateModY - this.game.camera.y, 4);
         } else if (this.facing == -1) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 160) - (this.facing * this.game.camera.x), this.y - this.game.camera.y, 4);
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing - 160) + (stateModX * this.facing) - (this.facing * this.game.camera.x), this.y + stateModY - this.game.camera.y, 4);
         }
         ctx.restore();
     };
@@ -393,38 +408,81 @@ class Dragon {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
 
-        this.game.Dragon = this;
-        this.state = 1;
+        this.state = 3; // stunned = 0, attack = 1, pre-attack = 2, idle = 3, flight = 4, death = 5
         this.facing = 1; // right = 1, left = -1
-
         this.health = 500;
         this.maxhealth = 500;
         this.damage = 15;
-
         this.dead = false;
 
         this.spritesheet = [];
         this.animation = [];
 
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Idle.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Flight.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_PreAttack.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Attack.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_PreAttack.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Idle.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Flight.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Death.png"));
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-        this.animation.push(new Animator(this.spritesheet[0], 10, 0, 80, 113, 14, 0.5, 38, false, true));
-        this.animation.push(new Animator(this.spritesheet[1], 4, 4, 175, 135, 11, 0.5, 10, false, true));
-        this.animation.push(new Animator(this.spritesheet[2]));
-        this.animation.push(new Animator(this.spritesheet[3]));
-        this.animation.push(new Animator(this.spritesheet[4]));
+        this.animation.push(new Animator(this.spritesheet[0], 30, 0, 90, 113, 14, 0.5, 10, false, true));
+        this.animation.push(new Animator(this.spritesheet[1], 50, 4, 250, 117, 6, 0.25, 48, false, false));
+        this.animation.push(new Animator(this.spritesheet[2], 16, 8, 141, 105, 4, 0.25, 10, false, false));
+        this.animation.push(new Animator(this.spritesheet[3], 46, 0, 90, 113, 14, 0.25, 10, false, true));
+        this.animation.push(new Animator(this.spritesheet[4], 4, 4, 182, 136, 11, 0.15, 20, false, true));
+        this.animation.push(new Animator(this.spritesheet[5], 17, 8, 120, 126, 5, 0.2, 10, false, false));
+    
+        this.updateBB();
     };
 
+    updateBB() {
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x, this.y, 375, 450, "enemy", this);
+    }
     update() {
+        if (this.health <= 0) {
+            this.dead = true;
+            this.state = 5;
+            if (this.animation[this.state].isDone()) {
+                this.removeFromWorld = true;
+            }
+        } else {
 
+            this.game.entities.forEach((entity) => {
+                if (entity.BB && this.BB.collide(entity.BB)) {
+                    if (entity instanceof Knight) {
+                        console.log("Dragon and Knight collision");
+                    }
+                }
+            });
+
+            if (this.animation[this.state].isDone()) {
+                const temp = this.state;
+                this.state = 0;
+                this.animation[temp].elapsedTime = 0;
+            }
+            this.updateBB();
+        }
+        
     };
 
     draw(ctx) {
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 375, 450);
+        }
+
+        if (this.dead === false) {
+            let ratio = this.health / this.maxhealth;
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = ratio < 0.2 ? "red" : ratio < 0.5 ? "yellow" : "green";
+            if (this.health > 0) {
+                ctx.fillRect(this.x - this.game.camera.x + 50, this.y - this.game.camera.y - 25, 5.5 * PARAMS.BLOCKWIDTH * ratio, 0.5 * PARAMS.BLOCKWIDTH);
+            }
+            ctx.strokeRect(this.x - this.game.camera.x + 50, this.y - this.game.camera.y - 25, 5.5 * PARAMS.BLOCKWIDTH, 0.5 * PARAMS.BLOCKWIDTH);
+        }
+
         if (this.facing == -1) {
             ctx.save();
             ctx.scale(-1, 1);
@@ -435,6 +493,8 @@ class Dragon {
 
         let stateModX = 0;
         let stateModY = 0;
+
+        if (this.state == 2) stateModY = -50;
 
         if (this.facing == 1) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, (this.y - stateModY) - this.game.camera.y, 4);

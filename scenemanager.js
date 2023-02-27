@@ -6,6 +6,7 @@ class SceneManager {
         this.potion = 0;
         this.bomb = 0;
         this.knife = 0;
+        this.lichTrigger = false;
         this.x = 0;
         this.title = true;
         this.over = false;
@@ -71,12 +72,13 @@ class SceneManager {
                 this.game.addEntity(new Chest(this.game, chest.x * PARAMS.BLOCKWIDTH, chest.y * PARAMS.BLOCKWIDTH, chest.facing, chest.item));
             }
         }
-        if(level.Lich){
-            for (var i = 0; i < level.Lich.length; i++) {
-                let lich = level.Lich[i];
-                this.game.addEntity(new Lich(this.game, lich.x * PARAMS.BLOCKWIDTH, lich.y * PARAMS.BLOCKWIDTH));
-            }
-        }
+        // if(level.Lich){
+        //     for (var i = 0; i < level.Lich.length; i++) {
+        //         let lich = level.Lich[i];
+        //         this.game.addEntity(new Lich(this.game, lich.x * PARAMS.BLOCKWIDTH, lich.y * PARAMS.BLOCKWIDTH));
+        //     }
+        // }
+
         if (level.Elf) {
             for (var i = 0; i < level.Elf.length; i++) {
                 let elf = level.Elf[i];
@@ -196,6 +198,15 @@ class SceneManager {
             this.knight = new Knight(this.game);
             if (this.game.click != null) this.game.click = null;
             this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
+        }
+
+        if (this.knight.position.x >= 25+(25*4) * PARAMS.BLOCKWIDTH && !this.lichTrigger) {
+            console.log(this.x);
+            if (levelOne.Lich) {
+                let lich = levelOne.Lich[0];
+                this.game.addEntitySpecific(new Lich(this.game, lich.x * PARAMS.BLOCKWIDTH, lich.y * PARAMS.BLOCKWIDTH), 1);
+                this.lichTrigger = true;
+            }
         }
         this.updateAudio();
 
