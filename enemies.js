@@ -229,9 +229,9 @@ class Elf {
 		this.speed = 100;
 		this.health = 50;
 		this.maxhealth = 50;
-		this.facing = 1; // right = 1 left = -1
-		this.state = 1; // stunned = 0, walking = 1, attack = 2, dead = 3, shooting = 4
-		this.game.Skeleton = this;
+		this.facing = -1; // right = 1 left = -1
+		this.state = 4; // stunned = 0, walking = 1, attack = 2, dead = 3, shooting = 4
+		this.game.Elf = this;
 		this.deathtime = 0;
 		this.spritesheet = [];
 		this.animation = [];
@@ -247,13 +247,46 @@ class Elf {
 		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 80, 81, 4, .2, 1, false, true));
 		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 80, 81, 6, .17, 1, false, true));
 		this.animation.push(new Animator(this.spritesheet[4], 0, 0, 82, 78, 10, .2, 1, false, true));
+		this.updateBB();
 	}
 	updateBB() {
+		this.lastBB = this.BB;
+		this.BB = new BoundingBox(this.x + 30, this.y - 10, 100, 175, "enemy", this);
 	}
 	update() {
 	}
 	draw(ctx) {
-		this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x  - this.game.camera.x, this.y - this.game.camera.y, 2.5);
+		if (PARAMS.DEBUG) {
+			ctx.strokeStyle = "red";
+			ctx.strokeRect(this.x + 30 - this.game.camera.x, this.y - 10 - this.game.camera.y, 100, 175);
+			if (this.state == 2) {
+				if (this.facing == 1) {
+					ctx.strokeStyle = "blue";
+					ctx.strokeRect(this.x + 130 - this.game.camera.x, this.y + 30 - this.game.camera.y, 60, 70);
+				} else {
+					ctx.strokeStyle = "blue";
+					ctx.strokeRect(this.x - 30 - this.game.camera.x, this.y + 30 - this.game.camera.y, 60, 70);
+				}
+			}
+		}
+		if (this.facing == -1) {
+			ctx.save()
+			ctx.scale(-1, 1)
+		} else if (this.facing == 1) {
+			ctx.save()
+			ctx.scale(1, 1)
+		}
+		var stateMod = 0;
+		if (this.state == 0) stateMod = -20;
+		else if (this.state == 1) stateMod = -20;
+		else if (this.state == 2) stateMod = -25;
+		else if (this.state == 3) stateMod = 0;
+		else if (this.state == 4) stateMod = -20;
+		if (this.facing == 1) {
+			this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - this.game.camera.x) * this.facing, this.y + stateMod - this.game.camera.y, 2.5);
+		} else {
+			this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x + 160 - this.game.camera.x) * this.facing, this.y + stateMod - this.game.camera.y, 2.5);
+		}
 		ctx.restore();
 	}
 }
@@ -362,13 +395,10 @@ class Skeleton {
 							this.attackBB = new AttackBox(this.game, this, this.x - 123, this.y, 122, 185, 2, 3, this.damage);
 						}
 					}
-					/* else if (this.attackBB) { 
-						this.attackBB.removeFromWorld = true;
-					}; */
-					//console.log("skeleton has collided")
 				}
 			};
 		});
+
 		if (this.animation[this.state].isDone()) {
 			var tempState = this.state;
 			this.state = 1;
