@@ -62,7 +62,9 @@ class Knight {
             //this.SwordBB = new BoundingBox(0, 0, 0, 0);
         }
         if (this.state == 9 || this.state == 10) {
+            if (this.facing == 1) {
             this.blockBB = new BoundingBox(this.position.x + 50, this.position.y, 50, 181, "player", this);
+            } else this.blockBB = new BoundingBox(this.position.x, this.position.y, 50, 181, "player", this);
         }
         else {
             //this.blockBB = new BoundingBox(0, 0, 0, 0, "player", this);
@@ -215,6 +217,9 @@ class Knight {
                             }
                         }   
                         if (entity.BB && that.BB.collide(entity.BB)) {
+                            if (entity instanceof Slime && entity.color == "green") {
+                                console.log("E");
+                            }
                             if (entity instanceof Tile) {
                                 if ((that.lastBB.bottom) <= entity.BB.top) { //landing
                                     that.position.y = entity.y - 171.25;
