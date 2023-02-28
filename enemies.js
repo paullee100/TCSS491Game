@@ -410,7 +410,9 @@ class Skeleton {
 			} else if (rng >= 20 && rng <= 100) {
 				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
 			}
+			if(this.game.Lich) {
 			this.game.Lich.maxSummon--;
+			};
 			this.removeFromWorld = true;
 			//console.log("is ded");
 		}
