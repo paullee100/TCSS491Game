@@ -471,7 +471,7 @@ class Skeleton {
 				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
 			} else if (rng >= 10 && rng <= 20) {
 				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
-			} else if (rng >= 20 && rng <= 100) {
+			} else if (rng >= 20 && rng <= 30) {
 				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
 			}
 
@@ -779,6 +779,8 @@ class Slime {
 				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
 			} else if (rng >= 10 && rng <= 20) {
 				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
+			}else if (rng >= 20 && rng <= 30) {
+				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
 			}
 			this.removeFromWorld = true;
 			//console.log(this.color + " slime is ded");
