@@ -122,6 +122,9 @@ ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range1.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range2.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range3.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Death.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning0.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning1.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning2.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Dragon/Dragon_Idle.png");
 ASSET_MANAGER.queueDownload("./sprites/Dragon/Dragon_Flight.png");

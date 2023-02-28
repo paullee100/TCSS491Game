@@ -291,8 +291,8 @@ class Elf {
 	}
 }
 class Skeleton {
-	constructor(game,x,y) {
-		Object.assign(this, { game,x,y });
+	constructor(game,x,y,summon) {
+		Object.assign(this, { game,x,y,summon });
 		this.leftbound = this.x - 300;
 		this.rightbound = this.x + 300;
 		this.speed = 100;
@@ -471,10 +471,13 @@ class Skeleton {
 				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
 			} else if (rng >= 10 && rng <= 20) {
 				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
-			} else if (rng >= 20 && rng <= 100) {
+			} else if (rng >= 20 && rng <= 30) {
 				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
 			}
-			this.game.Lich.maxSummon--;
+
+			if (this.summon) {
+				this.game.Lich.maxSummon--;
+			}
 			this.removeFromWorld = true;
 			//console.log("is ded");
 		}
@@ -776,6 +779,8 @@ class Slime {
 				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
 			} else if (rng >= 10 && rng <= 20) {
 				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
+			}else if (rng >= 20 && rng <= 30) {
+				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
 			}
 			this.removeFromWorld = true;
 			//console.log(this.color + " slime is ded");
