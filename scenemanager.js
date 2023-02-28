@@ -34,6 +34,7 @@ class SceneManager {
     loadLevel(level, xp, yp, transition, title) {
         this.title = title;
         this.level = level;
+        this.lichTrigger = false;
         this.clearEntities();
         //x = 0;
         this.knight.position.x = xp;
@@ -88,7 +89,7 @@ class SceneManager {
         if(level.Skeleton){
             for (var i = 0; i < level.Skeleton.length; i++) {
                 let skeleton = level.Skeleton[i];
-                this.game.addEntity(new Skeleton(this.game, skeleton.x * PARAMS.BLOCKWIDTH, skeleton.y * PARAMS.BLOCKWIDTH));
+                this.game.addEntity(new Skeleton(this.game, skeleton.x * PARAMS.BLOCKWIDTH, skeleton.y * PARAMS.BLOCKWIDTH, false));
             }
         }
 

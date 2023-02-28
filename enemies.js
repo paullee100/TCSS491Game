@@ -291,8 +291,8 @@ class Elf {
 	}
 }
 class Skeleton {
-	constructor(game,x,y) {
-		Object.assign(this, { game,x,y });
+	constructor(game,x,y,summon) {
+		Object.assign(this, { game,x,y,summon });
 		this.leftbound = this.x - 300;
 		this.rightbound = this.x + 300;
 		this.speed = 100;
@@ -474,7 +474,10 @@ class Skeleton {
 			} else if (rng >= 20 && rng <= 100) {
 				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
 			}
-			this.game.Lich.maxSummon--;
+
+			if (this.summon) {
+				this.game.Lich.maxSummon--;
+			}
 			this.removeFromWorld = true;
 			//console.log("is ded");
 		}

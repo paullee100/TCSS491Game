@@ -133,7 +133,7 @@ class Lich {
                 if (this.summonCounter >= 2.5) {
                     this.maxSummon++;
                     let rand = Math.floor(Math.random()*(3-1+1))+1;
-                    this.game.addEntitySpecific(new Skeleton(this.game,this.x+(rand * PARAMS.BLOCKWIDTH),(540/64)* PARAMS.BLOCKWIDTH), 1);
+                    this.game.addEntitySpecific(new Skeleton(this.game,this.x+(rand * PARAMS.BLOCKWIDTH),(540/64)* PARAMS.BLOCKWIDTH, true), 1);
                     this.summonCounter = 0;
                 }
             } else {
