@@ -87,7 +87,7 @@ class Mimic {
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/mimic_attack.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Chest/chest_opened.png"));
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-		this.animation.push(new Animator(this.spritesheet[0], 142, 42, 25, 27, 1, 0.5, 0, false, true));
+		this.animation.push(new Animator(this.spritesheet[0], 142, 42, 25, 27, 1, 1.5, 0, false, false));
 		this.animation.push(new Animator(this.spritesheet[1], 28, 45, 22, 22, 3, 1, 92, false, true));
 		this.animation.push(new Animator(this.spritesheet[2], 26, 40, 26, 27, 2, 0.5, 90, false, false));
 		this.animation.push(new Animator(this.spritesheet[3], 142, 42, 25, 27, 1, 0.5, 0, false, true));

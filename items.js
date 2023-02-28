@@ -171,7 +171,7 @@ class Bomb {
         };
         this.game.entities.forEach(entity => {
             if (entity.BB && this.BB.collide(entity.BB) && entity.BB.type == "enemy" && this.state == 2) {
-                entity.health -= (0.5);
+                entity.health -= (80) * this.game.clockTick;
             }
         });
     };
