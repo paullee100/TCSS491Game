@@ -229,8 +229,8 @@ class Elf {
 		this.speed = 100;
 		this.health = 50;
 		this.maxhealth = 50;
-		this.facing = -1; // right = 1 left = -1
-		this.state = 4; // stunned = 0, walking = 1, attack = 2, dead = 3, shooting = 4
+		this.facing = 1; // right = 1 left = -1
+		this.state = 1; // stunned = 0, walking = 1, attack = 2, dead = 3, shooting = 4
 		this.game.Elf = this;
 		this.deathtime = 0;
 		this.spritesheet = [];
@@ -254,6 +254,49 @@ class Elf {
 		this.BB = new BoundingBox(this.x + 30, this.y - 10, 100, 175, "enemy", this);
 	}
 	update() {
+		this.x += this.speed * this.game.clockTick;
+		// collision
+		var that = this;
+		this.game.entities.forEach(entity => {
+			/*
+			if (entity.BB && that.VisionBB.collide(entity.BB)) {
+				if (entity instanceof Knight) {
+					if ((that.lastBB.right) <= entity.BB.left) { // skeleton sees knight from right
+						this.facing = 1;
+						this.speed = 150;
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) { // skeleton sees knight from left
+						this.facing = -1;
+						this.speed = -150;
+					}
+				}
+			}
+			*/
+			if (entity.BB && that.BB.collide(entity.BB)) {
+				if (entity instanceof Knight) {
+					this.speed = 0;
+					this.state = 2;
+					if (this.facing == 1) {
+						this.attackBB = new AttackBox(this.game, this, this.x + 130, this.y + 30, 60, 70, 8, 10, this.damage);
+					} else {
+						this.attackBB = new AttackBox(this.game, this, this.x - 30, this.y + 30, 60, 70, 8, 10, this.damage);
+					}
+					//console.log("slime has collided")
+				}
+				if (entity instanceof Tile) {
+					if ((that.lastBB.right) <= entity.BB.left) {
+						this.facing = -1;
+						this.speed = -150;
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) {
+						this.facing = 1;
+						this.speed = 150;
+
+					}
+				};
+			};
+		});
+		this.updateBB();
 	}
 	draw(ctx) {
 		if (PARAMS.DEBUG) {
