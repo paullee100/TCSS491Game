@@ -4,6 +4,17 @@ const ASSET_MANAGER = new AssetManager();
 //main screen
 ASSET_MANAGER.queueDownload("./tileset/title/title_950_164.png")
 ASSET_MANAGER.queueDownload("./tileset/title/start_455_127.png")
+ASSET_MANAGER.queueDownload("./tileset/title/startSelected.png");
+ASSET_MANAGER.queueDownload("./tileset/title/controls.png");
+ASSET_MANAGER.queueDownload("./tileset/title/controlsSelected.png");
+ASSET_MANAGER.queueDownload("./tileset/title/levelOne.png");
+ASSET_MANAGER.queueDownload("./tileset/title/levelOneSelected.png");
+ASSET_MANAGER.queueDownload("./tileset/title/levelTwo.png");
+ASSET_MANAGER.queueDownload("./tileset/title/levelTwoSelected.png");
+ASSET_MANAGER.queueDownload("./tileset/title/boss.png");
+ASSET_MANAGER.queueDownload("./tileset/title/bossSelected.png");
+ASSET_MANAGER.queueDownload("./tileset/title/back.png");
+ASSET_MANAGER.queueDownload("./tileset/title/backSelected.png");
 //gameover
 ASSET_MANAGER.queueDownload("./tileset/title/gameover_865_183.png")
 //tbc
