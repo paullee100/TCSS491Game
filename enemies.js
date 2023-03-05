@@ -527,9 +527,9 @@ class Cyclops {
 	};
 
 	update() {
-		if (this.game.Knight.position.x > this.x) {
+		if (this.game.camera.knight.position.x > this.x) {
 			this.facing = 1;
-		} else if (this.game.Knight.position.x < this.x) {
+		} else if (this.game.camera.knight.position.x < this.x) {
 			this.facing = -1;
 		}
 

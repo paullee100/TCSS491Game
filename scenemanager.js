@@ -97,6 +97,12 @@ class SceneManager {
                 this.game.addEntity(new Elf(this.game, elf.x * PARAMS.BLOCKWIDTH, elf.y * PARAMS.BLOCKWIDTH));
             }
         }
+        if (level.Cyclops) {
+            for (var i = 0; i < level.Cyclops.length; i++) {
+                let cyclops = level.Cyclops[i];
+                this.game.addEntity(new Cyclops(this.game, cyclops.x * PARAMS.BLOCKWIDTH, cyclops.y * PARAMS.BLOCKWIDTH));
+            }
+        }
         if(level.Skeleton){
             for (var i = 0; i < level.Skeleton.length; i++) {
                 let skeleton = level.Skeleton[i];
@@ -395,6 +401,7 @@ class SceneManager {
             ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_865_183.png"), 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
             this.bomb = 0;
             this.potion = 0;
+            this.knife = 0;
         }
         if(this.tbc){
             //ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/tbc_1024_127.png") , 1.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 883, 201);
