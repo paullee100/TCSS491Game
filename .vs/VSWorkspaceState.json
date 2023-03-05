@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
+    "",
     "\\sprites",
-    "\\sprites\\Elf",
-    "\\sprites\\Items"
+    "\\sprites\\Elf"
   ],
+  "SelectedNode": "\\scenemanager.js",
   "PreviewInSolutionExplorer": false
 }

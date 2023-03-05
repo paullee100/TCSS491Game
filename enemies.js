@@ -229,46 +229,142 @@ class Elf {
 		this.speed = 100;
 		this.health = 50;
 		this.maxhealth = 50;
-		this.facing = -1; // right = 1 left = -1
-		this.state = 4; // stunned = 0, walking = 1, attack = 2, dead = 3, shooting = 4
+		this.facing = 1; // right = 1 left = -1
+		this.state = 1; // stunned = 0, walking = 1, attack = 2, dead = 3, shooting = 4
 		this.game.Elf = this;
 		this.deathtime = 0;
+		this.attacktime = 0;
 		this.spritesheet = [];
 		this.animation = [];
 		this.damage = 5;
+		this.dead = false;
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Damage.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Walking.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Attack.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Death.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Shoot.png"));
 		//spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 75, 82, 3, 0.25, 1, false, true));
+		this.animation.push(new Animator(this.spritesheet[0], 0, 0, 75, 82, 3, 0.25, 1, false, false));
 		this.animation.push(new Animator(this.spritesheet[1], 0, 0, 80, 78, 10, .1, 1, false, true));
-		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 80, 81, 4, .2, 1, false, true));
-		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 80, 81, 6, .17, 1, false, true));
-		this.animation.push(new Animator(this.spritesheet[4], 0, 0, 82, 78, 10, .2, 1, false, true));
+		this.animation.push(new Animator(this.spritesheet[2], 0, 0, 80, 81, 4, .2, 1, false, false));
+		this.animation.push(new Animator(this.spritesheet[3], 0, 0, 80, 81, 6, .17, 1, false, false));
+		this.animation.push(new Animator(this.spritesheet[4], 0, 0, 82, 78, 10, .15, 1, false, false));
 		this.updateBB();
 	}
 	updateBB() {
 		this.lastBB = this.BB;
+		this.lastAttackBB = this.attackrangeBB;
+		this.lastVisionBB = this.VisionBB;
+		if (this.facing == 1) {
+			this.attackrangeBB = new BoundingBox(this.x + 130, this.y + 30, 60, 70, "enemy", this);
+		} else {
+			this.attackrangeBB = new BoundingBox(this.x - 30, this.y + 30, 60, 70, "enemy", this);
+		}
+		this.VisionBB = new BoundingBox(this.x - 400, this.y - 10, 1000, 175, "enemy", this);
 		this.BB = new BoundingBox(this.x + 30, this.y - 10, 100, 175, "enemy", this);
+
 	}
 	update() {
+		this.x += this.speed * this.game.clockTick;
+		// collision
+		var that = this;
+		this.game.entities.forEach(entity => {
+			if (entity.BB && that.VisionBB.collide(entity.BB)) {
+				if (entity instanceof Knight) {
+					this.attacktime += this.game.clockTick;
+					if ((that.lastBB.right) <= entity.BB.left) { // elf sees knight from right
+						this.speed = 0;
+						this.facing = 1;
+						this.state = 4;
+						if (this.animation[4].currentFrame() == 9 && this.attacktime >= 2) {
+							this.game.addEntitySpecific(new Arrow(this.game, this.x, this.y, this.facing), 1);
+							this.attacktime = 0;
+						}
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) { // elf sees knight from left
+						this.speed = 0;
+						this.facing = -1;
+						this.state = 4;
+						if (this.animation[4].currentFrame() == 9 && this.attacktime >= 1.5) {
+							this.game.addEntitySpecific(new Arrow(this.game, this.x, this.y + 20, this.facing), 1);
+							this.attacktime = 0;
+						}
+					}
+				}
+			}
+			if (entity.BB && that.attackrangeBB.collide(entity.BB)) {
+				if (entity instanceof Knight) {
+					this.speed = 0;
+					this.state = 2;
+					if (this.animation[2].currentFrame() == 4) {
+						if (this.facing == 1) {
+							this.attackBB = new AttackBox(this.game, this, this.x + 130, this.y + 30, 60, 70, 3, 4, this.damage);
+						} else {
+							this.attackBB = new AttackBox(this.game, this, this.x - 30, this.y + 30, 60, 70, 3, 4, this.damage);
+						}
+					}
+				}
+			}
+			if (entity.BB && that.BB.collide(entity.BB) && this.state !== 0) {
+				if (entity instanceof Tile) {
+					if ((that.lastBB.right) <= entity.BB.left) {
+						this.facing = -1;
+						this.speed = -150;
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) {
+						this.facing = 1;
+						this.speed = 150;
+
+					}
+				};
+			};
+		});
+		if (this.animation[this.state].isDone()) {
+			var tempState = this.state;
+			this.state = 1;
+			this.animation[tempState].elapsedTime = 0;
+			if (this.facing == 1) {
+				this.speed = 100;
+			} else {
+				this.speed = -100;
+			}
+		};
+		if (this.health <= 0) {
+			this.speed = 0;
+			this.state = 3;
+			this.deathtime += this.game.clockTick;
+			if (this.deathtime >= 1) {
+				this.dead = true;
+			}
+			this.removeFromWorld;
+		}
+		this.updateBB();
 	}
 	draw(ctx) {
 		if (PARAMS.DEBUG) {
-			ctx.strokeStyle = "red";
+			ctx.strokeStyle = "green";
 			ctx.strokeRect(this.x + 30 - this.game.camera.x, this.y - 10 - this.game.camera.y, 100, 175);
-			if (this.state == 2) {
-				if (this.facing == 1) {
-					ctx.strokeStyle = "blue";
-					ctx.strokeRect(this.x + 130 - this.game.camera.x, this.y + 30 - this.game.camera.y, 60, 70);
-				} else {
-					ctx.strokeStyle = "blue";
-					ctx.strokeRect(this.x - 30 - this.game.camera.x, this.y + 30 - this.game.camera.y, 60, 70);
-				}
+			if (this.facing == 1) {
+				ctx.strokeStyle = "blue";
+				ctx.strokeRect(this.x + 130 - this.game.camera.x, this.y + 30 - this.game.camera.y, 60, 70);
+			} else {
+				ctx.strokeStyle = "blue";
+				ctx.strokeRect(this.x - 30 - this.game.camera.x, this.y + 30 - this.game.camera.y, 60, 70);
 			}
+			
+			// visionbox
+			ctx.strokeStyle = "red";
+			ctx.strokeRect(this.x - 400 - this.game.camera.x, (this.y - 10) - this.game.camera.y, 1000, 175);
 		}
+		let ratio = this.health / this.maxhealth;
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";
+
+		if (this.health > 0) {
+			ctx.fillRect(this.x - this.game.camera.x, this.y - this.game.camera.y - 25, 2.5 * PARAMS.BLOCKWIDTH * ratio, 0.25 * PARAMS.BLOCKWIDTH);
+		}
+		ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y - 25, 2.5 * PARAMS.BLOCKWIDTH, 0.25 * PARAMS.BLOCKWIDTH);
+
 		if (this.facing == -1) {
 			ctx.save()
 			ctx.scale(-1, 1)
@@ -282,10 +378,22 @@ class Elf {
 		else if (this.state == 2) stateMod = -25;
 		else if (this.state == 3) stateMod = 0;
 		else if (this.state == 4) stateMod = -20;
-		if (this.facing == 1) {
-			this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - this.game.camera.x) * this.facing, this.y + stateMod - this.game.camera.y, 2.5);
+		if (this.dead == false) {
+			if (this.facing == 1) {
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - this.game.camera.x) * this.facing, this.y + stateMod - this.game.camera.y, 2.5);
+			} else {
+				this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x + 160 - this.game.camera.x) * this.facing, this.y + stateMod - this.game.camera.y, 2.5);
+			}
 		} else {
-			this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x + 160 - this.game.camera.x) * this.facing, this.y + stateMod - this.game.camera.y, 2.5);
+			let rng = Math.floor(Math.random() * 100);
+			if (rng < 10) {
+				this.game.addEntitySpecific(new Potion(this.game, this.x, this.y), 1);
+			} else if (rng >= 10 && rng <= 20) {
+				this.game.addEntitySpecific(new Bomb(this.game, this.x, this.y, 0), 1);
+			} else if (rng >= 20 && rng <= 40) {
+				this.game.addEntitySpecific(new ThrowingKnife(this.game, this.x, this.y, 1, 0), 1);
+			}
+			this.removeFromWorld = true;
 		}
 		ctx.restore();
 	}
@@ -305,7 +413,7 @@ class Skeleton {
 		this.attacktime = 0;
 		this.spritesheet = [];
 		this.animation = [];
-		this.damage = 5;
+		this.damage = 15;
 		
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonhurt.png"));
 		this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Skeleton/Skeletonwalking.png"));
@@ -675,22 +783,23 @@ class Slime {
 			}
 		}
 		// collision
+		//this.hittingtile = true;
 		var that = this;
 		this.game.entities.forEach(entity => {
-			if (entity.BB && that.VisionBB.collide(entity.BB)) {
-				if (entity instanceof Knight) {
-					if ((that.lastBB.right) <= entity.BB.left) { // skeleton sees knight from right
+			if (entity.BB && that.BB.collide(entity.BB)) {
+				if (entity instanceof Tile) {
+					if ((that.lastBB.right) <= entity.BB.left) {
+						this.facing = -1;
+						this.speed = -150
+						//this.hittingtile = false;
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) {
 						this.facing = 1;
 						this.speed = 150;
+						//this.hittingtile = false;
+
 					}
-					else if ((that.lastBB.left) >= entity.BB.right) { // skeleton sees knight from left
-						this.facing = -1;
-						this.speed = -150;
-					}
-				}
-			}
-			if (entity.BB && that.BB.collide(entity.BB)) {
-				if (entity instanceof Knight) {
+				} else if (entity instanceof Knight) {
 					this.speed = 0;
 					if (this.state == 1) {
 						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 90, 160, 2, 3, this.damage);
@@ -699,18 +808,18 @@ class Slime {
 					}
 					//console.log("slime has collided")
 				}
-				if (entity instanceof Tile) {
-					if ((that.lastBB.right) <= entity.BB.left) {
+			}else if (entity.BB && that.VisionBB.collide(entity.BB)) {
+				if (entity instanceof Knight) {
+					if ((that.lastBB.right) <= entity.BB.left) { // slime sees knight from right
+						this.facing = 1;
+						this.speed = 150;
+					}
+					else if ((that.lastBB.left) >= entity.BB.right) { // slime sees knight from left
 						this.facing = -1;
 						this.speed = -150;
 					}
-					else if ((that.lastBB.left) >= entity.BB.right) {
-						this.facing = 1;
-						this.speed = 150;
-						
-					}
-				};
-			};
+				}
+			}
 		});
 		if (this.animation[this.state].isDone()) {
 			var tempState = this.state;
