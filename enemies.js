@@ -783,7 +783,7 @@ class Slime {
 			}
 		}
 		// collision
-	
+		//this.hittingtile = true;
 		var that = this;
 		this.game.entities.forEach(entity => {
 			if (entity.BB && that.BB.collide(entity.BB)) {
@@ -791,12 +791,12 @@ class Slime {
 					if ((that.lastBB.right) <= entity.BB.left) {
 						this.facing = -1;
 						this.speed = -150
-						this.hittingtile = false;
+						//this.hittingtile = false;
 					}
 					else if ((that.lastBB.left) >= entity.BB.right) {
 						this.facing = 1;
 						this.speed = 150;
-						this.hittingtile = false;
+						//this.hittingtile = false;
 
 					}
 				} else if (entity instanceof Knight) {
@@ -809,7 +809,7 @@ class Slime {
 					//console.log("slime has collided")
 				}
 			}else if (entity.BB && that.VisionBB.collide(entity.BB)) {
-				if (entity instanceof Knight && this.hittingtile) {
+				if (entity instanceof Knight) {
 					if ((that.lastBB.right) <= entity.BB.left) { // slime sees knight from right
 						this.facing = 1;
 						this.speed = 150;

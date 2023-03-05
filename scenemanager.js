@@ -421,9 +421,9 @@ class SceneManager {
             ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/throwing_knife.png"), 14 * PARAMS.BLOCKWIDTH, 35, 60, 40);
             ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_potion.png"), 10 * PARAMS.BLOCKWIDTH, - 22);
             ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_bomb.png"), 12 * PARAMS.BLOCKWIDTH, .15 * PARAMS.BLOCKWIDTH);
-            ctx.fillText("x" + this.potion, 13 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-            ctx.fillText("x" + this.knife, 11 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-            ctx.fillText("x" + this.bomb, 15 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
+            ctx.fillText("x" + this.potion, 11 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
+            ctx.fillText("x" + this.knife, 15 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
+            ctx.fillText("x" + this.bomb, 13 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
         }
     }
 
