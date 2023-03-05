@@ -395,6 +395,7 @@ class SceneManager {
             ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_865_183.png"), 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
             this.bomb = 0;
             this.potion = 0;
+            this.knife = 0;
         }
         if(this.tbc){
             //ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/tbc_1024_127.png") , 1.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 883, 201);
@@ -411,9 +412,9 @@ class SceneManager {
 
             ctx.fillStyle = "White";
             ctx.font = PARAMS.BLOCKWIDTH / 2 + 'px "Press Start 2P"';
-            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/throwing_knife.png"), 10 * PARAMS.BLOCKWIDTH, 35, 60, 40);
-            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_potion.png"), 12 * PARAMS.BLOCKWIDTH, - 22);
-            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_bomb.png"), 14 * PARAMS.BLOCKWIDTH, .15 * PARAMS.BLOCKWIDTH);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/throwing_knife.png"), 14 * PARAMS.BLOCKWIDTH, 35, 60, 40);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_potion.png"), 10 * PARAMS.BLOCKWIDTH, - 22);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/Items/medium_bomb.png"), 12 * PARAMS.BLOCKWIDTH, .15 * PARAMS.BLOCKWIDTH);
             ctx.fillText("x" + this.potion, 13 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
             ctx.fillText("x" + this.knife, 11 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
             ctx.fillText("x" + this.bomb, 15 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);

@@ -35,7 +35,69 @@ class Potion {
         ctx.drawImage(this.spritesheet[0], this.x - this.game.camera.x, this.y - this.game.camera.y)
     };
 };
-
+class Arrow {
+    constructor(game, x, y, facing) {
+        Object.assign(this, { game, x, y, facing });
+        this.speed = 300;
+        this.spritesheet = [];
+        this.damage = 7;
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Elf/Elf_Arrow.png"));
+        this.updateBB();
+    }
+    updateBB() {
+        this.lastBB = this.BB;
+        if (this.facing == 1) {
+            this.BB = new BoundingBox(this.x + 100, this.y + 50, 90, 20);
+        } else {
+            this.BB = new BoundingBox(this.x - 90, this.y + 30, 100, 20);
+        }
+    }
+    update() {
+        this.x += this.speed * this.game.clockTick * this.facing;
+        this.updateBB();
+        var that = this;
+        
+        this.game.entities.forEach(entity => {
+            if (entity.BB && that.BB.collide(entity.BB)) {
+                if (entity instanceof Knight) {
+                    if (entity.state != 4) {
+                        if (entity.state < 9 && entity.facing) entity.health -= this.damage;
+                        that.removeFromWorld = true;
+                    }
+                }
+                if (entity instanceof Tile) {
+                    that.removeFromWorld = true;
+                }
+            }
+        });
+        
+    };
+    draw(ctx) {
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = "red";
+            if (this.facing == 1) {
+                ctx.strokeRect(this.x + 100 - this.game.camera.x, this.y + 50 - this.game.camera.y, 90, 20);
+            } else {
+                ctx.strokeRect(this.x - 90 - this.game.camera.x, this.y + 30 - this.game.camera.y, 100, 20);
+            }
+        }
+        
+        if (this.facing == -1) {
+			ctx.save()
+			ctx.scale(-1, 1)
+		} else if (this.facing == 1) {
+			ctx.save()
+			ctx.scale(1, 1)
+		}
+        
+        if (this.facing == 1) {
+            ctx.drawImage(this.spritesheet[0], this.x + 100 - this.game.camera.x, this.y + 20 - this.game.camera.y, 100, 100);
+        } else {
+            ctx.drawImage(this.spritesheet[0], (this.x - this.game.camera.x) * this.facing, this.y - this.game.camera.y, 100, 100);
+        }
+        ctx.restore();
+    };
+}
 class ThrowingKnife {
     constructor(game, x, y, facing, state) {
         console.log('throwing knife being made')
