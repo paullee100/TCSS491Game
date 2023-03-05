@@ -317,6 +317,9 @@ class Titan {
             this.dead = true;
             this.state = 9;
             if (this.animation[this.state].isDone()) {
+                //level complete
+                this.game.camera.levelclear = true;
+                this.dead = true;
                 this.removeFromWorld = true;
             }
         }
@@ -445,6 +448,9 @@ class Dragon {
             this.dead = true;
             this.state = 5;
             if (this.animation[this.state].isDone()) {
+                //level complete
+                this.game.camera.levelclear = true;
+                this.dead = true;
                 this.removeFromWorld = true;
             }
         } else {
