@@ -266,7 +266,7 @@ class Titan {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
 
-        this.state = 4; // stunned = 0, idle = 1, walking = 2, melee1 = 3, melee2 = 4, melee3 = 5, range1 = 6, range2 = 7, range3 = 8, death = 9
+        this.state = 4; // stunned = 0, melee2 = 1, idle = 2, walking = 3, melee1 = 4, melee3 = 5, range1 = 6, range2 = 7, range3 = 8, death = 9
         this.facing = 1; // right = 1, left = -1
         this.health = 500;
         this.maxhealth = 500;
@@ -279,10 +279,10 @@ class Titan {
         this.deathCounter = 0;
 
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Walking.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Melee2.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Idle.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Walking.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Melee1.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Melee2.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Melee3.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Range1.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Range2.png"));
@@ -291,13 +291,13 @@ class Titan {
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
         this.animation.push(new Animator(this.spritesheet[0], 4, 6, 47, 104, 7, 0.5, 71, false, true));
-        this.animation.push(new Animator(this.spritesheet[1], 6, 4, 41, 103, 6, 0.5, 71, false, true));
-        this.animation.push(new Animator(this.spritesheet[2], 4, 6, 47, 104, 7, 0.5, 71, false, true));
-        this.animation.push(new Animator(this.spritesheet[3], 11, 4, 73, 108, 5, 0.5, 39, false, true));
-        this.animation.push(new Animator(this.spritesheet[4], 5, 7, 99, 99, 5, 0.2, 13, false, false));
+        this.animation.push(new Animator(this.spritesheet[1], 5, 7, 99, 99, 5, 0.2, 13, false, false));
+        this.animation.push(new Animator(this.spritesheet[2], 6, 4, 41, 103, 6, 0.5, 71, false, true));
+        this.animation.push(new Animator(this.spritesheet[3], 4, 6, 47, 104, 7, 0.5, 71, false, true));
+        this.animation.push(new Animator(this.spritesheet[4], 11, 4, 73, 108, 5, 0.5, 39, false, true));
         this.animation.push(new Animator(this.spritesheet[5], 4, 4, 63, 124, 5, 0.5, 49, false, true));
         this.animation.push(new Animator(this.spritesheet[6], 5, 6, 80, 101, 5, 0.5, 32, false, true));
-        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.2, 31, false, false));
+        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.15, 31, false, false));
         this.animation.push(new Animator(this.spritesheet[8], 8, 5, 78, 102, 6, 0.5, 35, false, true));
         this.animation.push(new Animator(this.spritesheet[9], 9, 11, 60, 102, 9, 0.15, 52, false, false));
 
@@ -311,6 +311,12 @@ class Titan {
         this.meleeRange = new BoundingBox(this.x - 226, this.y, 226 + 226 + 160, 410, "enemy", this);
         this.BB = new BoundingBox(this.x, this.y, 160, 410, "enemy", this);
     };
+
+    rngCounter() {
+        let rng = Math.random() * 100;
+
+        
+    }
 
     update() {
         if (this.health <= 0) {
@@ -332,22 +338,23 @@ class Titan {
 
         this.game.entities.forEach((entity) => {
             if (this.state !== 9) {
-                if (entity.BB && this.meleeRange.collide(entity.BB)) {
+                if (entity.BB && this.meleeRange.collide(entity.BB) && this.state != 2) {
                     if (entity instanceof Knight) {
-                        this.state = 4;
-                        // if (this.animation[4].currentFrame() == 4) {
+                        this.state = 1;
+                        if (this.animation[1].currentFrame() == 1) {
                             if (this.facing == 1) {
-                                this.meleeBB = new AttackBox(this.game, this, this.x + 160, this.y, 226, 410, 3, 5, this.damage);
+                                this.attackBB = new AttackBox(this.game, this, this.x + 160, this.y, 226, 410, 1, 5, this.damage);
                             } else {
-                                this.meleeBB = new AttackBox(this.game, this, this.x - 226, this.y, 226, 410, 3, 5, this.damage);
+                                this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226, 410, 1, 5, this.damage);
                             }
-                        // }
+                        }
                     }
                 } else {
-                    if (this.animation[this.state].isDone()) {
+                    this.state = 7;
+                    if (this.animation[7].isDone()) {
                         if (entity instanceof Knight) {
                             this.state = 7;
-                            this.game.addEntitySpecific(new TitanLightning(this.game, this.x, this.y, this.facing, 0), 1);
+                            this.game.addEntitySpecific(new TitanLightning(this.game, this.x, this.y, this.game.knight, this.facing), 1);
                             this.animation[this.state].elapsedTime = 0;
                         }
                     }
@@ -357,7 +364,7 @@ class Titan {
 
         if (this.animation[this.state].isDone()) {
             let tempState = this.state;
-            this.state = 1;
+            this.state = 2;
             this.animation[tempState].elapsedTime = 0;
 
         };
@@ -395,7 +402,7 @@ class Titan {
         let stateModX = 0;
         let stateModY = 0;
 
-        if (this.state == 1) stateModY = -15;
+        if (this.state == 2) stateModX = -13, stateModY = -15;
         else if (this.state == 7) stateModX = 30, stateModY = -10;
             
         if (this.facing == 1) {

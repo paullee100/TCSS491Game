@@ -37,20 +37,27 @@ class LichSmoke {
 }
 
 class TitanLightning {
-    constructor(game, x, y, facing, state) {
-        Object.assign(this, {game, x, y, facing, state});
-        // 0 = forward, 1 = right, 2 = left 
-        this.speed = 1500;
-        this.start = x;
-
-        this.spritesheet = [];
-        this.animation = [];
-
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Lightning0.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Lightning1.png"));
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Lightning2.png"));
-    
+    constructor(game, x, y, target, facing) {
+        Object.assign(this, {game, x, y, target, facing});
         
+        this.dist = this.target.position.x;
+        this.playerY = this.target.position.y;
+        this.speed = 120;
+
+        this.start = x;
+        this.cache = [];
+
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Lightning.png");
+        this.animation = [];
+        this.state = 0;
+
+        //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
+        this.animation.push(new Animator(this.spritesheet, 5, 12, 44, 44, 1, 0.2, 0, false, true)); // straight
+        this.animation.push(new Animator(this.spritesheet, 56, 12, 44, 44, 1, 0.2, 0, false, true)); // right1
+        this.animation.push(new Animator(this.spritesheet, 113, 12, 44, 44, 1, 0.2, 0, false, true)); // right2
+        this.animation.push(new Animator(this.spritesheet, 164, 12, 44, 44, 1, 0.2, 0, false, true)); // right3
+
+        this.elapsedTime = 0;
     };
 
     updateBB() {
@@ -58,21 +65,46 @@ class TitanLightning {
     };
 
     update() {
+        this.updateBB();
+
+        if (this.facing == 1) {
+            if (this.x > this.dist * 0.85 && this.x <= this.dist * 0.90) this.state = 1;
+            else if (this.x > this.dist * 0.90 && this.x <= this.dist * 0.95) this.state = 2;
+            else if (this.x > this.dist * 0.95 && this.x <= this.dist * 1) this.state = 3;
+        } else {
+            if (this.x > this.dist * 0.75 && this.x <= this.dist * 0.75) this.state = 1;
+            else if (this.x > this.dist * 0.85 && this.x <= this.dist * 0.85) this.state = 2;
+            else if (this.x > this.dist * 1 && this.x <= this.dist * 1) this.state = 3;
+        }
+
         if (this.state == 0) {
-            this.updateBB();
             this.x += (this.speed * this.facing) * this.game.clockTick;
 
-            if (this.facing == 1) {
-                if (this.x >= this.start * 2) this.state = 1;
-            } else {
-                if (this.x <= this.start * -1) this.state = 1;
-            }
-
-            this.state = 0;
+        } else if (this.state == 1) {
+            this.x += (this.speed * 0.50 * this.facing) * this.game.clockTick;
+            this.y += (this.speed * 1.15) * this.game.clockTick;
+        } else if (this.state == 2) {
+            this.x += (this.speed * 0.25 * this.facing) * this.game.clockTick;
+            this.y += (this.speed * 1.35) * this.game.clockTick;
+        } else if (this.state == 3) {
+            this.y += (this.speed * 1.5) * this.game.clockTick;
         }
+
+        // this.game.entities.forEach((entity) => {
+        //     if (entity.BB && this.BB.collide(entity.BB)) {
+        //         if (entity instanceof Tile) {
+
+        //         }
+        //     }
+        // });
     };
 
     draw(ctx) {
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = "red";
+            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 100, 100);
+        }
+
         if (this.facing == -1) {
             ctx.save();
             ctx.scale(-1, 1);
@@ -82,9 +114,9 @@ class TitanLightning {
         }
 
         if (this.facing == 1) {
-            ctx.drawImage(this.spritesheet[this.state], this.x + 100 - this.game.camera.x, this.y - 30 - this.game.camera.y, 200, 200);
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, this.x + 100 - this.game.camera.x, this.y - 30 - this.game.camera.y, 3);
         } else if (this.facing == -1) {
-            ctx.drawImage(this.spritesheet[this.state], (this.x * this.facing) - (this.game.camera.x * this.facing), this.y - this.game.camera.y, 200, 200);
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x * this.facing) - (this.game.camera.x * this.facing), this.y - this.game.camera.y, 3);
         }
         
         ctx.restore();
