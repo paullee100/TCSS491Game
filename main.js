@@ -61,6 +61,30 @@ ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_08.png")
 ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_10.png")
 ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_11.png")
 ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_12.png")
+//tiles castle
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle00.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle01.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle02.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle03.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle04.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle05.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle06.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle07.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle08.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle09.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle10.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle11.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle12.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle13.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle14.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle15.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle28.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle29.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle34.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle35.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle36.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle40.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/castle_background.png")
 // knight spritesheet
 ASSET_MANAGER.queueDownload("./sprites/Knight_Attack1.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Attack2.png");
@@ -166,9 +190,12 @@ ASSET_MANAGER.queueDownload("./sounds/bomb_explosion.mp3");
 ASSET_MANAGER.queueDownload("./sounds/throwing_knife.mp3");
 ASSET_MANAGER.queueDownload("./sounds/chest_open.mp3");
 ASSET_MANAGER.queueDownload("./sounds/mimic_attack.mp3");
+ASSET_MANAGER.queueDownload("./sounds/dragon_fire.mp3");
+ASSET_MANAGER.queueDownload("./sounds/dragon_flight.mp3");
 
 // music
 ASSET_MANAGER.queueDownload("./music/forsaken_forest.mp3"); //greenpath from hollow knight
+ASSET_MANAGER.queueDownload("./music/dragontheme.mp3"); // flamelurker from demon's souls (2009)
 
 ASSET_MANAGER.downloadAll(() => {
 	const gameEngine = new GameEngine();

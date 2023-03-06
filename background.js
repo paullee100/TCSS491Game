@@ -57,6 +57,20 @@ class Background4{
         ctx.drawImage(this.spritesheet, 0, 0 ,1024, 768,);
     };
 }
+class Background5{
+    constructor(){
+        // Object.assign(this, {game});
+        this.spritesheet = ASSET_MANAGER.getAsset("./tileset/castle/castle_background.png")
+    };
+
+    update(){
+
+    };
+
+    draw(ctx){
+        ctx.drawImage(this.spritesheet, 0, 0 ,1024, 768,);
+    };
+}
 
 class Tree{
     constructor(game, x,y){

@@ -186,6 +186,9 @@ class SceneManager {
             if(level.Background[0] === 4){
                 this.game.addEntity(new Background4());
             }
+            if(level.Background[0] === 5) {
+                this.game.addEntity(new Background5());
+            }
         }
     };
 
@@ -244,6 +247,7 @@ class SceneManager {
                 if (this.selection.levelTwo && this.game.click) {
                     this.levelSelection = false;
                     this.loadLevel(levelTwo, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
+                    //this.loadLevel(levelThree, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
                     if (this.game.click != null) this.game.click = null;
                 }
             // "back" button

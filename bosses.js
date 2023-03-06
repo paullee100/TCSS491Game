@@ -419,11 +419,15 @@ class Dragon {
         Object.assign(this, {game, x, y});
 
         this.state = 3; // stunned = 0, attack = 1, pre-attack = 2, idle = 3, flight = 4, death = 5
-        this.facing = 1; // right = 1, left = -1
+        this.facing = -1; // right = 1, left = -1
         this.health = 500;
         this.maxhealth = 500;
-        this.damage = 15;
+        this.damage = 10;
+        this.firedamage = 30;
+        this.speed = 0;
+        this.position = 32;
         this.dead = false;
+        this.constantAB = true;
 
         this.spritesheet = [];
         this.animation = [];
@@ -436,11 +440,11 @@ class Dragon {
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Death.png"));
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-        this.animation.push(new Animator(this.spritesheet[0], 30, 0, 90, 113, 14, 0.5, 10, false, true));
+        this.animation.push(new Animator(this.spritesheet[0], 30, 0, 90, 113, 4, 0.33, 10, false, false));
         this.animation.push(new Animator(this.spritesheet[1], 50, 4, 250, 117, 6, 0.25, 48, false, false));
         this.animation.push(new Animator(this.spritesheet[2], 16, 8, 141, 105, 4, 0.25, 10, false, false));
         this.animation.push(new Animator(this.spritesheet[3], 46, 0, 90, 113, 14, 0.25, 10, false, true));
-        this.animation.push(new Animator(this.spritesheet[4], 4, 4, 182, 136, 11, 0.15, 20, false, true));
+        this.animation.push(new Animator(this.spritesheet[4], 4, 4, 182, 136, 11, 0.20, 20, false, false));
         this.animation.push(new Animator(this.spritesheet[5], 17, 8, 120, 126, 5, 0.2, 10, false, false));
     
         this.updateBB();
@@ -448,9 +452,10 @@ class Dragon {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 375, 450, "enemy", this);
+        this.BB = new BoundingBox(this.x+25, this.y+75, 300, 275, "enemy", this);
     }
     update() {
+        this.speed = 0;
         if (this.health <= 0) {
             this.dead = true;
             this.state = 5;
@@ -461,20 +466,114 @@ class Dragon {
                 this.removeFromWorld = true;
             }
         } else {
-
+            const TICK = this.game.clockTick;
+            if (this.facing == -1 && this.game.knight.position.x / PARAMS.BLOCKWIDTH >= this.position && this.state == 3) {
+                this.state = 4;
+                ASSET_MANAGER.playAsset("./sounds/dragon_flight.mp3");
+            }
+            else if (this.facing == -1 && Math.abs(this.game.knight.position.x / PARAMS.BLOCKWIDTH - this.position) < 6 && this.state == 3) {
+                let rng = Math.floor(Math.random() * 100);
+			    if (rng < 25) {
+				    this.state = 4;
+                    ASSET_MANAGER.playAsset("./sounds/dragon_flight.mp3");
+                }
+                else {
+                    this.state = 2;
+                    ASSET_MANAGER.playAsset("./sounds/dragon_fire.mp3");
+                }
+            }
+            else if (this.facing == 1 && (this.game.knight.position.x - 300) / PARAMS.BLOCKWIDTH <= this.position && this.state == 3) {
+                this.state = 4;
+                ASSET_MANAGER.playAsset("./sounds/dragon_flight.mp3");
+            }
+            else if (this.facing == 1 && (this.game.knight.position.x - 300) / PARAMS.BLOCKWIDTH - this.position < 6 && this.state == 3) {
+                let rng = Math.floor(Math.random() * 100);
+			    if (rng < 25) {
+				    this.state = 4;
+                    ASSET_MANAGER.playAsset("./sounds/dragon_flight.mp3");
+                }
+                else {
+                    this.state = 2;
+                    ASSET_MANAGER.playAsset("./sounds/dragon_fire.mp3");
+                }
+            }
+            if (this.state == 4) {
+                if (this.facing== -1) {
+                    this.speed = (-350 * ((this.position - 20)/12)) * TICK
+                    console.log(this.speed)
+                    this.x += this.speed;
+                }
+                if (this.facing == 1) {
+                    this.speed = (350 * (Math.abs(this.position - 32)/12)) * TICK
+                    this.x += this.speed;
+                }
+                if (this.constantAB == true && this.animation[4].currentFrame() > 2 && this.animation[4].currentFrame() < 6) {
+                    if (this.facing == 1) {
+                        this.attackBB = new AttackBox(this.game, this, this.x+25, this.y+75, 300, 275, 2, 3, this.damage);
+                    }
+                    else if (this.facing == -1) {
+                        this.attackBB = new AttackBox(this.game, this, this.x+25, this.y+75, 300, 275, 2, 3, this.damage);
+                    }
+                }
+            };
+            if (this.state == 1) {
+                this.fireBB1 = new BoundingBox(this.x + 350, this.y+175, 100, 100, "enemy", this);
+                this.fireBB2 = new BoundingBox(this.x + 450, this.y+250, 100, 100, "enemy", this);
+                this.fireBB3 = new BoundingBox(this.x + 550, this.y+300, 165, 100, "enemy", this);
+            }
             this.game.entities.forEach((entity) => {
                 if (entity.BB && this.BB.collide(entity.BB)) {
-                    if (entity instanceof Knight) {
-                        console.log("Dragon and Knight collision");
+                    if (this.fireBB1 && entity.BB && this.fireBB1.collide(entity.BB)) {
+                        if (entity instanceof Knight && this.state === 1) {
+                            console.log("damaged by fire");
+                            this.attackBB = new AttackBox(this.game, this, this.x + 350, this.y + 175, 100, 100, 0, 0, this.firedamage);
+                            //this.state = 0;
+                            this.updateBB();
+                        }
+                    }
+                    if (this.fireBB2 && entity.BB && this.fireBB2.collide(entity.BB)) {
+                        if (entity instanceof Knight && this.state === 1) {
+                            console.log("damaged by fire");
+                            this.attackBB = new AttackBox(this.game, this, this.x + 450, this.y + 250, 100, 100, 0, 0, this.firedamage);
+                            //this.state = 0;
+                            this.updateBB();
+                        }
+                    }
+                    if (this.fireBB3 && entity.BB && this.fireBB3.collide(entity.BB)) {
+                        if (entity instanceof Knight && this.state === 1) {
+                            console.log("damaged by fire");
+                            this.attackBB = new AttackBox(this.game, this, this.x + 550, this.y + 300, 165, 100, 0, 0, this.firedamage);
+                            //this.state = 0;
+                            this.updateBB();
+                        }
                     }
                 }
             });
 
-            if (this.animation[this.state].isDone()) {
+            /* if (this.animation[this.state].isDone()) {
                 const temp = this.state;
-                this.state = 0;
+                this.state = 3;
+                this.animation[temp].elapsedTime = 0;
+            } */
+            if (this.animation[4].isDone()) {
+                const temp = this.state;
+                this.facing = this.facing * -1;
+                this.state = 3;
+                this.animation[temp].elapsedTime = 0;
+                this.position = this.x / PARAMS.BLOCKWIDTH;
+                this.constantAB = true;
+            }
+            if (this.animation[2].isDone()) {
+                const temp = this.state;
+                //this.facing = this.facing * -1;
+                this.state = 1;
                 this.animation[temp].elapsedTime = 0;
             }
+            if (this.animation[this.state].isDone()) {
+                const temp = this.state;
+                this.state = 3;
+                this.animation[temp].elapsedTime = 0;
+            };
             this.updateBB();
         }
         
@@ -483,7 +582,11 @@ class Dragon {
     draw(ctx) {
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = "black";
-            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 375, 450);
+            ctx.strokeRect(this.x - this.game.camera.x+20, this.y - this.game.camera.y+75, 300, 375);
+            ctx.strokeStyle = "green";
+            ctx.strokeRect(this.x * this.facing - this.game.camera.x * this.facing + 350 , this.y - this.game.camera.y+175, 100, 100);
+            ctx.strokeRect(this.x * this.facing - this.game.camera.x * this.facing + 450, this.y - this.game.camera.y+250, 100, 100);
+            ctx.strokeRect(this.x * this.facing - this.game.camera.x * this.facing + 550, this.y - this.game.camera.y+300, 165, 100);
         }
 
         if (this.dead === false) {
@@ -507,12 +610,15 @@ class Dragon {
         let stateModX = 0;
         let stateModY = 0;
 
+        if (this.state == 1) stateModX = 200;
+        if (this.state == 2) stateModX = 200;
         if (this.state == 2) stateModY = -50;
+        if (this.state == 4) stateModY = 75, stateModX = 150;
 
         if (this.facing == 1) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, (this.y - stateModY) - this.game.camera.y, 4);
         } else if (this.facing == -1) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 999 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), (this.y - stateModY) - this.game.camera.y, 4);
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 375 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), (this.y - stateModY) - this.game.camera.y, 4);
         }
 
         ctx.restore();
