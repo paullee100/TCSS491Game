@@ -7,14 +7,20 @@ ASSET_MANAGER.queueDownload("./tileset/title/start_455_127.png")
 ASSET_MANAGER.queueDownload("./tileset/title/startSelected.png");
 ASSET_MANAGER.queueDownload("./tileset/title/controls.png");
 ASSET_MANAGER.queueDownload("./tileset/title/controlsSelected.png");
-ASSET_MANAGER.queueDownload("./tileset/title/levelOne.png");
-ASSET_MANAGER.queueDownload("./tileset/title/levelOneSelected.png");
-ASSET_MANAGER.queueDownload("./tileset/title/levelTwo.png");
-ASSET_MANAGER.queueDownload("./tileset/title/levelTwoSelected.png");
-ASSET_MANAGER.queueDownload("./tileset/title/boss.png");
-ASSET_MANAGER.queueDownload("./tileset/title/bossSelected.png");
+
+// level select
+ASSET_MANAGER.queueDownload("./tileset/level_select/levelOne.png");
+ASSET_MANAGER.queueDownload("./tileset/level_select/levelOneSelected.png");
+ASSET_MANAGER.queueDownload("./tileset/level_select/levelTwo.png");
+ASSET_MANAGER.queueDownload("./tileset/level_select/levelTwoSelected.png");
+ASSET_MANAGER.queueDownload("./tileset/level_select/boss.png");
+ASSET_MANAGER.queueDownload("./tileset/level_select/bossSelected.png");
 ASSET_MANAGER.queueDownload("./tileset/title/back.png");
 ASSET_MANAGER.queueDownload("./tileset/title/backSelected.png");
+
+// controls
+ASSET_MANAGER.queueDownload("./tileset/controls/controls.png");
+
 //gameover
 ASSET_MANAGER.queueDownload("./tileset/title/gameover_865_183.png")
 //tbc
@@ -136,9 +142,7 @@ ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range1.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range2.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range3.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Death.png");
-ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning0.png");
-ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning1.png");
-ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning2.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Dragon/Dragon_Idle.png");
 ASSET_MANAGER.queueDownload("./sprites/Dragon/Dragon_Flight.png");

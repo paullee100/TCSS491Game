@@ -104,7 +104,7 @@ class Knight {
                         this.state = 4;
                         this.velocity.x = 500 * (this.facing);
                         ASSET_MANAGER.playAsset("./sounds/knight_roll.mp3");
-                    } else if (this.game.keys["W"]) { // jump
+                    } else if (this.velocity.y === 0 && (this.game.keys[" "] || this.game.keys["W"])) { // jump
                         this.velocity.y = JUMP;
                         this.state = 5;
                         this.velocity.x = 0;

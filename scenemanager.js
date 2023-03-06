@@ -247,7 +247,7 @@ class SceneManager {
                     if (this.game.click != null) this.game.click = null;
                 }
             // "back" button
-            } else if (this.game.mouse && this.game.mouse.y > 0 && this.game.mouse.y < 1.8 * PARAMS.BLOCKWIDTH
+            } else if (this.game.mouse && this.game.mouse.y > 0 && this.game.mouse.y < 1 * PARAMS.BLOCKWIDTH
                 && this.game.mouse.x > 0 && this.game.mouse.x < 3.6 * PARAMS.BLOCKWIDTH) {
                 this.selection.back = true;
                 if (this.selection.back && this.game.click) {
@@ -279,7 +279,7 @@ class SceneManager {
         } else if (this.controlMenu) {
             // TODO: CONTROLS
             // hovers over "back" button
-            if (this.game.mouse && this.game.mouse.y > 0 && this.game.mouse.y < 1.8 * PARAMS.BLOCKWIDTH
+            if (this.game.mouse && this.game.mouse.y > 0 && this.game.mouse.y < 1 * PARAMS.BLOCKWIDTH
                 && this.game.mouse.x > 0 && this.game.mouse.x < 3.6 * PARAMS.BLOCKWIDTH) {
                 this.selection.back = true;
                 if (this.selection.back && this.game.click) {
@@ -361,28 +361,28 @@ class SceneManager {
         // After selecting "Start", display the levels
         if (!this.title && this.levelSelection) {
             if (this.selection.back) {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/backSelected.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/backSelected.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 64);
             } else {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/back.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/back.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 64);
             }
 
             if (this.selection.levelOne) {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/levelOneSelected.png"), 4.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 455, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/levelOneSelected.png"), 4.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 455, 127);
             } else {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/levelOne.png"), 4.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 455, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/levelOne.png"), 4.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 455, 127);
             }
 
             if (this.selection.levelTwo) {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/levelTwoSelected.png"), 4.5 * PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH, 455, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/levelTwoSelected.png"), 4.5 * PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH, 455, 127);
             } else {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/levelTwo.png"), 4.5 * PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH, 455, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/levelTwo.png"), 4.5 * PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH, 455, 127);
             }
 
             if (this.levelComplete.one && this.levelComplete.two) {
                 if (this.selection.boss) {
-                    ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/bossSelected.png"), 6 * PARAMS.BLOCKWIDTH, 5 * PARAMS.BLOCKWIDTH, 255, 127);
+                    ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/bossSelected.png"), 6 * PARAMS.BLOCKWIDTH, 5 * PARAMS.BLOCKWIDTH, 255, 127);
                 } else {
-                    ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/boss.png"), 6 * PARAMS.BLOCKWIDTH, 5 * PARAMS.BLOCKWIDTH, 255, 127);
+                    ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/boss.png"), 6 * PARAMS.BLOCKWIDTH, 5 * PARAMS.BLOCKWIDTH, 255, 127);
                 }
             }
         }
@@ -390,10 +390,11 @@ class SceneManager {
         // After selecting "controls", display the controls
         if (!this.title && this.controlMenu) {
             if (this.selection.back) {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/backSelected.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/backSelected.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 64);
             } else {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/back.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/back.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 64);
             }
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/controls/controls.png"), 1.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 865, 725);
         }
 
         if(this.over){
