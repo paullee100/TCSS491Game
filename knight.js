@@ -260,7 +260,6 @@ class Knight {
                             ASSET_MANAGER.playAsset("./sounds/knight_parry.mp3");
                             if (entity instanceof Dragon) {
                                 entity.position = entity.x / PARAMS.BLOCKWIDTH;
-                                entity.constantAB = true;
                             };
                         }
                         else if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
