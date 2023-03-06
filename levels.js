@@ -291,7 +291,7 @@ Background:[3]
 };
 
 var levelTwo = {
-    Music:["./music/forsaken_forest.mp3"],
+    Music:["./music/ancient_ruins.mp3"],
     //temp comment them out
     Chest:[
         {x:1,y:9,facing:1,item: "bomb"},
