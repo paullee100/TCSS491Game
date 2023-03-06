@@ -375,9 +375,12 @@ var levelThree = {
 
     Dragon: [{x:32,y:4.5}],
     Chest:[
-        {x:0,y:9.5,facing:-1,item: "bomb"},
-        {x:6,y:9.5,facing:-1,item: "potion"},
-        {x:12,y:9.5,facing:-1,item: "throwingknife"}],
+        {x:1,y:9.5,facing:1,item: "bomb"},
+        {x:8,y:9.5,facing:-1,item: "potion"},
+        {x:15,y:9.5,facing:-1,item: "throwingknife"}],
+
+    Mimic:[
+        {x:7,y:-1,facing:-1},],
 
     Ground:[
     
