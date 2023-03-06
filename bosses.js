@@ -499,7 +499,6 @@ class Dragon {
             if (this.state == 4) {
                 if (this.facing== -1) {
                     this.speed = (-450 * ((this.position - 20)/12)) * TICK
-                    console.log(this.speed)
                     this.x += this.speed;
                 }
                 if (this.facing == 1) {
@@ -514,7 +513,7 @@ class Dragon {
                         this.attackBB = new AttackBox(this.game, this, this.x+25, this.y+75, 200, 275, 2, 3, this.damage);
                     }
                 }
-            };
+            } else this.attackBB = null;
             if (this.state == 1) {
                 if (this.facing == 1) {
                     this.fireBB1 = new BoundingBox(this.x + 350, this.y+175, 100, 100, "enemy", this);
@@ -528,8 +527,8 @@ class Dragon {
                 }
             }
             this.game.entities.forEach((entity) => {
-                if (this.fireBB1 && entity.BB && this.fireBB1.collide(entity.BB)) {
-                    if (entity instanceof Knight && this.state === 1) {
+                if (this.fireBB1 && entity.BB && this.fireBB1.collide(entity.BB) && this.state === 1) {
+                    if (entity instanceof Knight) {
                         console.log("damaged by fire");
                         if (this.facing == 1) this.attackBB = new AttackBox(this.game, this, this.x + 350, this.y + 175, 100, 100, 0, 0, this.firedamage);
                         if (this.facing == -1) this.attackBB = new AttackBox(this.game, this, this.x - 150, this.y + 175, 100, 100, 0, 0, this.firedamage);
@@ -537,16 +536,17 @@ class Dragon {
                         this.updateBB();
                     }
                 }
-                if (this.fireBB2 && entity.BB && this.fireBB2.collide(entity.BB)) {
-                    if (entity instanceof Knight && this.state === 1) {
+                if (this.fireBB2 && entity.BB && this.fireBB2.collide(entity.BB) && this.state === 1) {
+                    if (entity instanceof Knight) {
                         console.log("damaged by fire");
+                        if (this.facing == 1) this.attackBB = new AttackBox(this.game, this, this.x + 350, this.y + 175, 100, 100, 0, 0, this.firedamage);
                         if (this.facing == -1) this.attackBB = new AttackBox(this.game, this, this.x - 250, this.y + 175, 100, 100, 0, 0, this.firedamage);
                         //this.state = 0;
                         this.updateBB();
                     }
                 }
-                if (this.fireBB3 && entity.BB && this.fireBB3.collide(entity.BB)) {
-                    if (entity instanceof Knight && this.state === 1) {
+                if (this.fireBB3 && entity.BB && this.fireBB3.collide(entity.BB) && this.state === 1) {
+                    if (entity instanceof Knight) {
                         console.log("damaged by fire");
                         if (this.facing == 1) this.attackBB = new AttackBox(this.game, this, this.x + 550, this.y + 300, 165, 100, 0, 0, this.firedamage);
                         if (this.facing == -1) this.attackBB = new AttackBox(this.game, this, this.x - 415, this.y + 175, 100, 100, 0, 0, this.firedamage);
@@ -621,8 +621,10 @@ class Dragon {
 
         let stateModX = 0;
         let stateModY = 0;
+        let facingModX = 0;
 
-        if (this.state == 1) stateModX = 200;
+        if (this.state == 1 && this.facing == -1) stateModX = 200, facingModX = -50;
+        if (this.state == 1 && this.facing == 1) stateModX = 200
         if (this.state == 2) stateModX = 200;
         if (this.state == 2) stateModY = -50;
         if (this.state == 4) stateModY = 75, stateModX = 150;
@@ -630,7 +632,7 @@ class Dragon {
         if (this.facing == 1) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, (this.y - stateModY) - this.game.camera.y, 4);
         } else if (this.facing == -1) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 375 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), (this.y - stateModY) - this.game.camera.y, 4);
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 375 + (stateModX * this.facing) - facingModX) - (this.game.camera.x * this.facing), (this.y - stateModY) - this.game.camera.y, 4);
         }
 
         ctx.restore();

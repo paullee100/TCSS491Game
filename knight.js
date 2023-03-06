@@ -216,9 +216,6 @@ class Knight {
                             }
                         }   
                         if (entity.BB && that.BB.collide(entity.BB)) {
-                            if (entity instanceof Slime && entity.color == "green") {
-                                console.log("E");
-                            }
                             if (entity instanceof Tile) {
                                 if ((that.lastBB.bottom) <= entity.BB.top) { //landing
                                     that.position.y = entity.y - 171.25;
