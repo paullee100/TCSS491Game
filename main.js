@@ -195,6 +195,7 @@ ASSET_MANAGER.queueDownload("./sounds/dragon_flight.mp3");
 
 // music
 ASSET_MANAGER.queueDownload("./music/forsaken_forest.mp3"); //greenpath from hollow knight
+ASSET_MANAGER.queueDownload("./music/ancient_ruins.mp3"); //crystal peak from hollow knight
 ASSET_MANAGER.queueDownload("./music/dragontheme.mp3"); // flamelurker from demon's souls (2009)
 
 ASSET_MANAGER.downloadAll(() => {
