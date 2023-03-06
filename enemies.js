@@ -605,10 +605,12 @@ class Cyclops {
 		this.health = 100;
 		this.maxhealth = 100;
 		this.dead = false;
-		this.damage = 10;
+		this.damage = 7.5;
+		this.attackDelay = 0;
+		this.firstEncounter = true;
+		this.encounter = false;
 		this.speed = 100;
 
-		this.tile = false;
 		this.spritesheet = [];
 		this.animation = [];
 
@@ -634,11 +636,12 @@ class Cyclops {
 	updateBB() {
 		this.lastBB = this.BB;
 		this.lastVisionBB = this.visionBB;
+		this.lastAggroRange = this.AggroRange
 
 		if (this.facing == -1) {
-			this.visionBB = new BoundingBox(this.x - 135, this.y, 135, 240, "enemy", this);
+			this.visionBB = new BoundingBox(this.x - 260, this.y, 260, 240, "enemy", this);
 		} else {
-			this.visionBB = new BoundingBox(this.x + 120, this.y, 135, 240, "enemy", this);
+			this.visionBB = new BoundingBox(this.x + 120, this.y, 260, 240, "enemy", this);
 		}
 
 		this.BB = new BoundingBox(this.x, this.y, 120, 240, "enemy", this);
@@ -680,19 +683,27 @@ class Cyclops {
 
 				if (entity.BB && this.visionBB.collide(entity.BB) && this.state !== 0) {
 					if (entity instanceof Knight) {
-						this.state = 1;
-						if (this.animation[1].currentFrame() == 1) {
-							if (this.facing == 1) {
-								this.attackBB = new AttackBox(this.game, this, this.x + 120, this.y, 135, 240, 1, 2, this.damage);
-							} else {
-								this.attackBB = new AttackBox(this.game, this, this.x - 135, this.y, 135, 240, 1, 2, this.damage);
+
+						if (!this.firstEncounter && this.attackDelay < 1) {
+							this.attackDelay += this.game.clockTick;
+							console.log(this.attackDelay);
+						} else if (this.firstEncounter || this.attackDelay >= 1) {
+							this.state = 1;
+							if (this.animation[1].currentFrame() == 1) {
+								if (this.facing == 1) {
+									this.attackBB = new AttackBox(this.game, this, this.x + 120, this.y, 135, 240, 1, 2, this.damage);
+								} else {
+									this.attackBB = new AttackBox(this.game, this, this.x - 135, this.y, 135, 240, 1, 2, this.damage);
+								}
 							}
-						} else if (this.animation[1].currentFrame() == 3) {
-							if (this.facing == 1) {
-								this.attackBB = new AttackBox(this.game, this, this.x + 120, this.y, 260, 240, 3, 4, this.damage);
-							} else {
-								this.attackBB = new AttackBox(this.game, this, this.x - 260, this.y, 260, 240, 3, 4, this.damage);
+							if (this.animation[1].currentFrame() == 3) {
+								if (this.facing == 1) {
+									this.attackBB = new AttackBox(this.game, this, this.x + 120, this.y, 260, 240, 3, 4, this.damage);
+								} else if (this.facing == -1) {
+									this.attackBB = new AttackBox(this.game, this, this.x - 260, this.y, 260, 240, 3, 4, this.damage);
+								}
 							}
+							this.encounter = true;
 						}
 					}
 				}
@@ -710,8 +721,13 @@ class Cyclops {
 
 			if (this.animation[this.state].isDone()) {
 				const tempState = this.state;
-				this.state = 0;
+				this.state = 3;
 				this.animation[tempState].elapsedTime = 0;
+				if (this.firstEncounter) {
+					this.firstEncounter = false;
+				} else if (this.encounter) {
+					this.attackDelay = 0;
+				}
 			}
 		}
 	};
@@ -721,12 +737,15 @@ class Cyclops {
 			ctx.strokeStyle = "purple";
 			ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 120, 240);
 
+			ctx.strokeStyle = "green";
+			ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 120, 240);
 			if (this.facing == 1) {
 				ctx.strokeStyle = "red";
 				ctx.strokeRect(this.x + 120 - this.game.camera.x, this.y - this.game.camera.y, 135, 240);
 
 				ctx.strokeStyle = "blue";
 				ctx.strokeRect(this.x + 120 - this.game.camera.x, this.y - this.game.camera.y, 260, 240);
+
 			} else {
 				ctx.strokeStyle = "Red";
 				ctx.strokeRect(this.x - 135 - this.game.camera.x, this.y - this.game.camera.y, 135, 240);

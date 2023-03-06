@@ -22,7 +22,13 @@ ASSET_MANAGER.queueDownload("./tileset/title/backSelected.png");
 ASSET_MANAGER.queueDownload("./tileset/controls/controls.png");
 
 //gameover
-ASSET_MANAGER.queueDownload("./tileset/title/gameover_865_183.png")
+ASSET_MANAGER.queueDownload("./tileset/title/gameover_865_183.png");
+ASSET_MANAGER.queueDownload("./tileset/title/play_again.png");
+
+// beat level
+ASSET_MANAGER.queueDownload("./tileset/title/continue.png");
+ASSET_MANAGER.queueDownload("./tileset/title/beat_game.png");
+ASSET_MANAGER.queueDownload("./tileset/title/win.png");
 //tbc
 ASSET_MANAGER.queueDownload("./tileset/title/tbc_856_109.png")
 ASSET_MANAGER.queueDownload("./tileset/title/tbc_1024_127.png")
@@ -167,6 +173,7 @@ ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range2.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range3.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Death.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_BigLightning.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Dragon/Dragon_Idle.png");
 ASSET_MANAGER.queueDownload("./sprites/Dragon/Dragon_Flight.png");

@@ -11,7 +11,7 @@ class Lich {
         this.dead = false;
         this.deadCounter = 0;
         //testing
-        //this.health = 1
+        // this.health = 1
         this.health = 250
         this.maxhealth = 250;
         this.damage = 12.5;
@@ -65,6 +65,7 @@ class Lich {
         this.attackState = 0;
         this.numOfFire = 0;
 
+        // double-check to ensure that Lich really dies when health is 0
         if (this.health <= 0) {
             return;
         }
@@ -108,6 +109,7 @@ class Lich {
             if (this.deadCounter >= 1) {
                 //level complete
                 this.game.camera.levelclear = true;
+                this.game.camera.levelComplete.one = true;
                 this.dead = true;
                 this.removeFromWorld = true;
             }
@@ -220,6 +222,7 @@ class Lich {
             let stateModY = 0;
             if (this.state == 2 || this.state == 3) stateModY = 25;
             else if (this.state == 4) stateModY = 15;
+            else if (this.state == 5) stateModY = 15;
             
             if (this.facing == 1) {
                 this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y - stateModY- this.game.camera.y, 4);
@@ -266,8 +269,10 @@ class Titan {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
 
+        this.game.Titan = this;
         this.state = 4; // stunned = 0, melee2 = 1, idle = 2, walking = 3, melee1 = 4, melee3 = 5, range1 = 6, range2 = 7, range3 = 8, death = 9
         this.facing = 1; // right = 1, left = -1
+        // this.health = 1;
         this.health = 500;
         this.maxhealth = 500;
         this.damage = 15;
@@ -297,7 +302,7 @@ class Titan {
         this.animation.push(new Animator(this.spritesheet[4], 11, 4, 73, 108, 5, 0.5, 39, false, true));
         this.animation.push(new Animator(this.spritesheet[5], 4, 4, 63, 124, 5, 0.5, 49, false, true));
         this.animation.push(new Animator(this.spritesheet[6], 5, 6, 80, 101, 5, 0.5, 32, false, true));
-        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.15, 31, false, false));
+        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.5, 31, false, false));
         this.animation.push(new Animator(this.spritesheet[8], 8, 5, 78, 102, 6, 0.5, 35, false, true));
         this.animation.push(new Animator(this.spritesheet[9], 9, 11, 60, 102, 9, 0.15, 52, false, false));
 
@@ -312,10 +317,26 @@ class Titan {
         this.BB = new BoundingBox(this.x, this.y, 160, 410, "enemy", this);
     };
 
-    rngCounter() {
-        let rng = Math.random() * 100;
+    /**
+     * 
+     * @param {int} distance 0 for melee and 1 for range
+     * @returns nothing
+     */
+    attackState(distance) {
 
-        
+        // double-check to ensure that Titan really dies when health is 0
+        if (this.health <= 0) {
+            return;
+        }
+
+        let rng = Math.floor(Math.random() * 100);
+        if (distance == 0) {
+            this.state = 1;
+        } else if (distance == 1) {
+            this.state = 7;
+        } else {
+            console.log("how is this possible?");
+        }
     }
 
     update() {
@@ -325,6 +346,7 @@ class Titan {
             if (this.animation[this.state].isDone()) {
                 //level complete
                 this.game.camera.levelclear = true;
+                this.game.camera.levelComplete.two = true;
                 this.dead = true;
                 this.removeFromWorld = true;
             }
@@ -338,8 +360,9 @@ class Titan {
 
         this.game.entities.forEach((entity) => {
             if (this.state !== 9) {
-                if (entity.BB && this.meleeRange.collide(entity.BB) && this.state != 2) {
-                    if (entity instanceof Knight) {
+                if (entity.BB && this.meleeRange.collide(entity.BB)) {
+                    this.attackState(0);
+                    if (entity instanceof Knight && this.state != 2) {
                         this.state = 1;
                         if (this.animation[1].currentFrame() == 1) {
                             if (this.facing == 1) {
@@ -350,7 +373,7 @@ class Titan {
                         }
                     }
                 } else {
-                    this.state = 7;
+                    this.attackState(1);
                     if (this.animation[7].isDone()) {
                         if (entity instanceof Knight) {
                             this.state = 7;
@@ -403,7 +426,8 @@ class Titan {
         let stateModY = 0;
 
         if (this.state == 2) stateModX = -13, stateModY = -15;
-        else if (this.state == 7) stateModX = 30, stateModY = -10;
+        else if (this.state == 7) stateModX = 55, stateModY = -40;
+        else if (this.state == 9) stateModY = -50;
             
         if (this.facing == 1) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y + stateModY - this.game.camera.y, 4);
@@ -456,12 +480,12 @@ class Dragon {
     update() {
         this.speed = 0;
         if (this.health <= 0) {
-            this.dead = true;
             this.state = 5;
-            if (this.animation[this.state].isDone()) {
+            if (this.animation[this.state].isDone() && !this.game.camera.title) {
                 //level complete
-                this.game.camera.levelclear = true;
+                this.game.camera.finishGame = true;
                 this.dead = true;
+            } else if (this.game.camera.title) {
                 this.removeFromWorld = true;
             }
         } else {
@@ -629,10 +653,18 @@ class Dragon {
         if (this.state == 2) stateModY = -50;
         if (this.state == 4) stateModY = 75, stateModX = 150;
 
-        if (this.facing == 1) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, (this.y - stateModY) - this.game.camera.y, 4);
-        } else if (this.facing == -1) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 375 + (stateModX * this.facing) - facingModX) - (this.game.camera.x * this.facing), (this.y - stateModY) - this.game.camera.y, 4);
+        if (this.dead) {
+            if (this.facing == 1) {
+                ctx.drawImage(this.spritesheet[5], 546, 8, 97, 126, this.x - this.game.camera.x, this.y - this.game.camera.y, 97 * 4, 126 * 4);
+            } else if (this.facing == -1) {
+                ctx.drawImage(this.spritesheet[5], 546, 8, 97, 126, ((this.x * this.facing) - 375 - facingModX) - (this.game.camera.x * this.facing), this.y - this.game.camera.y, 97 * 4, 126 * 4);
+            }
+        } else {
+            if (this.facing == 1) {
+                this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, (this.y - stateModY) - this.game.camera.y, 4);
+            } else if (this.facing == -1) {
+                this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 375 + (stateModX * this.facing) - facingModX) - (this.game.camera.x * this.facing), (this.y - stateModY) - this.game.camera.y, 4);
+            }
         }
 
         ctx.restore();
