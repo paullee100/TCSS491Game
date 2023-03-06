@@ -349,3 +349,208 @@ var levelTwo = {
     ],
     Background:[4]
 };
+
+var levelThree = {
+    //Music:["./music/forsaken_forest.mp3"],
+    //temp comment them out
+    // Chest:[{x:106.5,y:-1,facing:-1,item: "bomb"},
+    // {x:65,y:18,facing:-1,item: "potion"},
+    // {x:86.5,y:-1,facing:1,item: "potion"}],
+    // Mimic:[{x:67,y:18,facing:-1}],
+    // Lich: [{x:37+(25*4),y:(390/64)}],
+    // Skeleton: [
+    // { x: 23.5, y: (540 / 64) },
+    // { x: 40, y: (540 / 64) }, 
+    // { x: 8 + (25 * 2), y: (540 / 64)},
+    // { x: 79, y: (284 / 64) },
+    // { x: 99, y: (92 / 64) },],
+    // Slime: [
+    // { x: 8, y: 17.5 , color: "green"},
+    // { x: 25, y: 17.5 , color: "yellow"},
+    // { x: 40, y: 17.5 , color: "red"},
+    // { x: 65, y: 17.5 , color: "green"}],
+    // Tree: [{x:(55/64),y:4},{x:15+(25*2),y:3},{x:14+(25*1),y:4},{x:20,y:4}],
+    // Bush: [{x:(655/64),y:4},{x:15+(25*2),y:3},{x:5+(25*2),y:4},{x:12.5+(25*1),y:4}],
+    // Rock:[{x:14.25+(25*1),y:4}],
+
+    Dragon: [{x:32,y:4.5}],
+    Chest:[
+        {x:0,y:9.5,facing:-1,item: "bomb"},
+        {x:6,y:9.5,facing:-1,item: "potion"},
+        {x:12,y:9.5,facing:-1,item: "throwingknife"}],
+
+    Ground:[
+    
+    // //test side collision sprites    
+    // {sprite:"./tileset/swamp/sprite_01.png",x:1,y:10,size:4},
+    
+    // standard  block grass 0
+    
+    //background
+    //door
+    {sprite:"./tileset/castle/sprite_castle01.png",x:-3,y:8,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle02.png",x:-2,y:8,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle03.png",x:-3,y:9,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle04.png",x:-2,y:9,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle05.png",x:-3,y:10,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle06.png",x:-2,y:10,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle08.png",x:6,y:8,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle08.png",x:7,y:8,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle10.png",x:6,y:9,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle11.png",x:7,y:9,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle12.png",x:6,y:10,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle13.png",x:7,y:10,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle14.png",x:6,y:8,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle15.png",x:7,y:8,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle07.png",x:0,y:5,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle07.png",x:5,y:5,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle07.png",x:10,y:5,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle07.png",x:15,y:5,size:1,c:true},
+
+    //walls
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:11,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:11,size:1},
+    //{sprite:"./tileset/castle/sprite_castle36.png",x:18,y:11,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:10,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:10,size:1},
+    //{sprite:"./tileset/castle/sprite_castle36.png",x:18,y:10,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:9,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:9,size:1},
+    //{sprite:"./tileset/castle/sprite_castle36.png",x:18,y:9,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:8,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:8,size:1},
+    //{sprite:"./tileset/castle/sprite_castle36.png",x:18,y:8,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:7,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:7,size:1},
+    //{sprite:"./tileset/castle/sprite_castle36.png",x:18,y:7,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:6,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:6,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:18,y:6,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:5,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:5,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:18,y:5,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:4,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:4,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:18,y:4,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:3,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:3,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:18,y:3,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:2,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:2,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:18,y:2,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:1,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:1,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:18,y:1,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:1,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:1,size:20},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:18,y:1,size:1},
+
+    //background interior
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:10,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:10,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:10,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:10,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:10,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:10,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:9,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:9,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:9,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:8,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:8,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:8,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:7,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:7,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:7,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:6,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:6,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:6,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:5,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:5,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:5,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:4,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:4,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:4,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:3,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:3,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:3,size:1,c:true},
+    
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:2,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:2,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:2,size:1,c:true},
+
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-3,y:1,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:-2,y:1,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle35.png",x:18,y:1,size:1,c:true},
+
+    //floor
+    {sprite:"./tileset/castle/sprite_castle00.png",x:-3,y:11,size:1},
+    {sprite:"./tileset/castle/sprite_castle00.png",x:-2,y:11,size:20},
+    {sprite:"./tileset/castle/sprite_castle00.png",x:18,y:11,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:12,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:12,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:18,y:12,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:13,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:13,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:18,y:13,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-3,y:14,size:1},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:-2,y:14,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle36.png",x:18,y:14,size:1},
+    
+    //bossroom floor
+    {sprite:"./tileset/castle/sprite_castle28.png",x:19,y:11,size:1},
+    {sprite:"./tileset/castle/sprite_castle28.png",x:18,y:11,size:20},
+    {sprite:"./tileset/castle/sprite_castle28.png",x:38,y:11,size:1},
+    
+    {sprite:"./tileset/castle/sprite_castle40.png",x:19,y:12,size:1},
+    {sprite:"./tileset/castle/sprite_castle40.png",x:18,y:12,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle40.png",x:38,y:12,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle40.png",x:19,y:13,size:1},
+    {sprite:"./tileset/castle/sprite_castle40.png",x:18,y:13,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle40.png",x:38,y:13,size:1},
+
+    {sprite:"./tileset/castle/sprite_castle40.png",x:19,y:14,size:1},
+    {sprite:"./tileset/castle/sprite_castle40.png",x:18,y:14,size:20,c:true},
+    {sprite:"./tileset/castle/sprite_castle40.png",x:38,y:14,size:1},
+
+    // {sprite:"./tileset/forest/forest_tiles03.png",x:14,y:11,size:1},
+    // {sprite:"./tileset/forest/forest_tiles05.png",x:15,y:11,size:1},
+    // {sprite:"./tileset/forest/forest_tiles06.png",x:16,y:11,size:2},
+    // {sprite:"./tileset/forest/forest_tiles04.png",x:18,y:11,size:1},
+    // {sprite:"./tileset/forest/forest_tiles00.png",x:0,y:11,size:1},
+    // {sprite:"./tileset/forest/forest_tiles01.png",x:1,y:11,size:14},
+    // {sprite:"./tileset/forest/forest_tiles01.png",x:19,y:11,size:7},
+    // {sprite:"./tileset/forest/forest_tiles08.png",x:0,y:12,size:1},
+    // {sprite:"./tileset/forest/forest_tiles06.png",x:1,y:12,size:3,c:true},
+    // {sprite:"./tileset/forest/forest_tiles07.png",x:4,y:12,size:18,c:true},
+    // {sprite:"./tileset/forest/forest_tiles06.png",x:22,y:12,size:4,c:true},
+    // {sprite:"./tileset/forest/forest_tiles08.png",x:0,y:13,size:1},
+    // {sprite:"./tileset/forest/forest_tiles07.png",x:1,y:13,size:25,c:true},
+    ],
+    Background:[5]
+};

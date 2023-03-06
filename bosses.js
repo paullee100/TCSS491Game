@@ -409,10 +409,11 @@ class Dragon {
         Object.assign(this, {game, x, y});
 
         this.state = 3; // stunned = 0, attack = 1, pre-attack = 2, idle = 3, flight = 4, death = 5
-        this.facing = 1; // right = 1, left = -1
+        this.facing = -1; // right = 1, left = -1
         this.health = 500;
         this.maxhealth = 500;
         this.damage = 15;
+        this.firedamage = 30;
         this.dead = false;
 
         this.spritesheet = [];
@@ -426,11 +427,11 @@ class Dragon {
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Dragon/Dragon_Death.png"));
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-        this.animation.push(new Animator(this.spritesheet[0], 30, 0, 90, 113, 14, 0.5, 10, false, true));
+        this.animation.push(new Animator(this.spritesheet[0], 30, 0, 90, 113, 4, 0.33, 10, false, false));
         this.animation.push(new Animator(this.spritesheet[1], 50, 4, 250, 117, 6, 0.25, 48, false, false));
         this.animation.push(new Animator(this.spritesheet[2], 16, 8, 141, 105, 4, 0.25, 10, false, false));
         this.animation.push(new Animator(this.spritesheet[3], 46, 0, 90, 113, 14, 0.25, 10, false, true));
-        this.animation.push(new Animator(this.spritesheet[4], 4, 4, 182, 136, 11, 0.15, 20, false, true));
+        this.animation.push(new Animator(this.spritesheet[4], 4, 4, 182, 136, 11, 0.20, 20, false, false));
         this.animation.push(new Animator(this.spritesheet[5], 17, 8, 120, 126, 5, 0.2, 10, false, false));
     
         this.updateBB();
@@ -438,7 +439,7 @@ class Dragon {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 375, 450, "enemy", this);
+        this.BB = new BoundingBox(this.x+25, this.y+75, 300, 275, "enemy", this);
     }
     update() {
         if (this.health <= 0) {
@@ -451,15 +452,25 @@ class Dragon {
 
             this.game.entities.forEach((entity) => {
                 if (entity.BB && this.BB.collide(entity.BB)) {
-                    if (entity instanceof Knight) {
+                    if (entity instanceof Knight && this.state !== 0) {
                         console.log("Dragon and Knight collision");
+                        this.state = 4;
+					    this.speed = 0;
+					    if (this.animation[4].currentFrame() >= 3 && this.animation[4].currentFrame() <= 8) {
+						if (this.facing == 1) {
+							this.attackBB = new AttackBox(this.game, this, this.x+25, this.y+75, 300, 275, 2, 3, this.damage);
+						}
+						else {
+							this.attackBB = new AttackBox(this.game, this, this.x+25, this.y+75, 300, 275, 2, 3, this.damage);
+						}
+					}
                     }
                 }
             });
 
             if (this.animation[this.state].isDone()) {
                 const temp = this.state;
-                this.state = 0;
+                this.state = 3;
                 this.animation[temp].elapsedTime = 0;
             }
             this.updateBB();
@@ -470,7 +481,7 @@ class Dragon {
     draw(ctx) {
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = "black";
-            ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 375, 450);
+            ctx.strokeRect(this.x - this.game.camera.x+20, this.y - this.game.camera.y+75, 300, 375);
         }
 
         if (this.dead === false) {
@@ -495,11 +506,12 @@ class Dragon {
         let stateModY = 0;
 
         if (this.state == 2) stateModY = -50;
+        if (this.state == 4) stateModY = 75, stateModX = 150;
 
         if (this.facing == 1) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, (this.y - stateModY) - this.game.camera.y, 4);
         } else if (this.facing == -1) {
-            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 999 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), (this.y - stateModY) - this.game.camera.y, 4);
+            this.animation[this.state].drawFrame(this.game.clockTick, ctx, ((this.x * this.facing) - 375 + (stateModX * this.facing)) - (this.game.camera.x * this.facing), (this.y - stateModY) - this.game.camera.y, 4);
         }
 
         ctx.restore();
