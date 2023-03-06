@@ -211,6 +211,7 @@ class SceneManager {
                     this.selection.start = true;
                     if (this.selection.start && this.game.click){
                     this.title = false;
+                    this.selection.start = false;
                     this.levelSelection = true;
                 }
             // "Controls" button
@@ -219,6 +220,7 @@ class SceneManager {
                     this.selection.controls = true;
                     if (this.selection.controls && this.game.click) {
                         this.title = false;
+                        this.selection.controls = false;
                         this.controlMenu = true;
                     }
             // mouse is not over "Start" and "Controls" button
@@ -237,6 +239,7 @@ class SceneManager {
                 this.selection.levelOne = true;
                 if (this.selection.levelOne && this.game.click) {
                     this.levelSelection = false;
+                    this.selection.levelOne = false;
                     this.loadLevel(levelOne, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
                     if (this.game.click != null) this.game.click = null;
                 }
@@ -246,8 +249,8 @@ class SceneManager {
                 this.selection.levelTwo = true;
                 if (this.selection.levelTwo && this.game.click) {
                     this.levelSelection = false;
+                    this.selection.levelTwo = false;
                     this.loadLevel(levelTwo, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
-                    //this.loadLevel(levelThree, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
                     if (this.game.click != null) this.game.click = null;
                 }
             // "back" button
@@ -257,8 +260,20 @@ class SceneManager {
                 if (this.selection.back && this.game.click) {
                     this.title = true;
                     this.levelSelection = false;
+                    this.selection.back = false;
                 }
-            // "boss" button
+            // when the player defeat level one and level two, boss will appear
+            } else if (this.levelComplete.one && this.levelComplete.two) {
+                if (this.game.mouse && this.game.mouse.y > 5 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 6.8 * PARAMS.BLOCKWIDTH
+                    && this.game.mouse.x > 6 * PARAMS.BLOCKWIDTH && this.game.mouse.x < 9.8 * PARAMS.BLOCKWIDTH) {
+                    this.selection.boss = true;
+                    if (this.selection.boss && this.game.click) {
+                        this.levelSelection = false;
+                        this.selection.boss = false;
+                        this.loadLevel(levelThree, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
+                        if (this.game.click != null) this.game.click = null;
+                    }
+                }
             } else {
                 this.selection.levelOne = false;
                 this.selection.levelTwo = false;
@@ -269,19 +284,8 @@ class SceneManager {
                 }
             }
             
-            // when the player defeat level one and level two, boss will appear
-            if (this.levelComplete.one && this.levelComplete.two) {
-                if (this.game.mouse && this.game.mouse.y > 5 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 6.8 * PARAMS.BLOCKWIDTH
-                    && this.game.mouse.x > 6 * PARAMS.BLOCKWIDTH && this.game.mouse.x < 9.8 * PARAMS.BLOCKWIDTH) {
-                    this.selection.boss = true;
-                    if (this.selection.boss && this.game.click) {
-                        this.levelSelection = false;
-                    }
-                }
-            }
         // controls screen
         } else if (this.controlMenu) {
-            // TODO: CONTROLS
             // hovers over "back" button
             if (this.game.mouse && this.game.mouse.y > 0 && this.game.mouse.y < 1 * PARAMS.BLOCKWIDTH
                 && this.game.mouse.x > 0 && this.game.mouse.x < 3.6 * PARAMS.BLOCKWIDTH) {
@@ -289,6 +293,7 @@ class SceneManager {
                 if (this.selection.back && this.game.click) {
                     this.title = true;
                     this.controlMenu = false;
+                    this.selection.back = false;
                 }
             } else {
                 this.selection.back = false;
@@ -345,6 +350,10 @@ class SceneManager {
     };
 
     draw(ctx) {
+        if (PARAMS.DEBUG) {
+            this.levelComplete.one = true;
+            this.levelComplete.two = true;
+        }
         // Title
         if(this.title){
             ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/title_950_164.png") , 0.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 950, 164);
