@@ -351,7 +351,7 @@ var levelTwo = {
 };
 
 var levelThree = {
-    //Music:["./music/forsaken_forest.mp3"],
+    Music:["./music/dragontheme.mp3"],
     //temp comment them out
     // Chest:[{x:106.5,y:-1,facing:-1,item: "bomb"},
     // {x:65,y:18,facing:-1,item: "potion"},

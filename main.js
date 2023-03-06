@@ -183,9 +183,12 @@ ASSET_MANAGER.queueDownload("./sounds/bomb_explosion.mp3");
 ASSET_MANAGER.queueDownload("./sounds/throwing_knife.mp3");
 ASSET_MANAGER.queueDownload("./sounds/chest_open.mp3");
 ASSET_MANAGER.queueDownload("./sounds/mimic_attack.mp3");
+ASSET_MANAGER.queueDownload("./sounds/dragon_fire.mp3");
+ASSET_MANAGER.queueDownload("./sounds/dragon_flight.mp3");
 
 // music
 ASSET_MANAGER.queueDownload("./music/forsaken_forest.mp3"); //greenpath from hollow knight
+ASSET_MANAGER.queueDownload("./music/dragontheme.mp3"); // flamelurker from demon's souls (2009)
 
 ASSET_MANAGER.downloadAll(() => {
 	const gameEngine = new GameEngine();
