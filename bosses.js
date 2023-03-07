@@ -108,6 +108,7 @@ class Lich {
             if (this.deadCounter >= 1) {
                 //level complete
                 this.game.camera.levelclear = true;
+                this.game.camera.levelComplete.one = true;
                 this.dead = true;
                 this.removeFromWorld = true;
             }
@@ -329,6 +330,7 @@ class Titan {
             if (this.animation[this.state].isDone()) {
                 //level complete
                 this.game.camera.levelclear = true;
+                this.game.camera.levelComplete.two = true;
                 this.dead = true;
                 this.removeFromWorld = true;
             }
