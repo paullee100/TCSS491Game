@@ -475,7 +475,7 @@ class Dragon {
             this.state = 5;
             if (this.animation[this.state].isDone()) {
                 //level complete
-                this.game.camera.levelclear = true;
+                this.game.camera.finishGame = true;
                 this.dead = true;
                 this.removeFromWorld = true;
             }
