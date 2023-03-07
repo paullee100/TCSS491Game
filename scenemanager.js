@@ -271,8 +271,7 @@ class SceneManager {
                     if (this.game.click != null) this.game.click = null;
                 }
             // when the player defeat level one and level two, boss will appear
-            //} else if (this.levelComplete.one && this.levelComplete.two &&
-            } else if (
+            } else if (this.levelComplete.one && this.levelComplete.two &&
                 this.game.mouse && this.game.mouse.y > 5 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 6.8 * PARAMS.BLOCKWIDTH
                 && this.game.mouse.x > 6 * PARAMS.BLOCKWIDTH && this.game.mouse.x < 9.8 * PARAMS.BLOCKWIDTH) {
                 this.selection.boss = true;
