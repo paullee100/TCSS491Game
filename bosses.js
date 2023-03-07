@@ -272,7 +272,7 @@ class Titan {
         this.facing = 1; // right = 1, left = -1
         this.health = 500;
         this.maxhealth = 500;
-        this.damage = 15;
+        this.damage = 10;
         this.attackDelay = 0;
         this.firstEncounter = false;
         this.encounter = false;
@@ -317,12 +317,6 @@ class Titan {
         this.BB = new BoundingBox(this.x, this.y, 160, 410, "enemy", this);
     };
 
-    rngCounter() {
-        let rng = Math.random() * 100;
-
-        
-    }
-
     update() {
         if (this.health <= 0) {
             this.dead = true;
@@ -334,58 +328,61 @@ class Titan {
                 this.dead = true;
                 this.removeFromWorld = true;
             }
-        }
+        } else {
 
-        if (this.game.camera.knight.position.x > this.x) {
-            this.facing = 1;
-        } else if (this.game.camera.knight.position.x < this.x) {
-            this.facing = -1;
-        }
+            if (this.game.camera.knight.position.x > this.x) {
+                this.facing = 1;
+            } else if (this.game.camera.knight.position.x < this.x) {
+                this.facing = -1;
+            }
 
-        this.game.entities.forEach((entity) => {
-            if (this.state !== 9) {
-                if (entity.BB && this.meleeRange.collide(entity.BB) && this.state !== 0) {
-                    if (entity instanceof Knight) {
+            this.game.entities.forEach((entity) => {
+                if (this.state !== 9) {
+                    if (entity.BB && this.meleeRange.collide(entity.BB) && this.state !== 0) {
+                        if (entity instanceof Knight) {
 
-                        if (!this.firstEncounter && this.attackDelay < 1) {
-                            this.attackDelay += this.game.clockTick;
-                        } else if (this.firstEncounter || this.attackDelay >= 1) {
-                            this.state = 1;
-                            if (this.animation[1].currentFrame() == 1) {
-                                if (this.facing == 1) {
-                                    this.attackBB = new AttackBox(this.game, this, this.x + 160, this.y, 226, 410, 1, 3, this.damage);
-                                } else {
-                                    this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226, 410, 1, 3, this.damage);
+                            if (!this.firstEncounter && this.attackDelay < 2.5) {
+                                this.attackDelay += this.game.clockTick;
+                            } else if (this.firstEncounter || this.attackDelay >= 2.5) {
+                                this.state = 1;
+                                if (this.animation[1].currentFrame() == 1) {
+                                    if (this.facing == 1) {
+                                        this.attackBB = new AttackBox(this.game, this, this.x + 160, this.y, 226, 410, 1, 3, this.damage);
+                                    } else {
+                                        this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226, 410, 1, 3, this.damage);
+                                    }
                                 }
+                                this.encounter = true;
+                            } else {
+                                this.state = 2;
                             }
-                            this.encounter = true;
                         }
-                    }
-                } else {
-                    this.state = 7;
-                    if (this.animation[7].currentFrame() == 4) {
+                    } else {
                         if (entity instanceof Knight) {
                             this.state = 7;
-                            this.game.addEntitySpecific(new TitanLightning(this.game, this.x, this.y, this.game.knight, this.facing), 1);
-                            this.animation[this.state].elapsedTime = 0;
+                            if (this.animation[7].currentFrame() == 4) {
+                                this.state = 7;
+                                this.game.addEntitySpecific(new TitanLightning(this.game, this.x, this.y, this.game.knight, this.facing), 1);
+                                this.animation[this.state].elapsedTime = 0;
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
 
-        if (this.animation[this.state].isDone()) {
-            let tempState = this.state;
-            this.state = 2;
-            this.animation[tempState].elapsedTime = 0;
-            if (this.firstEncounter) {
-                this.firstEncounter = false;
-            } else if (this.encounter) {
-                this.attackDelay = 0;
-            }
+            if (this.animation[this.state].isDone()) {
+                let tempState = this.state;
+                this.state = 2;
+                this.animation[tempState].elapsedTime = 0;
+                if (this.firstEncounter) {
+                    this.firstEncounter = false;
+                } else if (this.encounter) {
+                    this.attackDelay = 0;
+                }
 
-        };
-        this.updateBB();
+            };
+            this.updateBB();
+        }
     };
 
     draw(ctx) {
