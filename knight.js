@@ -348,22 +348,18 @@ class Knight {
             attackBB = undefined;
         }
 
-
-        else {
-                if (this.state !== 8 && this.state !== 11 && this.state !== 6 && !(this.state == 4 && this.animation[4].currentFrame() < 8)) {
-                    this.state = 8;
-                    attackBB.damageDeal(this);
-                    if (attackBB.attacker.facing == -1) this.velocity.x = Math.max(-600, -40 * damage);
-                    else if (attackBB.attacker.facing == 1) this.velocity.x = Math.min(600, 40 * damage);
-                    attackBB = undefined;
-                    ASSET_MANAGER.playAsset("./sounds/knight_takehit.mp3");
-                    for (var i = 0; i < 12; i++) {
-                        this.animation[i].elapsedTime = 0;
-                };
-            }
+        else if (this.state !== 8 && this.state !== 11 && this.state !== 6 && !(this.state == 4 && this.animation[4].currentFrame() < 8)) {
+            this.state = 8;
+            attackBB.damageDeal(this);
+            if (attackBB.attacker.facing == -1) this.velocity.x = Math.max(-600, -40 * damage);
+            else if (attackBB.attacker.facing == 1) this.velocity.x = Math.min(600, 40 * damage);
+            attackBB = undefined;
+            ASSET_MANAGER.playAsset("./sounds/knight_takehit.mp3");
+            for (var i = 0; i < 12; i++) {
+                this.animation[i].elapsedTime = 0;
+            };
         }
     };
-
     draw(ctx) {
         if (PARAMS.DEBUG) {
             // let canvas = document.getElementById("gameWorld");
