@@ -350,7 +350,7 @@ class Knight {
 
 
         else {
-                if (this.state !== 8 && this.state !== 11 && this.state !== 6) {
+                if (this.state !== 8 && this.state !== 11 && this.state !== 6 && !(this.state == 4 && this.animation[4].currentFrame() < 8)) {
                     this.state = 8;
                     attackBB.damageDeal(this);
                     if (attackBB.attacker.facing == -1) this.velocity.x = Math.max(-600, -40 * damage);
