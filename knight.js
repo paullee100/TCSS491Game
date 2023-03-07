@@ -337,7 +337,7 @@ class Knight {
     hit(damage, attackBB) {
 
         if (this.blockBB && this.blockBB.collide(attackBB) &&
-        (this.state == 9 || this.state == 10) && this.state !== 11 && (this.facing !== attackBB.attacker.facing)) {
+        (this.state == 9 || this.state == 10) && this.state !== 11 && this.game.keys["L"] && (this.facing !== attackBB.attacker.facing)) {
             damage /= 2;
             attackBB.damageDeal(this);
             this.state = 11;
@@ -348,7 +348,8 @@ class Knight {
             attackBB = undefined;
         }
 
-        else if (this.state !== 8 && this.state !== 11 && this.state !== 6 && !(this.state == 4 && this.animation[4].currentFrame() < 8)) {
+        else if (this.state !== 8 && this.state !== 11 && this.state !== 6 && this.state !== 9 && this.state !== 10 && !this.game.keys["L"] && !(this.state == 4 && this.animation[4].currentFrame() < 8)) {
+            console.log(this.state)
             this.state = 8;
             attackBB.damageDeal(this);
             if (attackBB.attacker.facing == -1) this.velocity.x = Math.max(-600, -40 * damage);
