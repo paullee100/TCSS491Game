@@ -639,12 +639,12 @@ class Cyclops {
 		this.lastAggroRange = this.AggroRange
 
 		if (this.facing == -1) {
-			this.visionBB = new BoundingBox(this.x - 260, this.y, 260, 240, "enemy", this);
+			this.visionBB = new BoundingBox(this.x - 260, this.y, 260, 230, "enemy", this);
 		} else {
-			this.visionBB = new BoundingBox(this.x + 120, this.y, 260, 240, "enemy", this);
+			this.visionBB = new BoundingBox(this.x + 120, this.y, 260, 230, "enemy", this);
 		}
 
-		this.BB = new BoundingBox(this.x, this.y, 120, 240, "enemy", this);
+		this.BB = new BoundingBox(this.x, this.y, 120, 230, "enemy", this);
 	};
 
 	update() {
@@ -686,7 +686,6 @@ class Cyclops {
 
 						if (!this.firstEncounter && this.attackDelay < 1) {
 							this.attackDelay += this.game.clockTick;
-							console.log(this.attackDelay);
 						} else if (this.firstEncounter || this.attackDelay >= 1) {
 							this.state = 1;
 							if (this.animation[1].currentFrame() == 1) {

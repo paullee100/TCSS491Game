@@ -266,11 +266,15 @@ class Titan {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
 
-        this.state = 4; // stunned = 0, melee2 = 1, idle = 2, walking = 3, melee1 = 4, melee3 = 5, range1 = 6, range2 = 7, range3 = 8, death = 9
+        this.game.Titan = this;
+        this.state = 2; // stunned = 0, melee2 = 1, idle = 2, walking = 3, melee1 = 4, melee3 = 5, range1 = 6, range2 = 7, range3 = 8, death = 9
         this.facing = 1; // right = 1, left = -1
         this.health = 500;
         this.maxhealth = 500;
         this.damage = 15;
+        this.attackDelay = 0;
+        this.firstEncounter = false;
+        this.encounter = false;
 
         this.spritesheet = [];
         this.animation = [];
@@ -338,20 +342,26 @@ class Titan {
 
         this.game.entities.forEach((entity) => {
             if (this.state !== 9) {
-                if (entity.BB && this.meleeRange.collide(entity.BB) && this.state != 2) {
+                if (entity.BB && this.meleeRange.collide(entity.BB) && this.state !== 0) {
                     if (entity instanceof Knight) {
-                        this.state = 1;
-                        if (this.animation[1].currentFrame() == 1) {
-                            if (this.facing == 1) {
-                                this.attackBB = new AttackBox(this.game, this, this.x + 160, this.y, 226, 410, 1, 5, this.damage);
-                            } else {
-                                this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226, 410, 1, 5, this.damage);
+
+                        if (!this.firstEncounter && this.attackDelay < 1) {
+                            this.attackDelay += this.game.clockTick;
+                        } else if (this.firstEncounter || this.attackDelay >= 1) {
+                            this.state = 1;
+                            if (this.animation[1].currentFrame() == 1) {
+                                if (this.facing == 1) {
+                                    this.attackBB = new AttackBox(this.game, this, this.x + 160, this.y, 226, 410, 1, 3, this.damage);
+                                } else {
+                                    this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226, 410, 1, 3, this.damage);
+                                }
                             }
+                            this.encounter = true;
                         }
                     }
                 } else {
                     this.state = 7;
-                    if (this.animation[7].isDone()) {
+                    if (this.animation[7].currentFrame() == 4) {
                         if (entity instanceof Knight) {
                             this.state = 7;
                             this.game.addEntitySpecific(new TitanLightning(this.game, this.x, this.y, this.game.knight, this.facing), 1);
@@ -366,6 +376,11 @@ class Titan {
             let tempState = this.state;
             this.state = 2;
             this.animation[tempState].elapsedTime = 0;
+            if (this.firstEncounter) {
+                this.firstEncounter = false;
+            } else if (this.encounter) {
+                this.attackDelay = 0;
+            }
 
         };
         this.updateBB();
@@ -403,7 +418,8 @@ class Titan {
         let stateModY = 0;
 
         if (this.state == 2) stateModX = -13, stateModY = -15;
-        else if (this.state == 7) stateModX = 30, stateModY = -10;
+        else if (this.state == 7) stateModX = 55//, stateModY = -40;
+        else if (this.state == 9) stateModY = -50;
             
         if (this.facing == 1) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y + stateModY - this.game.camera.y, 4);
