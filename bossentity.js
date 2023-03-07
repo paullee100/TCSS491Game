@@ -135,7 +135,7 @@ class TitanLightning {
     };
 
     draw(ctx) {
-        if (true) {
+        if (PARAMS.DEBUG) {
             ctx.strokeStyle = "red";
             // ctx.strokeRect(this.LightningX + 40 - this.game.camera.x, this.LightningY - this.game.camera.y - 1000, 160, 1150);
 
