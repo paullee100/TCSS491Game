@@ -6,7 +6,7 @@ class SceneManager {
         this.potion = 0;
         this.bomb = 0;
         this.knife = 0;
-        this.lichTrigger = false;
+        //this.lichTrigger = false;
         this.x = 0;
         this.title = true;
         this.levelSelection = false;
@@ -86,10 +86,10 @@ class SceneManager {
             this.game.addEntity(new Dragon(this.game, dragon.x * PARAMS.BLOCKWIDTH, dragon.y * PARAMS.BLOCKWIDTH));
         }
 
-        if (level.Lich) {
+        /* if (level.Lich) {
             const lich = level.Lich[0];
             this.game.addEntity(new Lich(this.game, lich.x * PARAMS.BLOCKWIDTH, lich.y * PARAMS.BLOCKWIDTH));
-        }
+        } */
 
         if (level.Titan) {
             const titan = level.Titan[0];
