@@ -435,8 +435,8 @@ class Dragon {
 
         this.state = 3; // stunned = 0, attack = 1, pre-attack = 2, idle = 3, flight = 4, death = 5
         this.facing = -1; // right = 1, left = -1
-        this.health = 500;
-        this.maxhealth = 500;
+        this.health = 600;
+        this.maxhealth = 600;
         this.damage = 7.5;
         this.firedamage = 15;
         this.speed = 0;
@@ -455,8 +455,8 @@ class Dragon {
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
         this.animation.push(new Animator(this.spritesheet[0], 30, 0, 90, 113, 4, 0.20, 10, false, false));
-        this.animation.push(new Animator(this.spritesheet[1], 50, 4, 250, 117, 6, 0.20, 48, false, false));
-        this.animation.push(new Animator(this.spritesheet[2], 16, 8, 141, 105, 4, 0.25, 10, false, false));
+        this.animation.push(new Animator(this.spritesheet[1], 50, 4, 250, 117, 6, 0.10, 48, false, false));
+        this.animation.push(new Animator(this.spritesheet[2], 16, 8, 141, 105, 4, 0.15, 10, false, false));
         this.animation.push(new Animator(this.spritesheet[3], 46, 0, 90, 113, 14, 0.25, 10, false, true));
         this.animation.push(new Animator(this.spritesheet[4], 4, 4, 182, 136, 11, 0.15, 20, false, false));
         this.animation.push(new Animator(this.spritesheet[5], 17, 8, 120, 126, 5, 0.5, 10, false, false));
@@ -527,6 +527,8 @@ class Dragon {
                     else if (this.facing == -1) {
                         this.attackBB = new AttackBox(this.game, this, this.x+25, this.y+75, 200, 275, 2, 3, this.damage);
                     }
+                } else {
+                    this.attackBB = null;
                 }
             } else this.attackBB = null;
             if (this.state == 1) {
@@ -555,11 +557,22 @@ class Dragon {
                         this.updateBB();
                     }
                 } */
-                if ((this.fireBB1 && entity.BB && this.fireBB1.collide(entity.BB) || this.fireBB2 && entity.BB && this.fireBB2.collide(entity.BB) 
-                || this.fireBB3 && entity.BB && this.fireBB3.collide(entity.BB)) && this.state === 1) {
+                if (this.fireBB1 && entity.BB && this.fireBB1.collide(entity.BB) && this.state === 1) {
+                    if (entity instanceof Knight) {
+                        console.log("damaged by fire");
+                        this.game.knight.hit(this.firedamage, this.fireBB1);
+                        this.updateBB();
+                    }
+                } else if (this.fireBB2 && entity.BB && this.fireBB2.collide(entity.BB) && this.state === 1) {
                     if (entity instanceof Knight) {
                         console.log("damaged by fire");
                         this.game.knight.hit(this.firedamage, this.fireBB2);
+                        this.updateBB();
+                    }
+                } else if (this.fireBB3 && entity.BB && this.fireBB3.collide(entity.BB) && this.state === 1) {
+                    if (entity instanceof Knight) {
+                        console.log("damaged by fire");
+                        this.game.knight.hit(this.firedamage, this.fireBB3);
                         this.updateBB();
                     }
                 }
@@ -579,8 +592,8 @@ class Dragon {
             } */
             if (this.animation[4].isDone()) {
                 const temp = this.state;
-                this.facing = this.facing * -1;
                 this.state = 3;
+                this.facing = this.facing * -1;
                 this.animation[temp].elapsedTime = 0;
                 this.position = this.x / PARAMS.BLOCKWIDTH;
             }
