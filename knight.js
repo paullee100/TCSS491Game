@@ -338,7 +338,7 @@ class Knight {
 
         if (this.blockBB && this.blockBB.collide(attackBB) &&
         (this.state == 9 || this.state == 10) && this.state !== 11 && this.game.keys["L"] && (this.facing !== attackBB.attacker.facing)) {
-            damage /= 2;
+            attackBB.damage /= 2;
             attackBB.damageDeal(this);
             this.state = 11;
             this.animation[9].elapsedTime = 0;
