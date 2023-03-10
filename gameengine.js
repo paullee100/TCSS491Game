@@ -72,13 +72,22 @@ class GameEngine {
             this.rightclick = getXandY(e);
         });
 
-        this.ctx.canvas.addEventListener("keydown", event => this.keys[this.isLetter(event.key) ? event.key.toUpperCase() : event.key] = true);
+        this.ctx.canvas.addEventListener("keydown", event => this.keys[this.isLetter(event.key) ? event.key.toUpperCase() : this.isSpace(event) ? event.key : event.key] = true);
         this.ctx.canvas.addEventListener("keyup", event => this.keys[this.isLetter(event.key) ? event.key.toUpperCase() : event.key] = false);
     };
 
     isLetter(str) {
         return str.length === 1 && str.match(/[A-Za-z]/i);
     };
+
+    isSpace(str) {
+        if (str.keyCode == 32) {
+            str.preventDefault();
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     addEntity(entity) {
         this.entities.push(entity);
