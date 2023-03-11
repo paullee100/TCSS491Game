@@ -7,10 +7,17 @@ class SceneManager {
         this.bomb = 0;
         this.knife = 0;
         this.lichTrigger = false;
+        this.titanTrigger = false;
         this.x = 0;
         this.title = true;
         this.levelSelection = false;
         this.controlMenu = false;
+        this.finishGame = false;
+
+        this.level = {
+            one: false,
+            two: false
+        };
 
         // checks if player defeat level before boss level is revealed
         this.levelComplete = {
@@ -54,6 +61,7 @@ class SceneManager {
         this.title = title;
         this.level = level;
         this.lichTrigger = false;
+        this.titanTrigger = false;
         this.clearEntities();
         //x = 0;
         this.knight.position.x = xp;
@@ -62,7 +70,12 @@ class SceneManager {
             this.game.addEntity(this.knight);
             
         }
-        
+
+        if (level == levelOne) {
+            this.level.one = true;
+        } else if (level == levelTwo) {
+            this.level.two = true;
+        }
         
         if(level.Music && !this.title) {
             ASSET_MANAGER.pauseBackgroundMusic();
@@ -84,11 +97,6 @@ class SceneManager {
         if (level.Dragon) {
             const dragon = level.Dragon[0];
             this.game.addEntity(new Dragon(this.game, dragon.x * PARAMS.BLOCKWIDTH, dragon.y * PARAMS.BLOCKWIDTH));
-        }
-
-        if (level.Titan) {
-            const titan = level.Titan[0];
-            this.game.addEntity(new Titan(this.game, titan.x * PARAMS.BLOCKWIDTH, titan.y * PARAMS.BLOCKWIDTH));
         }
 
         if (level.Elf) {
@@ -186,6 +194,9 @@ class SceneManager {
             if(level.Background[0] === 4){
                 this.game.addEntity(new Background4());
             }
+            if(level.Background[0] === 5) {
+                this.game.addEntity(new Background5());
+            }
         }
     };
 
@@ -208,7 +219,9 @@ class SceneManager {
                     this.selection.start = true;
                     if (this.selection.start && this.game.click){
                     this.title = false;
+                    this.selection.start = false;
                     this.levelSelection = true;
+                    if (this.game.click != null) this.game.click = null;
                 }
             // "Controls" button
             } else if (this.game.mouse && this.game.mouse.y > 9 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 11 * PARAMS.BLOCKWIDTH
@@ -216,7 +229,9 @@ class SceneManager {
                     this.selection.controls = true;
                     if (this.selection.controls && this.game.click) {
                         this.title = false;
+                        this.selection.controls = false;
                         this.controlMenu = true;
+                        if (this.game.click != null) this.game.click = null;
                     }
             // mouse is not over "Start" and "Controls" button
             } else {
@@ -234,6 +249,7 @@ class SceneManager {
                 this.selection.levelOne = true;
                 if (this.selection.levelOne && this.game.click) {
                     this.levelSelection = false;
+                    this.selection.levelOne = false;
                     this.loadLevel(levelOne, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
                     if (this.game.click != null) this.game.click = null;
                 }
@@ -243,18 +259,31 @@ class SceneManager {
                 this.selection.levelTwo = true;
                 if (this.selection.levelTwo && this.game.click) {
                     this.levelSelection = false;
+                    this.selection.levelTwo = false;
                     this.loadLevel(levelTwo, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
                     if (this.game.click != null) this.game.click = null;
                 }
             // "back" button
-            } else if (this.game.mouse && this.game.mouse.y > 0 && this.game.mouse.y < 1.8 * PARAMS.BLOCKWIDTH
+            } else if (this.game.mouse && this.game.mouse.y > 0 && this.game.mouse.y < 1 * PARAMS.BLOCKWIDTH
                 && this.game.mouse.x > 0 && this.game.mouse.x < 3.6 * PARAMS.BLOCKWIDTH) {
                 this.selection.back = true;
                 if (this.selection.back && this.game.click) {
                     this.title = true;
                     this.levelSelection = false;
+                    this.selection.back = false;
+                    if (this.game.click != null) this.game.click = null;
                 }
-            // "boss" button
+            // when the player defeat level one and level two, boss will appear
+            } else if (this.levelComplete.one && this.levelComplete.two &&
+                this.game.mouse && this.game.mouse.y > 5 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 6.8 * PARAMS.BLOCKWIDTH
+                && this.game.mouse.x > 6 * PARAMS.BLOCKWIDTH && this.game.mouse.x < 9.8 * PARAMS.BLOCKWIDTH) {
+                this.selection.boss = true;
+                if (this.selection.boss && this.game.click) {
+                    this.levelSelection = false;
+                    this.selection.boss = false;
+                    this.loadLevel(levelThree, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, false);
+                    if (this.game.click != null) this.game.click = null;
+                }
             } else {
                 this.selection.levelOne = false;
                 this.selection.levelTwo = false;
@@ -265,26 +294,17 @@ class SceneManager {
                 }
             }
             
-            // when the player defeat level one and level two, boss will appear
-            if (this.levelComplete.one && this.levelComplete.two) {
-                if (this.game.mouse && this.game.mouse.y > 5 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 6.8 * PARAMS.BLOCKWIDTH
-                    && this.game.mouse.x > 6 * PARAMS.BLOCKWIDTH && this.game.mouse.x < 9.8 * PARAMS.BLOCKWIDTH) {
-                    this.selection.boss = true;
-                    if (this.selection.boss && this.game.click) {
-                        this.levelSelection = false;
-                    }
-                }
-            }
         // controls screen
         } else if (this.controlMenu) {
-            // TODO: CONTROLS
             // hovers over "back" button
-            if (this.game.mouse && this.game.mouse.y > 0 && this.game.mouse.y < 1.8 * PARAMS.BLOCKWIDTH
+            if (this.game.mouse && this.game.mouse.y > 0 && this.game.mouse.y < 1 * PARAMS.BLOCKWIDTH
                 && this.game.mouse.x > 0 && this.game.mouse.x < 3.6 * PARAMS.BLOCKWIDTH) {
                 this.selection.back = true;
                 if (this.selection.back && this.game.click) {
                     this.title = true;
                     this.controlMenu = false;
+                    this.selection.back = false;
+                    if (this.game.click != null) this.game.click = null;
                 }
             } else {
                 this.selection.back = false;
@@ -310,7 +330,8 @@ class SceneManager {
             this.tbc = false;
             this.levelclear = false;
             this.levelSelection = true;
-            this.levelComplete.one = true;
+            if (this.level.one) this.level.one = false;
+            if (this.level.two) this.level.two = false;
             this.knight = new Knight(this.game);
             if (this.game.click != null) this.game.click = null;
         }
@@ -319,18 +340,36 @@ class SceneManager {
         if(this.over && this.game.click) {
             this.over = false;
             this.title = true;
+            if (this.level.one) this.level.one = false;
+            if (this.level.two) this.level.two = false;
             this.knight = new Knight(this.game);
             if (this.game.click != null) this.game.click = null;
             this.loadLevel(Title, 6 * PARAMS.BLOCKWIDTH, 8.25 * PARAMS.BLOCKWIDTH, false, true);
         }
 
+        // win screen
+        if (this.finishGame && this.game.click) {
+            this.finishGame = false;
+            this.title = true;
+            this.levelComplete.one = false;
+            this.levelComplete.two = false;
+            this.knight = new Knight(this.game);
+            if (this.game.click != null) this.game.click = null;
+        }
+
         // summons the Lich after crossing a specific x-coordinate
-        if (this.knight.position.x >= 25+(25*4) * PARAMS.BLOCKWIDTH && !this.lichTrigger) {
-            console.log(this.x);
+        if (this.level.one && this.knight.position.x >= 25+(25*4) * PARAMS.BLOCKWIDTH && !this.lichTrigger) {
             if (levelOne.Lich) {
-                let lich = levelOne.Lich[0];
+                const lich = levelOne.Lich[0];
                 this.game.addEntitySpecific(new Lich(this.game, lich.x * PARAMS.BLOCKWIDTH, lich.y * PARAMS.BLOCKWIDTH), 1);
                 this.lichTrigger = true;
+            }
+        } else if (this.level.two && this.knight.position.x >= 80 * PARAMS.BLOCKWIDTH && !this.titanTrigger) {
+            console.log(this.knight.position.x);
+            if (levelTwo.Titan) {
+                const titan = levelTwo.Titan[0];
+                this.game.addEntitySpecific(new Titan(this.game, titan.x * PARAMS.BLOCKWIDTH, titan.y * PARAMS.BLOCKWIDTH), 1);
+                this.titanTrigger = true;
             }
         }
         this.updateAudio();
@@ -341,6 +380,14 @@ class SceneManager {
     };
 
     draw(ctx) {
+        if (PARAMS.DEBUG) {
+            this.levelComplete.one = true;
+            this.levelComplete.two = true;
+        } else if (this.game.keys["0"]) {
+            this.levelComplete.one = false;
+            this.levelComplete.two = false;
+        }
+
         // Title
         if(this.title){
             ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/title_950_164.png") , 0.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 950, 164);
@@ -361,28 +408,28 @@ class SceneManager {
         // After selecting "Start", display the levels
         if (!this.title && this.levelSelection) {
             if (this.selection.back) {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/backSelected.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/backSelected.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 64);
             } else {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/back.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/back.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 64);
             }
 
             if (this.selection.levelOne) {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/levelOneSelected.png"), 4.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 455, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/levelOneSelected.png"), 4.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 455, 127);
             } else {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/levelOne.png"), 4.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 455, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/levelOne.png"), 4.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 455, 127);
             }
 
             if (this.selection.levelTwo) {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/levelTwoSelected.png"), 4.5 * PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH, 455, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/levelTwoSelected.png"), 4.5 * PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH, 455, 127);
             } else {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/levelTwo.png"), 4.5 * PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH, 455, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/levelTwo.png"), 4.5 * PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH, 455, 127);
             }
 
             if (this.levelComplete.one && this.levelComplete.two) {
                 if (this.selection.boss) {
-                    ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/bossSelected.png"), 6 * PARAMS.BLOCKWIDTH, 5 * PARAMS.BLOCKWIDTH, 255, 127);
+                    ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/bossSelected.png"), 6 * PARAMS.BLOCKWIDTH, 5 * PARAMS.BLOCKWIDTH, 255, 127);
                 } else {
-                    ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/boss.png"), 6 * PARAMS.BLOCKWIDTH, 5 * PARAMS.BLOCKWIDTH, 255, 127);
+                    ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/level_select/boss.png"), 6 * PARAMS.BLOCKWIDTH, 5 * PARAMS.BLOCKWIDTH, 255, 127);
                 }
             }
         }
@@ -390,24 +437,34 @@ class SceneManager {
         // After selecting "controls", display the controls
         if (!this.title && this.controlMenu) {
             if (this.selection.back) {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/backSelected.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/backSelected.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 64);
             } else {
-                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/back.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 127);
+                ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/back.png"), 0 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, 255, 64);
             }
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/controls/controls.png"), 1.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 865, 725);
         }
 
         if(this.over){
             //ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_883_201.png") , 1.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 883, 201);
             ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/gameover_865_183.png"), 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/play_again.png"), 0.5 * PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH, 965, 183);
             this.bomb = 0;
             this.potion = 0;
             this.knife = 0;
         }
         if(this.tbc){
             //ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/tbc_1024_127.png") , 1.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 883, 201);
-            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/tbc_856_109.png") , 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
+            // ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/tbc_856_109.png") , 1 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, 865, 183);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/continue.png"), 0.5 * PARAMS.BLOCKWIDTH, 4 * PARAMS.BLOCKWIDTH, 965, 183);
         }
-        if(!this.title && !this.over && !this.levelSelection && !this.controlMenu) {
+
+        if (this.finishGame) {
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/beat_game.png"), 1.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH, 865, 183);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/win.png"), 4.5 * PARAMS.BLOCKWIDTH, 4.5 * PARAMS.BLOCKWIDTH, 455, 183);
+            ctx.drawImage(ASSET_MANAGER.getAsset("./tileset/title/play_again.png"), 0.5 * PARAMS.BLOCKWIDTH, 8 * PARAMS.BLOCKWIDTH, 965, 183);
+        }
+
+        if(!this.title && !this.over && !this.levelSelection && !this.controlMenu && !this.finishGame) {
             var ratio = this.knight.health / this.knight.maxhealth;
             ctx.strokeStyle = "Black";
             ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";

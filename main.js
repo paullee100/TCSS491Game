@@ -7,16 +7,28 @@ ASSET_MANAGER.queueDownload("./tileset/title/start_455_127.png")
 ASSET_MANAGER.queueDownload("./tileset/title/startSelected.png");
 ASSET_MANAGER.queueDownload("./tileset/title/controls.png");
 ASSET_MANAGER.queueDownload("./tileset/title/controlsSelected.png");
-ASSET_MANAGER.queueDownload("./tileset/title/levelOne.png");
-ASSET_MANAGER.queueDownload("./tileset/title/levelOneSelected.png");
-ASSET_MANAGER.queueDownload("./tileset/title/levelTwo.png");
-ASSET_MANAGER.queueDownload("./tileset/title/levelTwoSelected.png");
-ASSET_MANAGER.queueDownload("./tileset/title/boss.png");
-ASSET_MANAGER.queueDownload("./tileset/title/bossSelected.png");
+
+// level select
+ASSET_MANAGER.queueDownload("./tileset/level_select/levelOne.png");
+ASSET_MANAGER.queueDownload("./tileset/level_select/levelOneSelected.png");
+ASSET_MANAGER.queueDownload("./tileset/level_select/levelTwo.png");
+ASSET_MANAGER.queueDownload("./tileset/level_select/levelTwoSelected.png");
+ASSET_MANAGER.queueDownload("./tileset/level_select/boss.png");
+ASSET_MANAGER.queueDownload("./tileset/level_select/bossSelected.png");
 ASSET_MANAGER.queueDownload("./tileset/title/back.png");
 ASSET_MANAGER.queueDownload("./tileset/title/backSelected.png");
+
+// controls
+ASSET_MANAGER.queueDownload("./tileset/controls/controls.png");
+
 //gameover
-ASSET_MANAGER.queueDownload("./tileset/title/gameover_865_183.png")
+ASSET_MANAGER.queueDownload("./tileset/title/gameover_865_183.png");
+ASSET_MANAGER.queueDownload("./tileset/title/play_again.png");
+
+// beat level
+ASSET_MANAGER.queueDownload("./tileset/title/continue.png");
+ASSET_MANAGER.queueDownload("./tileset/title/beat_game.png");
+ASSET_MANAGER.queueDownload("./tileset/title/win.png");
 //tbc
 ASSET_MANAGER.queueDownload("./tileset/title/tbc_856_109.png")
 ASSET_MANAGER.queueDownload("./tileset/title/tbc_1024_127.png")
@@ -55,6 +67,30 @@ ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_08.png")
 ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_10.png")
 ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_11.png")
 ASSET_MANAGER.queueDownload("./tileset/swamp/sprite_12.png")
+//tiles castle
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle00.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle01.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle02.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle03.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle04.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle05.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle06.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle07.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle08.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle09.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle10.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle11.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle12.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle13.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle14.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle15.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle28.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle29.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle34.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle35.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle36.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/sprite_castle40.png")
+ASSET_MANAGER.queueDownload("./tileset/castle/castle_background.png")
 // knight spritesheet
 ASSET_MANAGER.queueDownload("./sprites/Knight_Attack1.png");
 ASSET_MANAGER.queueDownload("./sprites/Knight_Attack2.png");
@@ -136,9 +172,8 @@ ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range1.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range2.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Range3.png");
 ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Death.png");
-ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning0.png");
-ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning1.png");
-ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning2.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_Lightning.png");
+ASSET_MANAGER.queueDownload("./sprites/Titan/Titan_BigLightning.png");
 
 ASSET_MANAGER.queueDownload("./sprites/Dragon/Dragon_Idle.png");
 ASSET_MANAGER.queueDownload("./sprites/Dragon/Dragon_Flight.png");
@@ -162,9 +197,13 @@ ASSET_MANAGER.queueDownload("./sounds/bomb_explosion.mp3");
 ASSET_MANAGER.queueDownload("./sounds/throwing_knife.mp3");
 ASSET_MANAGER.queueDownload("./sounds/chest_open.mp3");
 ASSET_MANAGER.queueDownload("./sounds/mimic_attack.mp3");
+ASSET_MANAGER.queueDownload("./sounds/dragon_fire.mp3");
+ASSET_MANAGER.queueDownload("./sounds/dragon_flight.mp3");
 
 // music
 ASSET_MANAGER.queueDownload("./music/forsaken_forest.mp3"); //greenpath from hollow knight
+ASSET_MANAGER.queueDownload("./music/ancient_ruins.mp3"); //crystal peak from hollow knight
+ASSET_MANAGER.queueDownload("./music/dragontheme.mp3"); // flamelurker from demon's souls (2009)
 
 ASSET_MANAGER.downloadAll(() => {
 	const gameEngine = new GameEngine();

@@ -77,7 +77,6 @@ class Knight {
         const RUN = 750;
         const JUMP = -900;
         const FALL = 1750;
-
         if (!this.game.camera.title && this.health <= 0) {
             console.log(this.health);
             this.state = 6;
@@ -104,7 +103,7 @@ class Knight {
                         this.state = 4;
                         this.velocity.x = 500 * (this.facing);
                         ASSET_MANAGER.playAsset("./sounds/knight_roll.mp3");
-                    } else if (this.game.keys["W"]) { // jump
+                    } else if (this.velocity.y === 0 && (this.game.keys[" "] || this.game.keys["W"])) { // jump
                         this.velocity.y = JUMP;
                         this.state = 5;
                         this.velocity.x = 0;
@@ -217,9 +216,6 @@ class Knight {
                             }
                         }   
                         if (entity.BB && that.BB.collide(entity.BB)) {
-                            if (entity instanceof Slime && entity.color == "green") {
-                                console.log("E");
-                            }
                             if (entity instanceof Tile) {
                                 if ((that.lastBB.bottom) <= entity.BB.top) { //landing
                                     that.position.y = entity.y - 171.25;
@@ -259,6 +255,9 @@ class Knight {
                             this.state = 0;
                             this.animation[9].elapsedTime = 0;
                             ASSET_MANAGER.playAsset("./sounds/knight_parry.mp3");
+                            if (entity instanceof Dragon) {
+                                entity.position = entity.x / PARAMS.BLOCKWIDTH;
+                            };
                         }
                         else if (that.blockBB && entity.attackBB && that.blockBB.collide(entity.attackBB) && entity.BB.type == "enemy" && entity.attackBB.removeFromWorld !== true
                         && (this.state == 9 || this.state == 10) && this.state !== 11 && (this.facing !== entity.facing)) {
@@ -335,6 +334,33 @@ class Knight {
         }
     }
 
+    hit(damage, attackBB) {
+
+        if (this.blockBB && this.blockBB.collide(attackBB) &&
+        (this.state == 9 || this.state == 10) && this.state !== 11 && this.game.keys["L"] && (this.facing !== attackBB.attacker.facing)) {
+            attackBB.damage /= 2;
+            attackBB.damageDeal(this);
+            this.state = 11;
+            this.animation[9].elapsedTime = 0;
+            if (attackBB.attacker.facing == -1) this.velocity.x = Math.max(-600, -40 * damage)/2;
+            else if (attackBB.attacker.facing == 1) this.velocity.x = Math.min(600, 40 * damage)/2;
+            ASSET_MANAGER.playAsset("./sounds/knight_blocked_attack.mp3");
+            attackBB = undefined;
+        }
+
+        else if (this.state !== 8 && this.state !== 11 && this.state !== 6 && this.state !== 9 && this.state !== 10 && !this.game.keys["L"] && !(this.state == 4 && this.animation[4].currentFrame() < 8)) {
+            console.log(this.state)
+            this.state = 8;
+            attackBB.damageDeal(this);
+            if (attackBB.attacker.facing == -1) this.velocity.x = Math.max(-600, -40 * damage);
+            else if (attackBB.attacker.facing == 1) this.velocity.x = Math.min(600, 40 * damage);
+            attackBB = undefined;
+            ASSET_MANAGER.playAsset("./sounds/knight_takehit.mp3");
+            for (var i = 0; i < 12; i++) {
+                this.animation[i].elapsedTime = 0;
+            };
+        }
+    };
     draw(ctx) {
         if (PARAMS.DEBUG) {
             // let canvas = document.getElementById("gameWorld");

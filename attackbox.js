@@ -17,22 +17,24 @@ class AttackBox {
     };
 
     damageDeal(entity) {
-        entity.health -= this.damage;
-        //ASSET_MANAGER.playAsset("./sounds/knight_attack_hit.mp3");
+        if (this.removeFromWorld !== true) {
+            entity.health -= this.damage;
+        }
         this.removeFromWorld = true;
     }
 
     update() {
-        if ((this.attacker.state == 1 && this.attacker.animation[1].currentFrame() == this.endtime) || (this.attacker.state == 2 && this.attacker.animation[2].currentFrame() == this.endtime)) {
+        if ((this.attacker.state == 1 && this.attacker.animation[1].currentFrame() == this.endtime) || (this.attacker.state == 2 && this.attacker.animation[2].currentFrame() == this.endtime)
+        || (this.attacker instanceof Dragon && this.attacker.animation[4].currentFrame() == this.endtime)) {
             this.removeFromWorld = true;
         };
-        if (this.attacker.facing == 1 && this.attacker instanceof Knight) {
-            this.x = this.attacker.position.x + 100;
-            this.y = this.attacker.position.y;
+        if (this.attacker.facing == 1 && this.attacker instanceof Dragon) {
+            this.x = this.attacker.x + 125;
+            this.y = this.attacker.y + 75;
         }
-        if (this.attacker.facing == -1 && this.attacker instanceof Knight) {
-            this.x = this.attacker.position.x - 200;
-            this.y = this.attacker.position.y;
+        if (this.attacker.facing == -1 && this.attacker instanceof Dragon) {
+            this.x = this.attacker.x + 25;
+            this.y = this.attacker.y + 75;
         }
     };
 
