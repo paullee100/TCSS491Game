@@ -302,7 +302,7 @@ class Titan {
         this.animation.push(new Animator(this.spritesheet[4], 11, 4, 73, 108, 5, 0.5, 39, false, true));
         this.animation.push(new Animator(this.spritesheet[5], 4, 4, 63, 124, 5, 0.5, 49, false, true));
         this.animation.push(new Animator(this.spritesheet[6], 5, 6, 80, 101, 5, 0.5, 32, false, true));
-        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.15, 31, false, false));
+        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.35, 31, false, false));
         this.animation.push(new Animator(this.spritesheet[8], 8, 5, 78, 102, 6, 0.5, 35, false, true));
         this.animation.push(new Animator(this.spritesheet[9], 9, 11, 60, 102, 9, 0.15, 52, false, false));
 
@@ -436,8 +436,8 @@ class Dragon {
         this.facing = -1; // right = 1, left = -1
         this.health = 600;
         this.maxhealth = 600;
-        this.damage = 7.5;
-        this.firedamage = 15;
+        this.damage = 15;
+        this.firedamage = 20;
         this.speed = 0;
         this.position = 32;
         this.dead = false;
