@@ -280,7 +280,6 @@ var levelOne = {
    
     
     //boss area
-
     {sprite:"./tileset/castle/sprite_castle01.png",x:125,y:8,size:1,c:true},
     {sprite:"./tileset/castle/sprite_castle02.png",x:126,y:8,size:1,c:true},
     {sprite:"./tileset/castle/sprite_castle03.png",x:125,y:9,size:1,c:true},
@@ -369,7 +368,6 @@ var levelTwo = {
         {x: 110, y: -11},
     ],
     Mimic:[{x:48,y:6,facing:-1}],
-    // Lich: [{x:37+(25*4),y:(390/64)}],
     Skeleton: [
         { x: 33, y: (476/ 64) },
         { x: 62, y: (284 / 64) },
@@ -380,11 +378,12 @@ var levelTwo = {
         { x: 60, y: 4.5 , color: "red"},
         { x: 68, y: 4.5 , color: "yellow"},
     ],
-    Bush:[{x:-2,y:4}],
-    //Rock:[{x:17.25,y:4}],
+    Tree: [{x:10,y:4}],
+    Bush:[{x:-2,y:4},{x:11,y:4},{x:13.5,y:4}],
+    
     Ground:[
     // standard  block grass 0
-    {sprite:"./tileset/swamp/sprite_00.png",x:4,y:10,size:1},
+    {sprite:"./tileset/swamp/sprite_01.png",x:4,y:10,size:1},
     {sprite:"./tileset/swamp/sprite_00.png",x:-3,y:11,size:1},
     {sprite:"./tileset/swamp/sprite_01.png",x:-2,y:11,size:30},
     {sprite:"./tileset/swamp/sprite_11.png",x:28,y:11,size:63},
