@@ -345,11 +345,11 @@ class Titan {
                                 this.attackDelay += this.game.clockTick;
                             } else if (this.firstEncounter || this.attackDelay >= 2.5) {
                                 this.state = 1;
-                                if (this.animation[1].currentFrame() == 1) {
+                                if (this.animation[1].currentFrame() == 2) {
                                     if (this.facing == 1) {
-                                        this.attackBB = new AttackBox(this.game, this, this.x + 160, this.y, 226, 410, 1, 3, this.damage);
+                                        this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226 + 226 + 160, 410, 2, 3, this.damage);
                                     } else {
-                                        this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226, 410, 1, 3, this.damage);
+                                        this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226 + 226 + 160, 410, 2, 3, this.damage);
                                     }
                                 }
                                 this.encounter = true;
@@ -418,7 +418,6 @@ class Titan {
 
         if (this.state == 2) stateModX = -13, stateModY = -15;
         else if (this.state == 7) stateModX = 55//, stateModY = -40;
-        else if (this.state == 9) stateModY = -50;
             
         if (this.facing == 1) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y + stateModY - this.game.camera.y, 4);
