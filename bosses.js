@@ -422,8 +422,8 @@ class Dragon {
         this.facing = -1; // right = 1, left = -1
         this.health = 600;
         this.maxhealth = 600;
-        this.damage = 7.5;
-        this.firedamage = 15;
+        this.damage = 15;
+        this.firedamage = 20;
         this.speed = 0;
         this.position = 32;
         this.dead = false;
