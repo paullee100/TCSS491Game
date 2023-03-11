@@ -200,6 +200,11 @@ var levelOne = {
     {sprite:"./tileset/forest/forest_tiles07.png",x:1+(25*3),y:13,size:19},
     {sprite:"./tileset/forest/forest_tiles07.png",x:20+(25*3),y:13,size:6},
     // standard 0-20 block grass 4 
+    {sprite:"./tileset/forest/forest_tiles27.png",x:118,y:11,size:8},
+    {sprite:"./tileset/forest/forest_tiles34.png",x:118,y:12,size:1},
+    {sprite:"./tileset/forest/forest_tiles34.png",x:118,y:13,size:1},
+    {sprite:"./tileset/forest/forest_tiles35.png",x:119,y:12,size:34},
+    {sprite:"./tileset/forest/forest_tiles35.png",x:119,y:13,size:34},
     {sprite:"./tileset/forest/forest_tiles01.png",x:1+(25*4),y:11,size:19},
     {sprite:"./tileset/forest/forest_tiles02.png",x:20+(25*4),y:11,size:1}, 
     {sprite:"./tileset/forest/forest_tiles06.png",x:1+(25*4),y:12,size:3},
@@ -272,8 +277,36 @@ var levelOne = {
     {sprite:"./tileset/forest/forest_tiles35.png",x:71,y:10,size:46},
     {sprite:"./tileset/forest/forest_tiles27.png",x:117,y:10,size:1},
 
+   
     
     //boss area
+
+    {sprite:"./tileset/castle/sprite_castle01.png",x:125,y:8,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle02.png",x:126,y:8,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle03.png",x:125,y:9,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle04.png",x:126,y:9,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle05.png",x:125,y:10,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle06.png",x:126,y:10,size:1,c:true},
+    {sprite:"./tileset/forest/forest_tiles34.png",x:25+(25*4),y:7,size:1},
+        //interior
+    {sprite:"./tileset/castle/sprite_castle07.png",x:28+(25*4),y:6,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle07.png",x:35+(25*4),y:6,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle07.png",x:42+(25*4),y:6,size:1,c:true},
+    {sprite:"./tileset/castle/sprite_castle07.png",x:49+(25*4),y:6,size:1,c:true},
+
+    {sprite:"./tileset/throne/throne_00.png",x:49+(25*4),y:8,size:1},
+    {sprite:"./tileset/throne/throne_01.png",x:50+(25*4),y:8,size:1},
+    {sprite:"./tileset/throne/throne_02.png",x:51+(25*4),y:8,size:1},
+    {sprite:"./tileset/throne/throne_03.png",x:52+(25*4),y:8,size:1},
+    {sprite:"./tileset/throne/throne_04.png",x:49+(25*4),y:9,size:1},
+    {sprite:"./tileset/throne/throne_05.png",x:50+(25*4),y:9,size:1},
+    {sprite:"./tileset/throne/throne_06.png",x:51+(25*4),y:9,size:1},
+    {sprite:"./tileset/throne/throne_07.png",x:52+(25*4),y:9,size:1},
+    {sprite:"./tileset/throne/throne_08.png",x:49+(25*4),y:10,size:1},
+    {sprite:"./tileset/throne/throne_09.png",x:50+(25*4),y:10,size:1},
+    {sprite:"./tileset/throne/throne_10.png",x:51+(25*4),y:10,size:1},
+    {sprite:"./tileset/throne/throne_11.png",x:52+(25*4),y:10,size:1},
+
     {sprite:"./tileset/forest/forest_tiles26.png",x:25+(25*4),y:1,size:1},
     {sprite:"./tileset/forest/forest_tiles27.png",x:26+(25*4),y:1,size:28},
     {sprite:"./tileset/forest/forest_tiles28.png",x:54+(25*4),y:1,size:1},
@@ -310,7 +343,7 @@ var levelOne = {
     {sprite:"./tileset/forest/forest_tiles36.png",x:54+(25*4),y:12,size:1},
     {sprite:"./tileset/forest/forest_tiles34.png",x:25+(25*4),y:13,size:1},
     {sprite:"./tileset/forest/forest_tiles35.png",x:26+(25*4),y:13,size:28},
-    {sprite:"./tileset/forest/forest_tiles36.png",x:54+(25*4),y:13,size:1}
+    {sprite:"./tileset/forest/forest_tiles36.png",x:54+(25*4),y:13,size:1},
 ],
 
 Background:[3]
