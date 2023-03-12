@@ -794,7 +794,7 @@ class Slime {
 		this.speed = 150;
 		this.health = 30;
 		this.maxhealth = 30;
-		this.visionleftbound = this.x - 200;
+		this.visionleftbound = this.x - 50;
 		this.facing = 1; // right = 1 left = -1
 		this.state = 1; // damage/stunned = 0,  jump = 1, idle = 2, death = 3
 		this.game.Slime = this;
@@ -836,14 +836,16 @@ class Slime {
 			this.animation.push(new Animator(this.spritesheet[2], 0, 0, 15.9, 18, 9, 0.1, 1, false, true));
 			this.animation.push(new Animator(this.spritesheet[3], 0, 0, 15.5, 18, 5, .15, 1, false, true));
 		}
+		this.hittingtile = true;
 		this.maxhealth = this.health;
 		this.updateBB();
 	}
 	updateBB() {
+		(this.x - 50 - this.game.camera.x, (this.y - 100) - this.game.camera.y, 200, 260);
 		this.lastBB = this.BB;
 		this.lastVisionBB = this.VisionBB;
 		this.BB = new BoundingBox(this.x, this.y + 10, 90, 160, "enemy", this);
-		this.VisionBB = new BoundingBox(this.visionleftbound, this.y + 10, 500, 160, "enemy", this);
+		this.VisionBB = new BoundingBox(this.visionleftbound, this.y - 100, 200, 260, "enemy", this);
 	}
 	update() {
 		this.visionleftbound += this.speed * this.game.clockTick;
@@ -864,18 +866,18 @@ class Slime {
 		this.game.entities.forEach(entity => {
 			if (entity.BB && that.BB.collide(entity.BB)) {
 				if (entity instanceof Tile) {
+					console.log('slime hitting tile')
 					if ((that.lastBB.right) <= entity.BB.left) {
 						this.facing = -1;
 						this.speed = -150
-						//this.hittingtile = false;
 					}
 					else if ((that.lastBB.left) >= entity.BB.right) {
 						this.facing = 1;
 						this.speed = 150;
-						//this.hittingtile = false;
 
 					}
 				} else if (entity instanceof Knight) {
+					
 					this.speed = 0;
 					if (this.state == 1) {
 						this.attackBB = new AttackBox(this.game, this, this.x, this.y + 10, 90, 160, 2, 3, this.damage);
@@ -884,7 +886,7 @@ class Slime {
 					}
 					//console.log("slime has collided")
 				}
-			}else if (entity.BB && that.VisionBB.collide(entity.BB)) {
+			} else if (entity.BB && that.VisionBB.collide(entity.BB)) {
 				if (entity instanceof Knight) {
 					if ((that.lastBB.right) <= entity.BB.left) { // slime sees knight from right
 						this.facing = 1;
@@ -926,7 +928,8 @@ class Slime {
 			}
 			// visionbox
 			ctx.strokeStyle = "blue";
-			ctx.strokeRect(this.x - 200 - this.game.camera.x, (this.y + 10) - this.game.camera.y, 500, 160);
+			ctx.strokeRect(this.x - 50 - this.game.camera.x, (this.y - 100) - this.game.camera.y, 200, 260);
+			//ctx.strokeRect(this.x - 200 - this.game.camera.x, (this.y + 10) - this.game.camera.y, 500, 160); old
 		}
 		let ratio = this.health / this.maxhealth;
 		ctx.strokeStyle = "black";
