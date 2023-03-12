@@ -42,7 +42,7 @@ class TitanLightning {
         
         this.dist = this.target.position.x - this.x;
         this.playerY = this.target.position.y;
-        this.speed = 1000;
+        this.speed = 750;
         this.damage = 10;
 
         this.start = this.x;
@@ -53,35 +53,41 @@ class TitanLightning {
         this.LightningY = 0;
         this.LightningCounter = 1;
         this.summonLightningTimer = 0;
+        this.damageTimer = 0;
 
         this.spritesheet = [];
         this.animation = [];
         this.state = 0;
 
-        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Lightning.png"));
         this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_BigLightning.png"));
+        this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/Titan/Titan_Lightning.png"));
 
         //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-        this.animation.push(new Animator(this.spritesheet[0], 5, 12, 44, 44, 1, 0.2, 0, false, true)); // straight
-        // this.animation.push(new Animator(this.spritesheet[0], 56, 12, 44, 44, 1, 0.2, 0, false, true)); // right1
-        this.animation.push(new Animator(this.spritesheet[0], 113, 12, 44, 44, 1, 0.2, 0, false, true)); // right2
-        this.animation.push(new Animator(this.spritesheet[0], 164, 12, 44, 44, 1, 0.2, 0, false, true)); // right3
+        this.animation.push(new Animator(this.spritesheet[1], 5, 12, 44, 44, 1, 0.2, 0, false, true)); // straight
+        this.animation.push(new Animator(this.spritesheet[1], 113, 12, 44, 44, 1, 0.2, 0, false, true)); // right2
+        this.animation.push(new Animator(this.spritesheet[1], 164, 12, 44, 44, 1, 0.2, 0, false, true)); // right3
     };
 
     updateBB() {
         this.lastBB = this.BB;
 
-        if (this.SummonLightning) {
-            this.BB = new BoundingBox(this.LightningX + 40, this.LightningY - 1000, 160, 1150);
-        } else {
-            // if (this.state == 1) {
-            //     this.BB = new BoundingBox(this.x + 100, this.y + 15, 180, 95);
-            // } 
-            if (this.state == 1) {
+        if (this.facing == 1) {
+            if (this.SummonLightning) {
+                this.BB = new BoundingBox(this.LightningX + 40, this.LightningY - 100, 160, 150);
+            } else if (this.state == 1) {
                 this.BB = new BoundingBox(this.x + 100, this.y - 10, 100, 155);
-            } 
-            else if (this.state == 2) {
+            } else if (this.state == 2) {
                 this.BB = new BoundingBox(this.x + 103, this.y - 26, 25, 195);
+            } else {
+                this.BB = new BoundingBox(this.x + 100, this.y + 50, 200, 35);
+            }
+        } else {
+            if (this.SummonLightning) {
+                this.BB = new BoundingBox(this.LightningX + 130, this.LightningY - 100, 160, 150);
+            } else if (this.state == 1) {
+                this.BB = new BoundingBox(this.x + 200, this.y - 10, 100, 155);
+            } else if (this.state == 2) {
+                this.BB = new BoundingBox(this.x + 200, this.y - 26, 25, 195);
             } else {
                 this.BB = new BoundingBox(this.x + 100, this.y + 50, 200, 35);
             }
@@ -93,38 +99,41 @@ class TitanLightning {
 
         if (this.facing == 1) {
             if (this.x >= this.start + this.dist * 0.60 && this.x <= this.start + this.dist * 0.66) this.state = 1;
-            // else if (this.y > this.playerY * 0.8 && this.y <= this.playerY * 0.85) this.state = 2;
             else if (this.y >= this.playerY * 0.9) this.state = 2;
         } else {
-            if (this.x <= this.start + this.dist * 0.60 && this.x >= this.start + this.dist * 0.66) this.state = 1;
-            // else if (this.x > this.dist * 0.85 && this.x <= this.dist * 0.85) this.state = 2;
+            if (this.x <= this.start + this.dist * 0.8 && this.x >= this.start + this.dist * 0.86) this.state = 1;
             else if (this.y >= this.playerY * 0.9) this.state = 2;
         }
 
         if (this.state == 0) {
             this.x += (this.speed * this.facing) * this.game.clockTick;
-        }
-        // } else if (this.state == 1) {
-        //     this.x += (this.speed * this.facing) * this.game.clockTick;
-        //     this.y += (this.speed * 1) * this.game.clockTick;
-        // } 
-        else if (this.state == 1) {
+        } else if (this.state == 1) {
             this.x += (this.speed * this.facing) * this.game.clockTick;
             this.y += (this.speed * 1.15) * this.game.clockTick;
-        } 
-        else if (this.state == 2) {
+        } else if (this.state == 2) {
             this.y += (this.speed * 1.5) * this.game.clockTick;
         }
 
         this.game.entities.forEach((entity) => {
             if (entity.BB && this.BB.collide(entity.BB)) {
-                if (entity instanceof Knight) {
-                    if (this.facing == 1) this.attackBB = new AttackBox(this.game, this, this.LightningX + 40, this.LightningY - 1000, 160, 1150, 0, 2, this.damage);
-                    if (this.facing == -1) this.attackBB = new AttackBox(this.game, this, this.LightningX + 40, this.LightningY - 1000, 160, 1150, 0, 2, this.damage);
+                this.damageTimer += this.game.clockTick;
+                if (entity instanceof Knight && this.SummonLightning == true && this.LightningCounter >= 9 && entity.health > 0) {
+                    entity.health -= this.damage;
+                    entity.state = 8;
+                    if (entity.facing == 1) {
+                        entity.velocity.x = -200;
+                    } else if (entity.facing == -1) {
+                        entity.velocity.x = 200;
+                    }
+                    ASSET_MANAGER.playAsset("./sounds/knight_takehit.mp3");
+                    for (var i = 0; i < 12; i++) {
+                        entity.animation[i].elapsedTime = 0;
+                    };
+                    this.removeFromWorld = true;
                 }
 
                 if (entity instanceof Tile) {
-                    if ((this.lastBB.bottom) <= entity.BB.top) {
+                    if ((this.lastBB.bottom) >= entity.BB.top) {
                         this.LightningX = this.x;
                         this.LightningY = this.y;
                         this.SummonLightning = true;
@@ -139,17 +148,26 @@ class TitanLightning {
             ctx.strokeStyle = "red";
             // ctx.strokeRect(this.LightningX + 40 - this.game.camera.x, this.LightningY - this.game.camera.y - 1000, 160, 1150);
 
-            if (this.SummonLightning) {
-                ctx.strokeRect(this.LightningX + 40 - this.game.camera.x, this.LightningY - this.game.camera.y - 1000, 160, 1150);
-            } else {
-                if (this.state == 1) {
-                    ctx.strokeRect(this.x + 100 - this.game.camera.x, this.y + 15 - this.game.camera.y, 180, 95);
-                } else if (this.state == 2) {
+            if (this.facing == 1) {
+                if (this.SummonLightning) {
+                    ctx.strokeRect(this.LightningX + 40 - this.game.camera.x, this.LightningY - this.game.camera.y - 100, 160, 150);
+                } else if (this.state == 1) {
                     ctx.strokeRect(this.x + 100 - this.game.camera.x, this.y - 10 - this.game.camera.y, 100, 155);
-                } else if (this.state == 3) {
+                } else if (this.state == 2) {
                     ctx.strokeRect(this.x + 103 - this.game.camera.x, this.y - 26 - this.game.camera.y, 25, 195);
                 } else {
                     ctx.strokeRect(this.x + 100 - this.game.camera.x, this.y + 50 - this.game.camera.y, 200, 35);
+                }
+            } else if (this.facing == -1) {
+                if (this.SummonLightning) {
+                    ctx.strokeRect(this.LightningX + 130 - this.game.camera.x, this.LightningY - this.game.camera.y - 100, 160, 150);
+                } else if (this.state == 1) {
+                    ctx.strokeRect(this.x + 200 - this.game.camera.x, this.y - 10 - this.game.camera.y, 100, 155);
+                } else if (this.state == 2) {
+                    ctx.strokeRect(this.x + 200 - this.game.camera.x, this.y - 26 - this.game.camera.y, 25, 195);
+                } else {
+                    ctx.strokeRect(this.x + 100 - this.game.camera.x, this.y + 50 - this.game.camera.y, 200, 35);
+
                 }
             }
         }
@@ -166,102 +184,105 @@ class TitanLightning {
         let stateModX = 0;
         let stateModY = 0;
 
+        if (this.facing == -1) {
+            if (this.state == 2) stateModX = -70;
+        }
+
         if (this.SummonLightning) {
+            console.log("true");
             this.summonLightningTimer += this.game.clockTick;
             // 1020 ---- 1500
             if (this.facing == 1) {
                 if (this.summonLightningTimer >= 0.0 && this.summonLightningTimer < 0.05) {
-                    ctx.drawImage(this.spritesheet[1], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 2;
 
                 } else if (this.summonLightningTimer >= 0.05 && this.summonLightningTimer < 0.1) {
-                    ctx.drawImage(this.spritesheet[1], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 3;
 
                 } else if (this.summonLightningTimer >= 0.1 && this.summonLightningTimer < 0.15) {
-                    ctx.drawImage(this.spritesheet[1], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 4;
 
                 } else if (this.summonLightningTimer >= 0.15 && this.summonLightningTimer < 0.2) {
-                    ctx.drawImage(this.spritesheet[1], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 5;
 
                 } else if (this.summonLightningTimer >= 0.2 && this.summonLightningTimer < 0.25) {
-                    ctx.drawImage(this.spritesheet[1], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 6;
 
                 } else if (this.summonLightningTimer >= 0.25 && this.summonLightningTimer < 0.3) {
-                    ctx.drawImage(this.spritesheet[1], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 7;
 
                 } else if (this.summonLightningTimer >= 0.3 && this.summonLightningTimer < 0.35) {
-                    ctx.drawImage(this.spritesheet[1], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 8;
 
                 } else if (this.summonLightningTimer >= 0.35 && this.summonLightningTimer < 0.4) {
-                    ctx.drawImage(this.spritesheet[1], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 9;
 
                 } else if (this.summonLightningTimer >= 0.4 && this.summonLightningTimer < 0.45) {
-                    ctx.drawImage(this.spritesheet[1], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 10;
 
                 } else if (this.summonLightningTimer >= 0.45 && this.summonLightningTimer < 0.5) {
-                    ctx.drawImage(this.spritesheet[1], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], this.LightningX - 25 - this.game.camera.x, this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.updateBB();
 
                 } else {
                     this.LightningCounter = 1;
                     this.SummonLightning = false;
                     this.summonLightningTimer = 0;
-                    this.removeFromWorld = true;
                 }
             } else if (this.facing == -1) {
                 if (this.summonLightningTimer >= 0.0 && this.summonLightningTimer < 0.05) {
-                    ctx.drawImage(this.spritesheet[1], (this.LightningX * this.facing) - 265 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], (this.LightningX * this.facing) - 350 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 2;
 
                 } else if (this.summonLightningTimer >= 0.05 && this.summonLightningTimer < 0.1) {
-                    ctx.drawImage(this.spritesheet[1], (this.LightningX * this.facing) - 265 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], (this.LightningX * this.facing) - 350 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 3;
 
                 } else if (this.summonLightningTimer >= 0.1 && this.summonLightningTimer < 0.15) {
-                    ctx.drawImage(this.spritesheet[1], (this.LightningX * this.facing) - 265 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], (this.LightningX * this.facing) - 350 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 4;
 
                 } else if (this.summonLightningTimer >= 0.15 && this.summonLightningTimer < 0.2) {
-                    ctx.drawImage(this.spritesheet[1], (this.LightningX * this.facing) - 265 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], (this.LightningX * this.facing) - 350 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 5;
 
                 } else if (this.summonLightningTimer >= 0.2 && this.summonLightningTimer < 0.25) {
-                    ctx.drawImage(this.spritesheet[1], (this.LightningX * this.facing) - 265 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], (this.LightningX * this.facing) - 350 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 6;
 
                 } else if (this.summonLightningTimer >= 0.25 && this.summonLightningTimer < 0.3) {
-                    ctx.drawImage(this.spritesheet[1], (this.LightningX * this.facing) - 265 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], (this.LightningX * this.facing) - 350 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 7;
 
                 } else if (this.summonLightningTimer >= 0.3 && this.summonLightningTimer < 0.35) {
-                    ctx.drawImage(this.spritesheet[1], (this.LightningX * this.facing) - 265 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], (this.LightningX * this.facing) - 350 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 8;
 
                 } else if (this.summonLightningTimer >= 0.35 && this.summonLightningTimer < 0.4) {
-                    ctx.drawImage(this.spritesheet[1], (this.LightningX * this.facing) - 265 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], (this.LightningX * this.facing) - 350 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 9;
 
                 } else if (this.summonLightningTimer >= 0.4 && this.summonLightningTimer < 0.45) {
-                    ctx.drawImage(this.spritesheet[1], (this.LightningX * this.facing) - 265 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], (this.LightningX * this.facing) - 350 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.LightningCounter = 10;
 
                 } else if (this.summonLightningTimer >= 0.45 && this.summonLightningTimer < 0.5) {
-                    ctx.drawImage(this.spritesheet[1], (this.LightningX * this.facing) - 265 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
+                    ctx.drawImage(this.spritesheet[0], (this.LightningX * this.facing) - 350 - (this.game.camera.x * this.facing), this.LightningY - 1000 - this.game.camera.y, 300, 150 * this.LightningCounter);
                     this.updateBB();
 
                 } else {
                     this.LightningCounter = 1;
                     this.SummonLightning = false;
                     this.summonLightningTimer = 0;
-                    this.removeFromWorld = true;
                 }
             }
 

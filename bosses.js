@@ -302,7 +302,7 @@ class Titan {
         this.animation.push(new Animator(this.spritesheet[4], 11, 4, 73, 108, 5, 0.5, 39, false, true));
         this.animation.push(new Animator(this.spritesheet[5], 4, 4, 63, 124, 5, 0.5, 49, false, true));
         this.animation.push(new Animator(this.spritesheet[6], 5, 6, 80, 101, 5, 0.5, 32, false, true));
-        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.15, 31, false, false));
+        this.animation.push(new Animator(this.spritesheet[7], 5, 7, 82, 101, 6, 0.35, 31, false, false));
         this.animation.push(new Animator(this.spritesheet[8], 8, 5, 78, 102, 6, 0.5, 35, false, true));
         this.animation.push(new Animator(this.spritesheet[9], 9, 11, 60, 102, 9, 0.15, 52, false, false));
 
@@ -345,11 +345,11 @@ class Titan {
                                 this.attackDelay += this.game.clockTick;
                             } else if (this.firstEncounter || this.attackDelay >= 2.5) {
                                 this.state = 1;
-                                if (this.animation[1].currentFrame() == 1) {
+                                if (this.animation[1].currentFrame() == 2) {
                                     if (this.facing == 1) {
-                                        this.attackBB = new AttackBox(this.game, this, this.x + 160, this.y, 226, 410, 1, 3, this.damage);
+                                        this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226 + 226 + 160, 410, 2, 3, this.damage);
                                     } else {
-                                        this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226, 410, 1, 3, this.damage);
+                                        this.attackBB = new AttackBox(this.game, this, this.x - 226, this.y, 226 + 226 + 160, 410, 2, 3, this.damage);
                                     }
                                 }
                                 this.encounter = true;
@@ -418,7 +418,6 @@ class Titan {
 
         if (this.state == 2) stateModX = -13, stateModY = -15;
         else if (this.state == 7) stateModX = 55//, stateModY = -40;
-        else if (this.state == 9) stateModY = -50;
             
         if (this.facing == 1) {
             this.animation[this.state].drawFrame(this.game.clockTick, ctx, (this.x - stateModX) - this.game.camera.x, this.y + stateModY - this.game.camera.y, 4);
@@ -437,8 +436,8 @@ class Dragon {
         this.facing = -1; // right = 1, left = -1
         this.health = 600;
         this.maxhealth = 600;
-        this.damage = 7.5;
-        this.firedamage = 15;
+        this.damage = 15;
+        this.firedamage = 20;
         this.speed = 0;
         this.position = 32;
         this.dead = false;
